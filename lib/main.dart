@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:warehouse_app/views/login_page.dart';
 import 'package:warehouse_app/views/welcome_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -17,6 +18,8 @@ class MyApp extends StatelessWidget {
         switch (settings.name) {
           case '/welcome':
             return MaterialPageRoute(builder: (context) => WelcomePage());
+          case '/login':
+            return MaterialPageRoute(builder: (context) => LoginPage());
           default:
         }
       },

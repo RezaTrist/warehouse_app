@@ -62,7 +62,9 @@ class _WelcomePageState extends State<WelcomePage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             primary: Color.fromRGBO(35, 42, 255, 1)),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed('/login');
+                        },
                         child: Text(
                           'Login',
                           style: TextStyle(
