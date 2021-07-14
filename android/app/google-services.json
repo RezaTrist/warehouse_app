@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "313001252075",
+    "project_id": "warehouse-intern",
+    "storage_bucket": "warehouse-intern.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313001252075:android:8237e3e30f1aca8e9adaae",
+        "android_client_info": {
+          "package_name": "com.example.warehouse_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313001252075-9a1cema5o2v76i90n2tjshht8ojp8nav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJV6ZkuWBzMOfLFrdRu7ckdbxNjPSbt6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313001252075-9a1cema5o2v76i90n2tjshht8ojp8nav.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
