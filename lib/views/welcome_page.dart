@@ -96,7 +96,9 @@ class _WelcomePageState extends State<WelcomePage> {
                           ),
                           primary: Colors.white,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed('/signup');
+                        },
                         child: Text(
                           'Sign Up',
                           style: TextStyle(

@@ -1,16 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/repo/providers/firebase_auth_provider.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignupPage extends StatefulWidget {
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignupPageState createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -28,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Welcome Back',
+              'Welcome',
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.w400,
@@ -42,7 +43,33 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                 width: 180,
                 height: 180,
-                child: Image.asset('assets/images/work.png'),
+                child: Image.asset('assets/images/user1.png'),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 25,
+                right: 25,
+                bottom: 20,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Color.fromRGBO(46, 40, 40, 1),
+                    width: 3.0,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                child: TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    hintText: 'Name',
+                    prefixIcon: Icon(FontAwesomeIcons.solidUser),
+                  ),
+                ),
               ),
             ),
             Padding(
@@ -107,17 +134,22 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      fixedSize: Size(163, 46),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                    fixedSize: Size(163, 46),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(
+                        color: Color.fromRGBO(255, 0, 0, 1),
+                        width: 2,
                       ),
-                      primary: Color.fromRGBO(35, 42, 255, 1)),
+                    ),
+                    primary: Colors.white,
+                  ),
                   onPressed: () {},
                   child: Text(
-                    'Login',
+                    'Sign Up',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.white,
+                      color: Color.fromRGBO(255, 0, 0, 1),
                     ),
                   ),
                 ),
@@ -129,18 +161,18 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have an account?"),
+                Text("Already have an account?"),
                 SizedBox(
-                  width: 10,
+                  width: 5,
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/signup');
+                    Navigator.of(context).pushReplacementNamed('/login');
                   },
                   child: Text(
-                    'Sign Up',
+                    'Login',
                     style: TextStyle(
-                      color: Color.fromRGBO(255, 0, 0, 1),
+                      color: Color.fromRGBO(35, 42, 255, 1),
                     ),
                   ),
                 ),
