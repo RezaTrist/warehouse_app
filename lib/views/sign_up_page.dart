@@ -38,7 +38,20 @@ class _SignupPageState extends State<SignupPage> {
             Padding(
               padding: const EdgeInsets.only(
                 top: 10,
-                bottom: 40,
+                bottom: 10,
+              ),
+              child: Text(
+                'Create your account by filling up the form',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color.fromRGBO(183, 183, 183, 1),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 10,
+                bottom: 20,
               ),
               child: SizedBox(
                 width: 180,
