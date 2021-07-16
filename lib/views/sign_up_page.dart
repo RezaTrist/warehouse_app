@@ -11,9 +11,9 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
 
   final bool obscureText = true;
 
@@ -46,32 +46,32 @@ class _SignupPageState extends State<SignupPage> {
                 child: Image.asset('assets/images/user1.png'),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 25,
-                right: 25,
-                bottom: 20,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Color.fromRGBO(46, 40, 40, 1),
-                    width: 3.0,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
-                child: TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    hintText: 'Name',
-                    prefixIcon: Icon(FontAwesomeIcons.solidUser),
-                  ),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //     left: 25,
+            //     right: 25,
+            //     bottom: 20,
+            //   ),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.white,
+            //       border: Border.all(
+            //         color: Color.fromRGBO(46, 40, 40, 1),
+            //         width: 3.0,
+            //       ),
+            //       borderRadius: BorderRadius.all(
+            //         Radius.circular(12),
+            //       ),
+            //     ),
+            //     child: TextField(
+            //       controller: nameController,
+            //       decoration: InputDecoration(
+            //         hintText: 'Name',
+            //         prefixIcon: Icon(FontAwesomeIcons.solidUser),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(
                 left: 25,
@@ -144,7 +144,20 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     primary: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    provider
+                        .registerWithEmailAndPassword(
+                            emailController.text.trim(),
+                            passwordController.text.trim())
+                        .then((value) {
+                      if (value == 'Success') {
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      } else {
+                        print('Email or password is too weak!');
+                        return Container();
+                      }
+                    });
+                  },
                   child: Text(
                     'Sign Up',
                     style: TextStyle(

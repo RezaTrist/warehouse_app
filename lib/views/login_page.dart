@@ -113,7 +113,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       primary: Color.fromRGBO(35, 42, 255, 1)),
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/dashboard');
+                    provider
+                        .loginWithEmailAndPassword(emailController.text.trim(),
+                            passwordController.text.trim())
+                        .then((value) {
+                      if (value == 'Welcome') {
+                        Navigator.of(context)
+                            .pushReplacementNamed('/dashboard');
+                      } else {
+                        print('Email or Password is invalid!');
+                      }
+                    });
                   },
                   child: Text(
                     'Login',
