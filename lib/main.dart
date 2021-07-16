@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
+import 'package:warehouse_app/views/dashboard/profile/profile_page.dart';
 import 'package:warehouse_app/views/login_page.dart';
 import 'package:warehouse_app/views/sign_up_page.dart';
 import 'package:warehouse_app/views/welcome_page.dart';
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => SignupPage());
           case '/dashboard':
             return MaterialPageRoute(builder: (context) => DashboardPage());
+          case '/profile':
+            return MaterialPageRoute(builder: (context) => ProfilePage());
           default:
         }
       },
