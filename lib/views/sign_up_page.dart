@@ -15,196 +15,255 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
-  final bool obscureText = true;
+  // List<String> _roles = ['Manager', 'Client'];
+  // late String _selectedRoles;
+
+  bool obscureText = true;
 
   FirebaseAuthProvider provider = FirebaseAuthProvider();
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome',
-              style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                bottom: 10,
-              ),
-              child: Text(
-                'Create your account by filling up the form',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color.fromRGBO(183, 183, 183, 1),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                bottom: 20,
-              ),
-              child: SizedBox(
-                width: 180,
-                height: 180,
-                child: Image.asset('assets/images/user1.png'),
-              ),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.only(
-            //     left: 25,
-            //     right: 25,
-            //     bottom: 20,
-            //   ),
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       color: Colors.white,
-            //       border: Border.all(
-            //         color: Color.fromRGBO(46, 40, 40, 1),
-            //         width: 3.0,
-            //       ),
-            //       borderRadius: BorderRadius.all(
-            //         Radius.circular(12),
-            //       ),
-            //     ),
-            //     child: TextField(
-            //       controller: nameController,
-            //       decoration: InputDecoration(
-            //         hintText: 'Name',
-            //         prefixIcon: Icon(FontAwesomeIcons.solidUser),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 25,
-                right: 25,
-                bottom: 20,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Color.fromRGBO(46, 40, 40, 1),
-                    width: 3.0,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
-                child: TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 25,
-                right: 25,
-                bottom: 10,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Color.fromRGBO(46, 40, 40, 1),
-                    width: 3.0,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
-                child: TextField(
-                  controller: passwordController,
-                  obscureText: obscureText,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    prefixIcon: Icon(FontAwesomeIcons.lock),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 20,
-                bottom: 2,
-              ),
-              child: new Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(163, 46),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(
-                        color: Color.fromRGBO(255, 0, 0, 1),
-                        width: 2,
-                      ),
-                    ),
-                    primary: Colors.white,
-                  ),
-                  onPressed: () {
-                    provider
-                        .registerWithEmailAndPassword(
-                            emailController.text.trim(),
-                            passwordController.text.trim())
-                        .then((value) {
-                      if (value == 'Success') {
-                        Navigator.of(context).pushReplacementNamed('/login');
-                      } else {
-                        print('Email or password is too weak!');
-                        return Container();
-                      }
-                    });
-                  },
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color.fromRGBO(255, 0, 0, 1),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Already have an account?"),
-                SizedBox(
-                  width: 5,
+                Text(
+                  'Welcome',
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/login');
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 10,
+                  ),
                   child: Text(
-                    'Login',
+                    'Create your account by filling up the form',
                     style: TextStyle(
-                      color: Color.fromRGBO(35, 42, 255, 1),
+                      fontSize: 16,
+                      color: Color.fromRGBO(183, 183, 183, 1),
                     ),
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 20,
+                  ),
+                  child: SizedBox(
+                    width: 180,
+                    height: 180,
+                    child: Image.asset('assets/images/user1.png'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                    bottom: 20,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Color.fromRGBO(46, 40, 40, 1),
+                        width: 3.0,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    child: TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        hintText: 'Name',
+                        prefixIcon: Icon(FontAwesomeIcons.solidUser),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                    bottom: 20,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Color.fromRGBO(46, 40, 40, 1),
+                        width: 3.0,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    // child: DropdownButton<String>(
+                    //   hint: Text('Select role'),
+                    //   dropdownColor: Colors.white,
+                    //   icon: Icon(FontAwesomeIcons.caretDown),
+                    //   iconSize: 36,
+                    //   isExpanded: true,
+                    //   style: TextStyle(
+                    //     fontSize: 18,
+                    //     color: Colors.black,
+                    //   ),
+                    //   value: _selectedRoles,
+                    //   onChanged: (String value) {
+                    //     setState(() {
+                    //       _selectedRoles = value;
+                    //     });
+                    //   },
+                    //   items: _roles.map((role) {
+                    //     return DropdownMenuItem(
+                    //       child: new Text(role),
+                    //       value: role,
+                    //     );
+                    //   }).toList(),
+                    // ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                    bottom: 20,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Color.fromRGBO(46, 40, 40, 1),
+                        width: 3.0,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    child: TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        hintText: 'Email',
+                        prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                    bottom: 10,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Color.fromRGBO(46, 40, 40, 1),
+                        width: 3.0,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    child: TextField(
+                      controller: passwordController,
+                      obscureText: obscureText,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        prefixIcon: Icon(FontAwesomeIcons.lock),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              obscureText = !obscureText;
+                            });
+                          },
+                          icon: Icon(obscureText
+                              ? FontAwesomeIcons.solidEye
+                              : FontAwesomeIcons.solidEyeSlash),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 2,
+                  ),
+                  child: new Container(
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(163, 46),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(
+                            color: Color.fromRGBO(255, 0, 0, 1),
+                            width: 2,
+                          ),
+                        ),
+                        primary: Colors.white,
+                      ),
+                      onPressed: () {
+                        provider
+                            .registerWithEmailAndPassword(
+                                emailController.text.trim(),
+                                passwordController.text.trim())
+                            .then((value) {
+                          if (value == 'Success') {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/login');
+                          } else {
+                            print('Email or password is too weak!');
+                            return Container();
+                          }
+                        });
+                      },
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromRGBO(255, 0, 0, 1),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already have an account?"),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Color.fromRGBO(35, 42, 255, 1),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

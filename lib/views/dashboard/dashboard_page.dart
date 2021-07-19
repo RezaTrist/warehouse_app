@@ -12,7 +12,6 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -59,6 +58,116 @@ class _DashboardPageState extends State<DashboardPage> {
                   color: Colors.black,
                   endIndent: 25,
                   thickness: 2,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 10,
+                  ),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(
+                        color: Color.fromRGBO(0, 209, 77, 1),
+                        width: 2,
+                      ),
+                    ),
+                    elevation: 4,
+                    child: InkWell(
+                      onTap: () {},
+                      child: SizedBox(
+                        width: 330,
+                        height: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(FontAwesomeIcons.warehouse),
+                            SizedBox(
+                              width: 25,
+                            ),
+                            Text(
+                              'Warehouse',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 20,
+                    bottom: 20,
+                  ),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(
+                        color: Color.fromRGBO(0, 209, 77, 1),
+                        width: 2,
+                      ),
+                    ),
+                    elevation: 4,
+                    child: InkWell(
+                      onTap: () {},
+                      child: SizedBox(
+                        width: 330,
+                        height: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(FontAwesomeIcons.cubes),
+                            SizedBox(
+                              width: 25,
+                            ),
+                            Text(
+                              'Product',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(
+                      color: Color.fromRGBO(0, 209, 77, 1),
+                      width: 2,
+                    ),
+                  ),
+                  elevation: 4,
+                  child: InkWell(
+                    onTap: () {},
+                    child: SizedBox(
+                      width: 330,
+                      height: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(FontAwesomeIcons.shoppingCart),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Text(
+                            'Order',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
