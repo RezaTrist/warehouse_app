@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:warehouse_app/views/dashboard/product/product_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -112,7 +113,13 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     elevation: 4,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductPage()),
+                        );
+                      },
                       child: SizedBox(
                         width: 330,
                         height: 100,

@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
+import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
+import 'package:warehouse_app/views/dashboard/product/product_page.dart';
 import 'package:warehouse_app/views/dashboard/profile/profile_page.dart';
 import 'package:warehouse_app/views/login_page.dart';
 import 'package:warehouse_app/views/sign_up_page.dart';
@@ -7,14 +10,16 @@ import 'package:warehouse_app/views/welcome_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Warehouse App',
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
@@ -28,10 +33,15 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => DashboardPage());
           case '/profile':
             return MaterialPageRoute(builder: (context) => ProfilePage());
+          case '/product':
+            return MaterialPageRoute(builder: (context) => ProductPage());
+          case '/detailprod':
+            return MaterialPageRoute(builder: (context) => DetailProductPage());
           default:
         }
       },
-      initialRoute: '/welcome',
+      initialRoute:
+          FirebaseAuth.instance.currentUser == null ? '/login' : '/dashboard',
     );
   }
 }
