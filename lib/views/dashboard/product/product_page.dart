@@ -41,7 +41,7 @@ class _ProductPageState extends State<ProductPage> {
                   Text(
                     'Product',
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 22,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -69,8 +69,8 @@ class _ProductPageState extends State<ProductPage> {
                           );
                         },
                         child: SizedBox(
-                          width: 320,
-                          height: 100,
+                          width: 330,
+                          height: 80,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -104,8 +104,8 @@ class _ProductPageState extends State<ProductPage> {
                       child: InkWell(
                         onTap: () {},
                         child: SizedBox(
-                          width: 320,
-                          height: 100,
+                          width: 330,
+                          height: 80,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

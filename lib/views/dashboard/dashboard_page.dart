@@ -51,7 +51,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 Text(
                   'Dashboard',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 22,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

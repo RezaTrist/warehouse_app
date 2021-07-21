@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         }
       },
       initialRoute:
-          FirebaseAuth.instance.currentUser == null ? '/login' : '/dashboard',
+          FirebaseAuth.instance.currentUser == null ? '/welcome' : '/dashboard',
     );
   }
 }
