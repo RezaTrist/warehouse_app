@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/views/dashboard/product/product_page.dart';
+import 'package:warehouse_app/views/dashboard/profile/profile_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -28,7 +29,10 @@ class _DashboardPageState extends State<DashboardPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/profile');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
             },
             icon: Icon(FontAwesomeIcons.userCircle),
             color: Colors.black,
@@ -60,6 +64,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   endIndent: 25,
                   thickness: 2,
                 ),
+
+                // WAREHOUSE BUTTON
                 Padding(
                   padding: EdgeInsets.only(
                     top: 10,
@@ -78,18 +84,20 @@ class _DashboardPageState extends State<DashboardPage> {
                       child: SizedBox(
                         width: 330,
                         height: 100,
-                        child: Row(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(FontAwesomeIcons.warehouse),
-                            SizedBox(
-                              width: 25,
-                            ),
-                            Text(
-                              'Warehouse',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w600,
+                            const ListTile(
+                              leading: Icon(
+                                FontAwesomeIcons.warehouse,
+                                color: Colors.black,
+                              ),
+                              title: Text(
+                                'Warehouse',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -103,6 +111,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     top: 20,
                     bottom: 20,
                   ),
+
+                  // PRODUCT BUTTON
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -123,18 +133,20 @@ class _DashboardPageState extends State<DashboardPage> {
                       child: SizedBox(
                         width: 330,
                         height: 100,
-                        child: Row(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(FontAwesomeIcons.cubes),
-                            SizedBox(
-                              width: 25,
-                            ),
-                            Text(
-                              'Product',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w600,
+                            const ListTile(
+                              leading: Icon(
+                                FontAwesomeIcons.cubes,
+                                color: Colors.black,
+                              ),
+                              title: Text(
+                                'Product',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -143,6 +155,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                 ),
+
+                // ORDER BUTTON
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -157,18 +171,20 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: SizedBox(
                       width: 330,
                       height: 100,
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(FontAwesomeIcons.shoppingCart),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Text(
-                            'Order',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
+                          const ListTile(
+                            leading: Icon(
+                              FontAwesomeIcons.shoppingCart,
+                              color: Colors.black,
+                            ),
+                            title: Text(
+                              'Order',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],

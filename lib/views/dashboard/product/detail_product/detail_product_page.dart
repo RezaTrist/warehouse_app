@@ -28,54 +28,244 @@ class _DetailProductPageState extends State<DetailProductPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 25,
-                left: 25,
-                bottom: 25,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Product',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                    ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 10,
+                    left: 25,
+                    right: 25,
                   ),
-                  Divider(
-                    color: Colors.black,
-                    endIndent: 25,
-                    thickness: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Product',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Divider(
+                        color: Colors.black,
+                        endIndent: 25,
+                        thickness: 2,
+                      ),
+                    ],
                   ),
-                  // HARGA PRODUCT
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 8,
-                    ),
-                    child: Card(
-                      color: Color.fromRGBO(226, 226, 226, 1),
-                      elevation: 0,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const ListTile(
-                            leading: Icon(
-                              FontAwesomeIcons.tag,
-                              color: Colors.black,
-                            ),
-                            title: Text(
-                              'Rp 35.000',
-                              style: TextStyle(fontSize: 16),
+                ),
+
+                // PRODUCT PRICE
+                Card(
+                  color: Color.fromRGBO(226, 226, 226, 1),
+                  elevation: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const ListTile(
+                        leading: Icon(
+                          FontAwesomeIcons.tag,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          'Rp 35.000',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // PRODUCT NAME
+                Card(
+                  color: Color.fromRGBO(226, 226, 226, 1),
+                  elevation: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const ListTile(
+                        leading: Icon(
+                          FontAwesomeIcons.cubes,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          'Vitamin D3',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // AMOUNT OF PRODUCT LEFT
+                Card(
+                  color: Color.fromRGBO(226, 226, 226, 1),
+                  elevation: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const ListTile(
+                        leading: Icon(
+                          FontAwesomeIcons.cubes,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          '5 Left',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // AMOUNT OF PRODUCT STOCK
+                Card(
+                  color: Color.fromRGBO(226, 226, 226, 1),
+                  elevation: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const ListTile(
+                        leading: Icon(
+                          FontAwesomeIcons.cubes,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          '10 Stock',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // PRODUCT DESCRIPTION
+                Card(
+                  color: Color.fromRGBO(226, 226, 226, 1),
+                  elevation: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const ListTile(
+                        leading: Icon(
+                          FontAwesomeIcons.alignJustify,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          'Membantu tubuh menyerap kalsium dan fosfor yang penting untuk membangun dan menjaga tulang yang kuat',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // WAREHOUSE SOURCES
+                Card(
+                  color: Color.fromRGBO(226, 226, 226, 1),
+                  elevation: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const ListTile(
+                        leading: Icon(
+                          FontAwesomeIcons.warehouse,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          'Warehouse-Century',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // WAREHOUSE ADDRESS
+                Card(
+                  color: Color.fromRGBO(226, 226, 226, 1),
+                  elevation: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const ListTile(
+                        leading: Icon(
+                          FontAwesomeIcons.mapMarkerAlt,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          'Jl. Limo No.40, RT.8/RW.10, Grogol Sel., Kec. Kby. Lama, Kota Jakarta Selatan',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                  ),
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(320, 45),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(
+                              color: Color.fromRGBO(35, 42, 255, 1),
+                              width: 2,
                             ),
                           ),
-                        ],
+                          primary: Colors.white,
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          'Edit',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromRGBO(35, 42, 255, 1),
+                          ),
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(320, 45),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: BorderSide(
+                                color: Color.fromRGBO(255, 0, 0, 1),
+                                width: 2,
+                              ),
+                            ),
+                            primary: Colors.white,
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            'Ban',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color.fromRGBO(255, 0, 0, 1),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),

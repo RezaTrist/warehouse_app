@@ -31,7 +31,7 @@ class _ProductPageState extends State<ProductPage> {
           child: Container(
             child: Padding(
               padding: const EdgeInsets.only(
-                top: 25,
+                top: 20,
                 left: 25,
                 bottom: 25,
               ),
