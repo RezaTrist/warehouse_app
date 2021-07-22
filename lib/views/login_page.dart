@@ -46,6 +46,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: Image.asset('assets/images/work.png'),
                   ),
                 ),
+
+                // TEXT FIELD EMAIL
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -68,10 +70,13 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         hintText: 'Email',
                         prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
+                        focusedBorder: InputBorder.none,
                       ),
                     ),
                   ),
                 ),
+
+                // TEXT FIELD PASSWORD
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -105,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                               ? FontAwesomeIcons.solidEye
                               : FontAwesomeIcons.solidEyeSlash),
                         ),
+                        focusedBorder: InputBorder.none,
                       ),
                     ),
                   ),

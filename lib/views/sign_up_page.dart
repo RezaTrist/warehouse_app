@@ -17,6 +17,7 @@ class _SignupPageState extends State<SignupPage> {
 
   // List<String> _roles = ['Manager', 'Client'];
   // late String _selectedRoles;
+  String _selectedRoles = 'Manager';
 
   bool obscureText = true;
 
@@ -63,6 +64,8 @@ class _SignupPageState extends State<SignupPage> {
                     child: Image.asset('assets/images/user1.png'),
                   ),
                 ),
+
+                // TEXT FIELD NAME
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -74,7 +77,7 @@ class _SignupPageState extends State<SignupPage> {
                       color: Colors.white,
                       border: Border.all(
                         color: Color.fromRGBO(46, 40, 40, 1),
-                        width: 3.0,
+                        width: 3,
                       ),
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -85,10 +88,14 @@ class _SignupPageState extends State<SignupPage> {
                       decoration: InputDecoration(
                         hintText: 'Name',
                         prefixIcon: Icon(FontAwesomeIcons.solidUser),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
                       ),
                     ),
                   ),
                 ),
+
+                // DROPDOWN ROLE
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -100,37 +107,48 @@ class _SignupPageState extends State<SignupPage> {
                       color: Colors.white,
                       border: Border.all(
                         color: Color.fromRGBO(46, 40, 40, 1),
-                        width: 3.0,
+                        width: 3,
                       ),
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
                       ),
                     ),
-                    // child: DropdownButton<String>(
-                    //   hint: Text('Select role'),
-                    //   dropdownColor: Colors.white,
-                    //   icon: Icon(FontAwesomeIcons.caretDown),
-                    //   iconSize: 36,
-                    //   isExpanded: true,
-                    //   style: TextStyle(
-                    //     fontSize: 18,
-                    //     color: Colors.black,
-                    //   ),
-                    //   value: _selectedRoles,
-                    //   onChanged: (String value) {
-                    //     setState(() {
-                    //       _selectedRoles = value;
-                    //     });
-                    //   },
-                    //   items: _roles.map((role) {
-                    //     return DropdownMenuItem(
-                    //       child: new Text(role),
-                    //       value: role,
-                    //     );
-                    //   }).toList(),
-                    // ),
+                    child: DropdownButtonHideUnderline(
+                      child: ButtonTheme(
+                        alignedDropdown: true,
+                        child: DropdownButton<String>(
+                          value: _selectedRoles,
+                          dropdownColor: Colors.white,
+                          icon: Icon(FontAwesomeIcons.caretDown),
+                          iconSize: 36,
+                          isExpanded: true,
+                          hint: Text('Select your role'),
+                          onChanged: (String? value) {
+                            setState(() {
+                              _selectedRoles = value!;
+                            });
+                          },
+                          items: <String>[
+                            'Manager',
+                            'Client',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
+
+                // TEXT FIELD EMAIL
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -142,7 +160,7 @@ class _SignupPageState extends State<SignupPage> {
                       color: Colors.white,
                       border: Border.all(
                         color: Color.fromRGBO(46, 40, 40, 1),
-                        width: 3.0,
+                        width: 3,
                       ),
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -153,10 +171,13 @@ class _SignupPageState extends State<SignupPage> {
                       decoration: InputDecoration(
                         hintText: 'Email',
                         prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
+                        focusedBorder: InputBorder.none,
                       ),
                     ),
                   ),
                 ),
+
+                // TEXT FIELD PASSWORD
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -168,7 +189,7 @@ class _SignupPageState extends State<SignupPage> {
                       color: Colors.white,
                       border: Border.all(
                         color: Color.fromRGBO(46, 40, 40, 1),
-                        width: 3.0,
+                        width: 3,
                       ),
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
@@ -190,6 +211,7 @@ class _SignupPageState extends State<SignupPage> {
                               ? FontAwesomeIcons.solidEye
                               : FontAwesomeIcons.solidEyeSlash),
                         ),
+                        focusedBorder: InputBorder.none,
                       ),
                     ),
                   ),
