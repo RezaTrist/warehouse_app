@@ -17,7 +17,7 @@ class _SignupPageState extends State<SignupPage> {
 
   // List<String> _roles = ['Manager', 'Client'];
   // late String _selectedRoles;
-  String _selectedRoles = 'Manager';
+  late String _selectedRoles;
 
   bool obscureText = true;
 
@@ -117,12 +117,12 @@ class _SignupPageState extends State<SignupPage> {
                       child: ButtonTheme(
                         alignedDropdown: true,
                         child: DropdownButton<String>(
+                          hint: Text("Select Role"),
                           value: _selectedRoles,
                           dropdownColor: Colors.white,
                           icon: Icon(FontAwesomeIcons.caretDown),
                           iconSize: 36,
                           isExpanded: true,
-                          hint: Text('Select your role'),
                           onChanged: (String? value) {
                             setState(() {
                               _selectedRoles = value!;
