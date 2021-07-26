@@ -7,7 +7,7 @@ class RoleApiProvider {
 
   final http.Client _role;
   final String _baseUrl =
-      'https://asia-east2-warehouse-intern.cloudfunctions.net/Api/user/User_role';
+      'https://asia-east2-warehouse-intern.cloudfunctions.net/Apiv1_1_0/user/User_role';
 
   Future<UserPack> getUserRoles(int amount) async {
     final Uri _url = Uri.parse('$_baseUrl?amount=$amount');

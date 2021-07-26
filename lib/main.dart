@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:warehouse_app/locator.dart';
 import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/product_page.dart';
@@ -9,9 +11,13 @@ import 'package:warehouse_app/views/sign_up_page.dart';
 import 'package:warehouse_app/views/welcome_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'bloc_observer.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  setupServices();
+  Bloc.observer = CustomBlocObserver();
   runApp(MyApp());
 }
 

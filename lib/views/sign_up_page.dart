@@ -1,7 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:warehouse_app/blocs/user_role_bloc/user_role_bloc.dart';
 import 'package:warehouse_app/repo/providers/firebase_auth_provider.dart';
+import 'package:warehouse_app/repo/repositories/role_api_repository.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -15,11 +20,11 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
-  // List<String> _roles = ['Manager', 'Client'];
   // late String _selectedRoles;
-  late String _selectedRoles;
 
   bool obscureText = true;
+
+  RoleApiRepository roleApiRepository = RoleApiRepository();
 
   FirebaseAuthProvider provider = FirebaseAuthProvider();
 
@@ -65,7 +70,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ),
 
-                // TEXT FIELD NAME
+                // ==================== TEXT FIELD NAME
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -95,7 +100,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ),
 
-                // DROPDOWN ROLE
+                // ==================== DROPDOWN ROLE
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -103,52 +108,57 @@ class _SignupPageState extends State<SignupPage> {
                     bottom: 20,
                   ),
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Color.fromRGBO(46, 40, 40, 1),
-                        width: 3,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Color.fromRGBO(46, 40, 40, 1),
+                          width: 3,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: ButtonTheme(
-                        alignedDropdown: true,
-                        child: DropdownButton<String>(
-                          hint: Text("Select Role"),
-                          value: _selectedRoles,
-                          dropdownColor: Colors.white,
-                          icon: Icon(FontAwesomeIcons.caretDown),
-                          iconSize: 36,
-                          isExpanded: true,
-                          onChanged: (String? value) {
-                            setState(() {
-                              _selectedRoles = value!;
-                            });
-                          },
-                          items: <String>[
-                            'Manager',
-                            'Client',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                  color: Colors.black,
+                      child: BlocProvider(
+                        create: (context) =>
+                            UserRoleBloc(roleApiRepository: roleApiRepository),
+                        child: BlocBuilder<UserRoleBloc, UserRoleState>(
+                            builder: (context, state) {
+                          if (state is UserRoleLoading) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            );
+                          } else if (state is UserRoleFailed) {
+                            print('Dropdown Error');
+                          } else if (state is UserRoleDone) {
+                            return DropdownButtonHideUnderline(
+                              child: ButtonTheme(
+                                alignedDropdown: true,
+                                child: DropdownButton(
+                                  hint: Text('Select Role'),
+                                  value: "Manager",
+                                  items: state.role.map((item) {
+                                    return DropdownMenuItem(
+                                      child: Text('${item.role}'),
+                                      value: item.role,
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      value = state.role as String;
+                                    });
+                                  },
                                 ),
                               ),
                             );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                  ),
+                          }
+                          return Container();
+                        }),
+                      )),
                 ),
 
-                // TEXT FIELD EMAIL
+                // ==================== TEXT FIELD EMAIL
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -177,7 +187,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ),
 
-                // TEXT FIELD PASSWORD
+                // ==================== TEXT FIELD PASSWORD
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 25,
@@ -216,6 +226,8 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                 ),
+
+                // ==================== SIGN UP BUTTON
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 20,
