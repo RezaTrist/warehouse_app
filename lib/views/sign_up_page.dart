@@ -1,10 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/user_role_bloc/user_role_bloc.dart';
+import 'package:warehouse_app/models/user_role_model.dart';
 import 'package:warehouse_app/repo/providers/firebase_auth_provider.dart';
 import 'package:warehouse_app/repo/repositories/role_api_repository.dart';
 
@@ -25,6 +24,8 @@ class _SignupPageState extends State<SignupPage> {
   bool obscureText = true;
 
   RoleApiRepository roleApiRepository = RoleApiRepository();
+
+  String? roles;
 
   FirebaseAuthProvider provider = FirebaseAuthProvider();
 
@@ -137,16 +138,16 @@ class _SignupPageState extends State<SignupPage> {
                                 alignedDropdown: true,
                                 child: DropdownButton(
                                   hint: Text('Select Role'),
-                                  value: "Manager",
-                                  items: state.role.map((item) {
+                                  value: roles,
+                                  items: state.role.map((UserRole item) {
                                     return DropdownMenuItem(
                                       child: Text('${item.role}'),
                                       value: item.role,
                                     );
                                   }).toList(),
-                                  onChanged: (value) {
+                                  onChanged: (String? newValue) {
                                     setState(() {
-                                      value = state.role as String;
+                                      roles = newValue;
                                     });
                                   },
                                 ),
