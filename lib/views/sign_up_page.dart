@@ -19,8 +19,6 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
-  // late String _selectedRoles;
-
   bool obscureText = true;
 
   RoleApiRepository roleApiRepository = RoleApiRepository();
