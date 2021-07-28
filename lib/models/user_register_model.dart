@@ -11,12 +11,12 @@ class UserRegister {
     required this.password,
   });
 
-  factory UserRegister.fromJson(Map<String, dynamic> json) {
-    return UserRegister(
-      roleId: json['Role_ID'] as int,
-      name: json['Name'] as String,
-      email: json['Email'] as String,
-      password: json['Password'] as String,
-    );
+  factory(Map<String, dynamic> toJson()) {
+    return {
+      'Role_ID': roleId,
+      'Name': name,
+      'Email': email,
+      'Password': password,
+    };
   }
 }

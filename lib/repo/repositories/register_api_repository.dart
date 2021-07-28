@@ -14,13 +14,13 @@ class RegisterApiRepository {
     required String email,
     required String password,
     required String name,
-    required int roleID,
+    required int roleId,
   }) async {
     UserRegister registration = UserRegister(
       email: email,
       password: password,
       name: name,
-      roleId: roleID,
+      roleId: roleId,
     );
     final result = await _provider.registerUser(registration);
     if (result is SuccessResponse) {
