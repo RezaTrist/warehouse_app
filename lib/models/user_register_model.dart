@@ -11,7 +11,7 @@ class UserRegister {
     required this.password,
   });
 
-  factory(Map<String, dynamic> toJson()) {
+  Map<String, dynamic> toJson() {
     return {
       'Role_ID': roleId,
       'Name': name,
