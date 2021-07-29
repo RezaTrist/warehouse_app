@@ -7,26 +7,16 @@ abstract class UserRegisterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class UserRegisterEmailChanged extends UserRegisterEvent {
+class UserRegistration extends UserRegisterEvent {
   final String email;
-
-  UserRegisterEmailChanged({required this.email});
-}
-
-class UserRegisterPasswordChanged extends UserRegisterEvent {
+  final int roleId;
+  final String name;
   final String password;
 
-  UserRegisterPasswordChanged({required this.password});
-}
-
-class UserRegisterNameChanged extends UserRegisterEvent {
-  final String name;
-
-  UserRegisterNameChanged({required this.name});
-}
-
-class UserRegisterRoleIdChanged extends UserRegisterEvent {
-  final int roleId;
-
-  UserRegisterRoleIdChanged({required this.roleId});
+  UserRegistration({
+    required this.email,
+    required this.roleId,
+    required this.name,
+    required this.password,
+  });
 }

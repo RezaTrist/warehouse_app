@@ -16,6 +16,22 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  Map<String, String> _authData = {
+    'roleId': '',
+    'name': '',
+    'email': '',
+    'password': '',
+  };
+
+  Future _submit() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+  }
+
   TextEditingController nameController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
@@ -27,8 +43,6 @@ class _SignupPageState extends State<SignupPage> {
   String? roles;
 
   FirebaseAuthProvider provider = FirebaseAuthProvider();
-
-  final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +106,7 @@ class _SignupPageState extends State<SignupPage> {
                           Radius.circular(12),
                         ),
                       ),
-                      child: FormBuilderTextField(
-                        name: 'name',
+                      child: TextFormField(
                         controller: nameController,
                         decoration: InputDecoration(
                           hintText: 'Name',
@@ -101,6 +114,14 @@ class _SignupPageState extends State<SignupPage> {
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty || value.length > 2) {
+                            return 'Name is too short';
+                          }
+                        },
+                        onSaved: (value) {
+                          _authData['name'] = value!;
+                        },
                       ),
                     ),
                   ),
@@ -181,13 +202,21 @@ class _SignupPageState extends State<SignupPage> {
                           Radius.circular(12),
                         ),
                       ),
-                      child: TextField(
+                      child: TextFormField(
                         controller: emailController,
                         decoration: InputDecoration(
                           hintText: 'Email',
                           prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
                           focusedBorder: InputBorder.none,
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty || value.contains('@')) {
+                            return 'Invalid Email';
+                          }
+                        },
+                        onSaved: (value) {
+                          _authData['email'] = value!;
+                        },
                       ),
                     ),
                   ),
@@ -210,7 +239,7 @@ class _SignupPageState extends State<SignupPage> {
                           Radius.circular(12),
                         ),
                       ),
-                      child: TextField(
+                      child: TextFormField(
                         controller: passwordController,
                         obscureText: obscureText,
                         decoration: InputDecoration(
@@ -228,6 +257,14 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           focusedBorder: InputBorder.none,
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty || value.length < 5) {
+                            return 'Password is too short';
+                          }
+                        },
+                        onSaved: (value) {
+                          _authData['password'] = value!;
+                        },
                       ),
                     ),
                   ),
@@ -253,6 +290,7 @@ class _SignupPageState extends State<SignupPage> {
                           primary: Colors.white,
                         ),
                         onPressed: () {
+                          _submit();
                           provider
                               .registerWithEmailAndPassword(
                                   emailController.text.trim(),

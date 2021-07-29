@@ -12,36 +12,17 @@ class UserRegisterInitial extends UserRegisterState {}
 class UserRegisterLoading extends UserRegisterState {}
 
 class UserRegisterDone extends UserRegisterState {
-  late final int? roleId;
-  bool get isValidRoleId => (roleId == 0 || roleId == 1);
+  // final int roleId;
+  // final String name;
+  // final String email;
+  // final String password;
 
-  late final String email;
-  bool get isValidEmail => email.contains('@');
-
-  late final String password;
-  bool get isValidPassword => password.length > 6;
-
-  late final String name;
-  bool get isValidName => name.length > 3;
-
-  UserRegisterDone({
-    this.roleId,
-    this.email = '',
-    this.password = '',
-    this.name = '',
-  });
-
-  UserRegisterDone copyWith({
-    required int roleId,
-    required String email,
-    required String password,
-    required String name,
-  }) {
-    return UserRegisterDone(
-      roleId: roleId,
-      email: email,
-      password: password,
-      name: name,
-    );
-  }
+  // UserRegisterDone({
+  //   required this.roleId,
+  //   required this.name,
+  //   required this.email,
+  //   required this.password,
+  // });
 }
+
+class UserRegisterFailed extends UserRegisterState {}
