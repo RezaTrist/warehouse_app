@@ -36,4 +36,24 @@ class WarehouseApiProvider {
       throw Exception(exception);
     }
   }
+
+  Future loginUser(UserRegister login) async {
+    final Uri _url = Uri.parse('$_baseUrl/user/F_user/:Firebase_UID');
+
+    try {
+      final http.Response response = await _client.get(_url);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseJson = jsonDecode(response.body);
+        if (responseJson['message'] == 'Success') {
+          return SuccessResponse.fromJson(responseJson);
+        } else {
+          return FailedResponse.fromJson(responseJson);
+        }
+      }
+      throw Exception(response.statusCode);
+    } catch (exception) {
+      print('$exception');
+      throw Exception(exception);
+    }
+  }
 }
