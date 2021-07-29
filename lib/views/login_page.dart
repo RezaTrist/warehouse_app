@@ -26,8 +26,8 @@ class _LoginPageState extends State<LoginPage> {
     _formKey.currentState!.save();
   }
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  // TextEditingController emailController = TextEditingController();
+  // TextEditingController passwordController = TextEditingController();
 
   bool obscureText = true;
 
@@ -39,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       body: FormBuilder(
         key: _formKey,
+        autovalidateMode: AutovalidateMode.always,
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -82,8 +83,9 @@ class _LoginPageState extends State<LoginPage> {
                           Radius.circular(12),
                         ),
                       ),
-                      child: TextFormField(
-                        controller: emailController,
+                      child: FormBuilderTextField(
+                        name: 'email',
+                        // controller: emailController,
                         decoration: InputDecoration(
                           hintText: 'Email',
                           prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
@@ -119,8 +121,9 @@ class _LoginPageState extends State<LoginPage> {
                           Radius.circular(12),
                         ),
                       ),
-                      child: TextFormField(
-                        controller: passwordController,
+                      child: FormBuilderTextField(
+                        name: 'password',
+                        // controller: passwordController,
                         obscureText: obscureText,
                         decoration: InputDecoration(
                           hintText: 'Password',
@@ -164,18 +167,26 @@ class _LoginPageState extends State<LoginPage> {
                             primary: Color.fromRGBO(35, 42, 255, 1)),
                         onPressed: () {
                           _submit();
-                          provider
-                              .loginWithEmailAndPassword(
-                                  emailController.text.trim(),
-                                  passwordController.text.trim())
-                              .then((value) {
-                            if (value == 'Welcome') {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/dashboard');
-                            } else {
-                              print('Email or Password is invalid!');
-                            }
-                          });
+                          // provider
+                          //     .loginWithEmailAndPassword(
+                          //         emailController.text.trim(),
+                          //         passwordController.text.trim())
+                          //     .then((value)
+                          //     {
+                          //   if (value == 'Welcome') {
+                          //     Navigator.of(context)
+                          //         .pushReplacementNamed('/dashboard');
+                          //   } else {
+                          //     print('Email or Password is invalid!');
+                          //   }
+                          // });
+                          _formKey.currentState!.save();
+                          if (_formKey.currentState!.validate()) {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/dashboard');
+                          } else {
+                            print('Email or Password is invalid');
+                          }
                         },
                         child: Text(
                           'Login',
