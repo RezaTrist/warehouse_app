@@ -31,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool obscureText = true;
 
+  bool autoValidate = true;
+
   FirebaseAuthProvider provider = FirebaseAuthProvider();
 
   @override
@@ -89,13 +91,12 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: InputDecoration(
                           hintText: 'Email',
                           prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
-                          focusedBorder: InputBorder.none,
+                          // focusedBorder: InputBorder.none,
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty || value.contains('@')) {
-                            return 'Invalid Email';
-                          }
-                        },
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context,
+                              errorText: 'Your Email is Invalid')
+                        ]),
                         onSaved: (value) {
                           _authData['email'] = value!;
                         },
@@ -138,13 +139,12 @@ class _LoginPageState extends State<LoginPage> {
                                 ? FontAwesomeIcons.solidEye
                                 : FontAwesomeIcons.solidEyeSlash),
                           ),
-                          focusedBorder: InputBorder.none,
+                          // focusedBorder: InputBorder.none,
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
-                            return 'Password is too short';
-                          }
-                        },
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context,
+                              errorText: 'Your Password is Invalid')
+                        ]),
                         onSaved: (value) {
                           _authData['password'] = value!;
                         },
