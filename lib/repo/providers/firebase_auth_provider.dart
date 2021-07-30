@@ -4,11 +4,11 @@ class FirebaseAuthProvider {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   Future<String> loginWithEmailAndPassword(
-      String email, String password) async {
+      {String? email, String? password}) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: email!,
+        password: password!,
       );
       return 'Welcome';
     } on FirebaseAuthException catch (e) {
