@@ -8,7 +8,7 @@ part 'user_login_event.dart';
 part 'user_login_state.dart';
 
 class UserLoginBloc extends Bloc<UserLoginEvent, UserLoginState> {
-  UserLoginBloc(this.firebaseAuth) : super(UserLoginInitial());
+  UserLoginBloc({required this.firebaseAuth}) : super(UserLoginInitial());
 
   final FirebaseAuthProvider firebaseAuth;
 
@@ -23,7 +23,10 @@ class UserLoginBloc extends Bloc<UserLoginEvent, UserLoginState> {
           email: event.email,
           password: event.password,
         );
-        yield UserLoginDone();
+        yield UserLoginDone(
+          email: event.email,
+          password: event.password,
+        );
       } catch (e) {
         yield UserLoginFailed();
       }

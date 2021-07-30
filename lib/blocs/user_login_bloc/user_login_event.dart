@@ -15,4 +15,12 @@ class UserLogin extends UserLoginEvent {
     required this.email,
     required this.password,
   });
+
+  @override
+  List<Object> get props => [email, password];
+
+  @override
+  String toString() {
+    return 'UserLogin{email: $email, password: $password}';
+  }
 }
