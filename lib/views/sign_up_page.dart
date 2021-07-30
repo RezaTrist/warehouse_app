@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:warehouse_app/blocs/user_register_bloc/user_register_bloc.dart';
 import 'package:warehouse_app/blocs/user_role_bloc/user_role_bloc.dart';
+import 'package:warehouse_app/models/user_register_model.dart';
 import 'package:warehouse_app/models/user_role_model.dart';
 import 'package:warehouse_app/repo/providers/firebase_auth_provider.dart';
+import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
 import 'package:warehouse_app/repo/repositories/role_api_repository.dart';
 
 class SignupPage extends StatefulWidget {
@@ -40,19 +43,28 @@ class _SignupPageState extends State<SignupPage> {
 
   RoleApiRepository roleApiRepository = RoleApiRepository();
 
-  String? roles;
+  RegisterApiRepository provider = RegisterApiRepository();
 
-  FirebaseAuthProvider provider = FirebaseAuthProvider();
+  String? roles;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: FormBuilder(
-        key: _formKey,
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider<UserRegisterBloc>(
+                  create: (BuildContext context) =>
+                      UserRegisterBloc(registerApiRepository: provider),
+                ),
+                BlocProvider<UserRoleBloc>(
+                  create: (BuildContext context) =>
+                      UserRoleBloc(roleApiRepository: roleApiRepository),
+                ),
+              ],
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -87,257 +99,8 @@ class _SignupPageState extends State<SignupPage> {
                       child: Image.asset('assets/images/user1.png'),
                     ),
                   ),
-
-                  // ==================== TEXT FIELD NAME
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 25,
-                      right: 25,
-                      bottom: 20,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Color.fromRGBO(46, 40, 40, 1),
-                          width: 3,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                      ),
-                      child: TextFormField(
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          hintText: 'Name',
-                          prefixIcon: Icon(FontAwesomeIcons.solidUser),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty || value.length > 2) {
-                            return 'Name is too short';
-                          }
-                        },
-                        onSaved: (value) {
-                          _authData['name'] = value!;
-                        },
-                      ),
-                    ),
-                  ),
-
-                  // ==================== DROPDOWN ROLE
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 25,
-                      right: 25,
-                      bottom: 20,
-                    ),
-                    child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: Color.fromRGBO(46, 40, 40, 1),
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
-                          ),
-                        ),
-                        child: BlocProvider(
-                          create: (context) => UserRoleBloc(
-                              roleApiRepository: roleApiRepository),
-                          child: BlocBuilder<UserRoleBloc, UserRoleState>(
-                              builder: (context, state) {
-                            if (state is UserRoleLoading) {
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              );
-                            } else if (state is UserRoleFailed) {
-                              print('Dropdown Error');
-                            } else if (state is UserRoleDone) {
-                              return DropdownButtonHideUnderline(
-                                child: ButtonTheme(
-                                  alignedDropdown: true,
-                                  child: DropdownButton(
-                                    hint: Text('Select Role'),
-                                    value: roles,
-                                    items: state.role.map((UserRole item) {
-                                      return DropdownMenuItem(
-                                        child: Text('${item.role}'),
-                                        value: item.role,
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        roles = newValue;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              );
-                            }
-                            return Container();
-                          }),
-                        )),
-                  ),
-
-                  // ==================== TEXT FIELD EMAIL
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 25,
-                      right: 25,
-                      bottom: 20,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Color.fromRGBO(46, 40, 40, 1),
-                          width: 3,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                      ),
-                      child: TextFormField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          hintText: 'Email',
-                          prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
-                          focusedBorder: InputBorder.none,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty || value.contains('@')) {
-                            return 'Invalid Email';
-                          }
-                        },
-                        onSaved: (value) {
-                          _authData['email'] = value!;
-                        },
-                      ),
-                    ),
-                  ),
-
-                  // ==================== TEXT FIELD PASSWORD
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 25,
-                      right: 25,
-                      bottom: 10,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Color.fromRGBO(46, 40, 40, 1),
-                          width: 3,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                      ),
-                      child: TextFormField(
-                        controller: passwordController,
-                        obscureText: obscureText,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          prefixIcon: Icon(FontAwesomeIcons.lock),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                obscureText = !obscureText;
-                              });
-                            },
-                            icon: Icon(obscureText
-                                ? FontAwesomeIcons.solidEye
-                                : FontAwesomeIcons.solidEyeSlash),
-                          ),
-                          focusedBorder: InputBorder.none,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty || value.length < 5) {
-                            return 'Password is too short';
-                          }
-                        },
-                        onSaved: (value) {
-                          _authData['password'] = value!;
-                        },
-                      ),
-                    ),
-                  ),
-
-                  // ==================== SIGN UP BUTTON
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 2,
-                    ),
-                    child: new Container(
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(163, 46),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            side: BorderSide(
-                              color: Color.fromRGBO(255, 0, 0, 1),
-                              width: 2,
-                            ),
-                          ),
-                          primary: Colors.white,
-                        ),
-                        onPressed: () {
-                          _submit();
-                          provider
-                              .registerWithEmailAndPassword(
-                                  emailController.text.trim(),
-                                  passwordController.text.trim())
-                              .then((value) {
-                            if (value == 'Success') {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/login');
-                            } else {
-                              print('Email or password is too weak!');
-                              return Container();
-                            }
-                          });
-                        },
-                        child: Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color.fromRGBO(255, 0, 0, 1),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Already have an account?"),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacementNamed('/login');
-                        },
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Color.fromRGBO(35, 42, 255, 1),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  signUpForm(),
+                  loginButton(),
                 ],
               ),
             ),
@@ -345,5 +108,282 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+
+  Widget signUpForm() {
+    return BlocListener<UserRegisterBloc, UserRegisterState>(
+      listener: (context, state) {
+        if (state is UserRegisterFailed) {
+          print('Register Failed');
+        }
+      },
+      child: FormBuilder(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            nameField(),
+            roleDropdown(),
+            emailField(),
+            passwordField(),
+            signUpButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget nameField() {
+    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
+        builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          left: 25,
+          right: 25,
+          bottom: 20,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Color.fromRGBO(46, 40, 40, 1),
+              width: 3,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
+            ),
+          ),
+          child: TextFormField(
+            controller: nameController,
+            decoration: InputDecoration(
+              hintText: 'Name',
+              prefixIcon: Icon(FontAwesomeIcons.solidUser),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+            ),
+            validator: (value) {
+              if (value!.isEmpty || value.length > 2) {
+                return 'Name is too short';
+              }
+            },
+            onSaved: (value) {
+              _authData['name'] = value!;
+            },
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget roleDropdown() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+        bottom: 20,
+      ),
+      child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Color.fromRGBO(46, 40, 40, 1),
+              width: 3,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
+            ),
+          ),
+          child: BlocBuilder<UserRoleBloc, UserRoleState>(
+              builder: (context, state) {
+            if (state is UserRoleLoading) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              );
+            } else if (state is UserRoleFailed) {
+              print('Dropdown Error');
+            } else if (state is UserRoleDone) {
+              return DropdownButtonHideUnderline(
+                child: ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButton(
+                    hint: Text('Select Role'),
+                    value: roles,
+                    items: state.role.map((UserRole item) {
+                      return DropdownMenuItem(
+                        child: Text('${item.role}'),
+                        value: item.role,
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        roles = newValue;
+                      });
+                    },
+                  ),
+                ),
+              );
+            }
+            return Container();
+          })),
+    );
+  }
+
+  Widget emailField() {
+    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
+        builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          left: 25,
+          right: 25,
+          bottom: 20,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Color.fromRGBO(46, 40, 40, 1),
+              width: 3,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
+            ),
+          ),
+          child: TextFormField(
+            controller: emailController,
+            decoration: InputDecoration(
+              hintText: 'Email',
+              prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
+              focusedBorder: InputBorder.none,
+            ),
+            validator: (value) {
+              if (value!.isEmpty || value.contains('@')) {
+                return 'Invalid Email';
+              }
+            },
+            onSaved: (value) {
+              _authData['email'] = value!;
+            },
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget passwordField() {
+    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
+        builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          left: 25,
+          right: 25,
+          bottom: 10,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Color.fromRGBO(46, 40, 40, 1),
+              width: 3,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
+            ),
+          ),
+          child: TextFormField(
+            controller: passwordController,
+            obscureText: obscureText,
+            decoration: InputDecoration(
+              hintText: 'Password',
+              prefixIcon: Icon(FontAwesomeIcons.lock),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    obscureText = !obscureText;
+                  });
+                },
+                icon: Icon(obscureText
+                    ? FontAwesomeIcons.solidEye
+                    : FontAwesomeIcons.solidEyeSlash),
+              ),
+              focusedBorder: InputBorder.none,
+            ),
+            validator: (value) {
+              if (value!.isEmpty || value.length < 5) {
+                return 'Password is too short';
+              }
+            },
+            onSaved: (value) {
+              _authData['password'] = value!;
+            },
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget signUpButton() {
+    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
+        builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          top: 20,
+          bottom: 2,
+        ),
+        child: new Container(
+          alignment: Alignment.center,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(163, 46),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(
+                  color: Color.fromRGBO(255, 0, 0, 1),
+                  width: 2,
+                ),
+              ),
+              primary: Colors.white,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            child: Text(
+              'Sign Up',
+              style: TextStyle(
+                fontSize: 18,
+                color: Color.fromRGBO(255, 0, 0, 1),
+              ),
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget loginButton() {
+    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
+        builder: (context, state) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Already have an account?"),
+          SizedBox(
+            width: 5,
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed('/login');
+            },
+            child: Text(
+              'Login',
+              style: TextStyle(
+                color: Color.fromRGBO(35, 42, 255, 1),
+              ),
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

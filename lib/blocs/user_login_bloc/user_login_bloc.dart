@@ -23,10 +23,7 @@ class UserLoginBloc extends Bloc<UserLoginEvent, UserLoginState> {
           email: event.email,
           password: event.password,
         );
-        yield UserLoginDone(
-          email: event.email,
-          password: event.password,
-        );
+        yield UserLoginDone();
       } catch (e) {
         yield UserLoginFailed();
       }
