@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:warehouse_app/repo/providers/firebase_auth_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -10,8 +11,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  FirebaseAuthProvider provider = FirebaseAuthProvider();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,8 +67,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     primary: Colors.white,
                   ),
                   onPressed: () {
-                    provider.logOut();
-                    Navigator.of(context).pushReplacementNamed('/login');
+                    BlocProvider.of<AuthenticationBloc>(context)
+                        .add(LogoutRequested());
                   },
                   child: Text(
                     'Sign Out',

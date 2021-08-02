@@ -5,9 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/user_register_bloc/user_register_bloc.dart';
 import 'package:warehouse_app/blocs/user_role_bloc/user_role_bloc.dart';
-import 'package:warehouse_app/models/user_register_model.dart';
 import 'package:warehouse_app/models/user_role_model.dart';
-import 'package:warehouse_app/repo/providers/firebase_auth_provider.dart';
 import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
 import 'package:warehouse_app/repo/repositories/role_api_repository.dart';
 

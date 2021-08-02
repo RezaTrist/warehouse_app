@@ -4,7 +4,7 @@ class UserRegister {
   final String email;
   final String password;
 
-  UserRegister({
+  const UserRegister({
     required this.roleId,
     required this.name,
     required this.email,

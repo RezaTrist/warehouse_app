@@ -1,13 +1,13 @@
 class FirebaseUser {
   final String uid;
   final String? email;
-  final String? password;
+  final String? name;
 
   const FirebaseUser({
     required this.uid,
     this.email,
-    this.password,
+    this.name,
   });
 
-  static const empty = FirebaseUser(email: '', uid: '', password: '');
+  static const empty = FirebaseUser(email: '', uid: '', name: null);
 }
