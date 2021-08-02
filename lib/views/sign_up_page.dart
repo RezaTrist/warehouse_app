@@ -10,34 +10,30 @@ import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
 import 'package:warehouse_app/repo/repositories/role_api_repository.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
+  const SignupPage(
+      {Key? key, required RegisterApiRepository registerApiRepository})
+      : _registerApiRepository = registerApiRepository,
+        super(key: key);
+
+  final RegisterApiRepository _registerApiRepository;
 
   @override
   _SignupPageState createState() => _SignupPageState();
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormBuilderState> _formKey = GlobalKey();
 
-  Map<String, String> _authData = {
-    'roleId': '',
-    'name': '',
-    'email': '',
-    'password': '',
-  };
-
-  Future _submit() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-    _formKey.currentState!.save();
-  }
-
-  TextEditingController nameController = new TextEditingController();
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
+  late UserRegisterBloc _registerBloc;
 
   bool obscureText = true;
+
+  @override
+  void initState() {
+    _registerBloc =
+        UserRegisterBloc(registerApiRepository: widget._registerApiRepository);
+    super.initState();
+  }
 
   RoleApiRepository roleApiRepository = RoleApiRepository();
 
@@ -63,43 +59,50 @@ class _SignupPageState extends State<SignupPage> {
                       UserRoleBloc(roleApiRepository: roleApiRepository),
                 ),
               ],
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Welcome',
-                    style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      bottom: 10,
-                    ),
-                    child: Text(
-                      'Create your account by filling up the form',
+              child: FormBuilder(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Welcome',
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Color.fromRGBO(183, 183, 183, 1),
+                        fontSize: 35,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      bottom: 20,
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 10,
+                      ),
+                      child: Text(
+                        'Create your account by filling up the form',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromRGBO(183, 183, 183, 1),
+                        ),
+                      ),
                     ),
-                    child: SizedBox(
-                      width: 180,
-                      height: 180,
-                      child: Image.asset('assets/images/user1.png'),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 20,
+                      ),
+                      child: SizedBox(
+                        width: 180,
+                        height: 180,
+                        child: Image.asset('assets/images/user1.png'),
+                      ),
                     ),
-                  ),
-                  signUpForm(),
-                  loginButton(),
-                ],
+                    nameField(),
+                    roleDropdown(),
+                    emailField(),
+                    passwordField(),
+                    signUpButton(),
+                    loginButton(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -108,69 +111,28 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget signUpForm() {
-    return BlocListener<UserRegisterBloc, UserRegisterState>(
-      listener: (context, state) {
-        if (state is UserRegisterFailed) {
-          print('Register Failed');
-        }
-      },
-      child: FormBuilder(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            nameField(),
-            roleDropdown(),
-            emailField(),
-            passwordField(),
-            signUpButton(),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget nameField() {
-    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
-        builder: (context, state) {
-      return Padding(
-        padding: const EdgeInsets.only(
-          left: 25,
-          right: 25,
-          bottom: 20,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Color.fromRGBO(46, 40, 40, 1),
-              width: 3,
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(12),
-            ),
-          ),
-          child: TextFormField(
-            controller: nameController,
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+        bottom: 20,
+      ),
+      child: Container(
+        child: FormBuilderTextField(
+            name: 'name',
             decoration: InputDecoration(
               hintText: 'Name',
               prefixIcon: Icon(FontAwesomeIcons.solidUser),
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
             ),
-            validator: (value) {
-              if (value!.isEmpty || value.length > 2) {
-                return 'Name is too short';
-              }
-            },
-            onSaved: (value) {
-              _authData['name'] = value!;
-            },
-          ),
-        ),
-      );
-    });
+            textInputAction: TextInputAction.next,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(context),
+            ])),
+      ),
+    );
   }
 
   Widget roleDropdown() {
@@ -202,24 +164,23 @@ class _SignupPageState extends State<SignupPage> {
             } else if (state is UserRoleFailed) {
               print('Dropdown Error');
             } else if (state is UserRoleDone) {
-              return DropdownButtonHideUnderline(
-                child: ButtonTheme(
-                  alignedDropdown: true,
-                  child: DropdownButton(
-                    hint: Text('Select Role'),
-                    value: roles,
-                    items: state.role.map((UserRole item) {
-                      return DropdownMenuItem(
-                        child: Text('${item.role}'),
-                        value: item.role,
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        roles = newValue;
-                      });
-                    },
-                  ),
+              return ButtonTheme(
+                alignedDropdown: true,
+                child: FormBuilderDropdown(
+                  name: 'role',
+                  hint: Text('Select Role'),
+                  // value: roles,
+                  items: state.role.map((UserRole item) {
+                    return DropdownMenuItem(
+                      child: Text('${item.role}'),
+                      value: item.role,
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      roles = newValue;
+                    });
+                  },
                 ),
               );
             }
@@ -229,159 +190,126 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget emailField() {
-    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
-        builder: (context, state) {
-      return Padding(
-        padding: const EdgeInsets.only(
-          left: 25,
-          right: 25,
-          bottom: 20,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Color.fromRGBO(46, 40, 40, 1),
-              width: 3,
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(12),
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+        bottom: 20,
+      ),
+      child: Container(
+        child: FormBuilderTextField(
+          name: 'email',
+          decoration: InputDecoration(
+            hintText: 'Email',
+            prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
+            focusedBorder: InputBorder.none,
           ),
-          child: TextFormField(
-            controller: emailController,
-            decoration: InputDecoration(
-              hintText: 'Email',
-              prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
-              focusedBorder: InputBorder.none,
-            ),
-            validator: (value) {
-              if (value!.isEmpty || value.contains('@')) {
-                return 'Invalid Email';
-              }
-            },
-            onSaved: (value) {
-              _authData['email'] = value!;
-            },
-          ),
+          textInputAction: TextInputAction.next,
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.email(context),
+            FormBuilderValidators.required(context),
+          ]),
         ),
-      );
-    });
+      ),
+    );
   }
 
   Widget passwordField() {
-    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
-        builder: (context, state) {
-      return Padding(
-        padding: const EdgeInsets.only(
-          left: 25,
-          right: 25,
-          bottom: 10,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Color.fromRGBO(46, 40, 40, 1),
-              width: 3,
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+        bottom: 10,
+      ),
+      child: Container(
+        child: FormBuilderTextField(
+          name: 'password',
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            hintText: 'Password',
+            prefixIcon: Icon(FontAwesomeIcons.lock),
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  obscureText = !obscureText;
+                });
+              },
+              icon: Icon(obscureText
+                  ? FontAwesomeIcons.solidEye
+                  : FontAwesomeIcons.solidEyeSlash),
             ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(12),
-            ),
+            focusedBorder: InputBorder.none,
           ),
-          child: TextFormField(
-            controller: passwordController,
-            obscureText: obscureText,
-            decoration: InputDecoration(
-              hintText: 'Password',
-              prefixIcon: Icon(FontAwesomeIcons.lock),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  setState(() {
-                    obscureText = !obscureText;
-                  });
-                },
-                icon: Icon(obscureText
-                    ? FontAwesomeIcons.solidEye
-                    : FontAwesomeIcons.solidEyeSlash),
-              ),
-              focusedBorder: InputBorder.none,
-            ),
-            validator: (value) {
-              if (value!.isEmpty || value.length < 5) {
-                return 'Password is too short';
-              }
-            },
-            onSaved: (value) {
-              _authData['password'] = value!;
-            },
-          ),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.minLength(context, 3),
+            FormBuilderValidators.required(context),
+          ]),
         ),
-      );
-    });
+      ),
+    );
   }
 
   Widget signUpButton() {
-    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
-        builder: (context, state) {
-      return Padding(
-        padding: const EdgeInsets.only(
-          top: 20,
-          bottom: 2,
-        ),
-        child: new Container(
-          alignment: Alignment.center,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              fixedSize: Size(163, 46),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-                side: BorderSide(
-                  color: Color.fromRGBO(255, 0, 0, 1),
-                  width: 2,
-                ),
-              ),
-              primary: Colors.white,
-            ),
-            onPressed: () {
-              _submit();
-            },
-            child: Text(
-              'Sign Up',
-              style: TextStyle(
-                fontSize: 18,
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 20,
+        bottom: 2,
+      ),
+      child: new Container(
+        alignment: Alignment.center,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            fixedSize: Size(163, 46),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(
                 color: Color.fromRGBO(255, 0, 0, 1),
+                width: 2,
               ),
+            ),
+            primary: Colors.white,
+          ),
+          onPressed: () {
+            if (_formKey.currentState!.saveAndValidate()) {
+              _registerBloc.add(UserRegistration(
+                  email: _formKey.currentState!.value['email'],
+                  password: _formKey.currentState!.value['password'],
+                  name: _formKey.currentState!.value['name'],
+                  roleId: _formKey.currentState!.value['role']));
+            }
+          },
+          child: Text(
+            'Sign Up',
+            style: TextStyle(
+              fontSize: 18,
+              color: Color.fromRGBO(255, 0, 0, 1),
             ),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   Widget loginButton() {
-    return BlocBuilder<UserRegisterBloc, UserRegisterState>(
-        builder: (context, state) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("Already have an account?"),
-          SizedBox(
-            width: 5,
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/login');
-            },
-            child: Text(
-              'Login',
-              style: TextStyle(
-                color: Color.fromRGBO(35, 42, 255, 1),
-              ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Already have an account?"),
+        SizedBox(
+          width: 5,
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/login');
+          },
+          child: Text(
+            'Login',
+            style: TextStyle(
+              color: Color.fromRGBO(35, 42, 255, 1),
             ),
           ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:warehouse_app/repo/repositories/firebase_auth_repository.dart';
+import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
 import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/product_page.dart';
@@ -12,11 +13,16 @@ import 'package:warehouse_app/views/sign_up_page.dart';
 import 'package:warehouse_app/views/welcome_page.dart';
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key, required FirebaseAuthRepo firebaseAuthRepo})
+  MyApp(
+      {Key? key,
+      required FirebaseAuthRepo firebaseAuthRepo,
+      required RegisterApiRepository registerApiRepository})
       : _firebaseAuthRepo = firebaseAuthRepo,
+        _registerApiRepository = registerApiRepository,
         super(key: key);
 
   final FirebaseAuthRepo _firebaseAuthRepo;
+  final RegisterApiRepository _registerApiRepository;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -64,7 +70,10 @@ class _MyAppState extends State<MyApp> {
                       firebaseAuthRepo: widget._firebaseAuthRepo,
                     ));
           case '/signup':
-            return MaterialPageRoute(builder: (context) => SignupPage());
+            return MaterialPageRoute(
+                builder: (context) => SignupPage(
+                      registerApiRepository: widget._registerApiRepository,
+                    ));
           case '/dashboard':
             return MaterialPageRoute(builder: (context) => DashboardPage());
           case '/profile':
