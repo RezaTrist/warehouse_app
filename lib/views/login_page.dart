@@ -84,19 +84,8 @@ class _LoginPageState extends State<LoginPage> {
         bottom: 20,
       ),
       child: Container(
-        // decoration: BoxDecoration(
-        //   color: Colors.white,
-        //   border: Border.all(
-        //     color: Color.fromRGBO(46, 40, 40, 1),
-        //     width: 3.0,
-        //   ),
-        //   borderRadius: BorderRadius.all(
-        //     Radius.circular(12),
-        //   ),
-        // ),
         child: FormBuilderTextField(
           name: 'email',
-          // controller: emailController,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
@@ -124,19 +113,8 @@ class _LoginPageState extends State<LoginPage> {
         bottom: 10,
       ),
       child: Container(
-        // decoration: BoxDecoration(
-        //   color: Colors.white,
-        //   border: Border.all(
-        //     color: Color.fromRGBO(46, 40, 40, 1),
-        //     width: 3.0,
-        //   ),
-        //   borderRadius: BorderRadius.all(
-        //     Radius.circular(12),
-        //   ),
-        // ),
         child: FormBuilderTextField(
           name: 'password',
-          // controller: passwordController,
           obscureText: obscureText,
           decoration: InputDecoration(
             border: OutlineInputBorder(

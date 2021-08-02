@@ -11,18 +11,6 @@ class UserRegisterInitial extends UserRegisterState {}
 
 class UserRegisterLoading extends UserRegisterState {}
 
-class UserRegisterDone extends UserRegisterState {
-  // final int roleId;
-  // final String name;
-  // final String email;
-  // final String password;
-
-  // UserRegisterDone({
-  //   required this.roleId,
-  //   required this.name,
-  //   required this.email,
-  //   required this.password,
-  // });
-}
+class UserRegisterDone extends UserRegisterState {}
 
 class UserRegisterFailed extends UserRegisterState {}
