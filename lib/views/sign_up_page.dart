@@ -73,8 +73,8 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                        top: 10,
-                        bottom: 10,
+                        top: 6,
+                        bottom: 6,
                       ),
                       child: Text(
                         'Create your account by filling up the form',
@@ -87,11 +87,11 @@ class _SignupPageState extends State<SignupPage> {
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 10,
-                        bottom: 20,
+                        bottom: 25,
                       ),
                       child: SizedBox(
-                        width: 180,
-                        height: 180,
+                        width: 160,
+                        height: 160,
                         child: Image.asset('assets/images/user1.png'),
                       ),
                     ),
@@ -116,7 +116,7 @@ class _SignupPageState extends State<SignupPage> {
       padding: const EdgeInsets.only(
         left: 25,
         right: 25,
-        bottom: 20,
+        bottom: 12,
       ),
       child: Container(
         child: FormBuilderTextField(
@@ -124,8 +124,11 @@ class _SignupPageState extends State<SignupPage> {
             decoration: InputDecoration(
               hintText: 'Name',
               prefixIcon: Icon(FontAwesomeIcons.solidUser),
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
             ),
             textInputAction: TextInputAction.next,
             validator: FormBuilderValidators.compose([
@@ -140,52 +143,49 @@ class _SignupPageState extends State<SignupPage> {
       padding: const EdgeInsets.only(
         left: 25,
         right: 25,
-        bottom: 20,
+        bottom: 12,
       ),
-      child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Color.fromRGBO(46, 40, 40, 1),
-              width: 3,
+      child: Container(child:
+          BlocBuilder<UserRoleBloc, UserRoleState>(builder: (context, state) {
+        if (state is UserRoleLoading) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
             ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(12),
+          );
+        } else if (state is UserRoleFailed) {
+          print('Dropdown Error');
+        } else if (state is UserRoleDone) {
+          return ButtonTheme(
+            alignedDropdown: true,
+            child: FormBuilderDropdown(
+              name: 'role',
+              decoration: InputDecoration(
+                prefixIcon: Icon(FontAwesomeIcons.solidUser),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+              ),
+              hint: Text('Select Role'),
+              // value: roles,
+              items: state.role.map((UserRole item) {
+                return DropdownMenuItem(
+                  child: Text('${item.role}'),
+                  value: item.role,
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  roles = newValue;
+                });
+              },
             ),
-          ),
-          child: BlocBuilder<UserRoleBloc, UserRoleState>(
-              builder: (context, state) {
-            if (state is UserRoleLoading) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              );
-            } else if (state is UserRoleFailed) {
-              print('Dropdown Error');
-            } else if (state is UserRoleDone) {
-              return ButtonTheme(
-                alignedDropdown: true,
-                child: FormBuilderDropdown(
-                  name: 'role',
-                  hint: Text('Select Role'),
-                  // value: roles,
-                  items: state.role.map((UserRole item) {
-                    return DropdownMenuItem(
-                      child: Text('${item.role}'),
-                      value: item.role,
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      roles = newValue;
-                    });
-                  },
-                ),
-              );
-            }
-            return Container();
-          })),
+          );
+        }
+        return Container();
+      })),
     );
   }
 
@@ -194,7 +194,7 @@ class _SignupPageState extends State<SignupPage> {
       padding: const EdgeInsets.only(
         left: 25,
         right: 25,
-        bottom: 20,
+        bottom: 12,
       ),
       child: Container(
         child: FormBuilderTextField(
@@ -202,7 +202,11 @@ class _SignupPageState extends State<SignupPage> {
           decoration: InputDecoration(
             hintText: 'Email',
             prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
-            focusedBorder: InputBorder.none,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(12),
+              ),
+            ),
           ),
           textInputAction: TextInputAction.next,
           validator: FormBuilderValidators.compose([
@@ -238,7 +242,11 @@ class _SignupPageState extends State<SignupPage> {
                   ? FontAwesomeIcons.solidEye
                   : FontAwesomeIcons.solidEyeSlash),
             ),
-            focusedBorder: InputBorder.none,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(12),
+              ),
+            ),
           ),
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.minLength(context, 3),
