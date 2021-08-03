@@ -55,220 +55,240 @@ class _DetailProductPageState extends State<DetailProductPage> {
                     ],
                   ),
                 ),
-
-                // PRODUCT PRICE
-                Card(
-                  color: Color.fromRGBO(226, 226, 226, 1),
-                  elevation: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.tag,
-                          color: Colors.black,
-                        ),
-                        title: Text(
-                          'Rp 35.000',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // PRODUCT NAME
-                Card(
-                  color: Color.fromRGBO(226, 226, 226, 1),
-                  elevation: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.cubes,
-                          color: Colors.black,
-                        ),
-                        title: Text(
-                          'Vitamin D3',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // AMOUNT OF PRODUCT LEFT
-                Card(
-                  color: Color.fromRGBO(226, 226, 226, 1),
-                  elevation: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.cubes,
-                          color: Colors.black,
-                        ),
-                        title: Text(
-                          '5 Left',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // AMOUNT OF PRODUCT STOCK
-                Card(
-                  color: Color.fromRGBO(226, 226, 226, 1),
-                  elevation: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.cubes,
-                          color: Colors.black,
-                        ),
-                        title: Text(
-                          '10 Stock',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // PRODUCT DESCRIPTION
-                Card(
-                  color: Color.fromRGBO(226, 226, 226, 1),
-                  elevation: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.alignJustify,
-                          color: Colors.black,
-                        ),
-                        title: Text(
-                          'Membantu tubuh menyerap kalsium dan fosfor yang penting untuk membangun dan menjaga tulang yang kuat',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // WAREHOUSE SOURCES
-                Card(
-                  color: Color.fromRGBO(226, 226, 226, 1),
-                  elevation: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.warehouse,
-                          color: Colors.black,
-                        ),
-                        title: Text(
-                          'Warehouse-Century',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // WAREHOUSE ADDRESS
-                Card(
-                  color: Color.fromRGBO(226, 226, 226, 1),
-                  elevation: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.mapMarkerAlt,
-                          color: Colors.black,
-                        ),
-                        title: Text(
-                          'Jl. Limo No.40, RT.8/RW.10, Grogol Sel., Kec. Kby. Lama, Kota Jakarta Selatan',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(320, 45),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            side: BorderSide(
-                              color: Color.fromRGBO(35, 42, 255, 1),
-                              width: 2,
-                            ),
-                          ),
-                          primary: Colors.white,
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          'Edit',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color.fromRGBO(35, 42, 255, 1),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                        ),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: Size(320, 45),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side: BorderSide(
-                                color: Color.fromRGBO(255, 0, 0, 1),
-                                width: 2,
-                              ),
-                            ),
-                            primary: Colors.white,
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Ban',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color.fromRGBO(255, 0, 0, 1),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                productPrice(),
+                productName(),
+                productLeft(),
+                productStock(),
+                productDescription(),
+                warehouseSources(),
+                warehouseAddress(),
+                productButton(),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget productPrice() {
+    return Card(
+      color: Color.fromRGBO(226, 226, 226, 1),
+      elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const ListTile(
+            leading: Icon(
+              FontAwesomeIcons.tag,
+              color: Colors.black,
+            ),
+            title: Text(
+              'Rp 35.000',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget productName() {
+    return Card(
+      color: Color.fromRGBO(226, 226, 226, 1),
+      elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const ListTile(
+            leading: Icon(
+              FontAwesomeIcons.cubes,
+              color: Colors.black,
+            ),
+            title: Text(
+              'Vitamin D3',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget productLeft() {
+    return Card(
+      color: Color.fromRGBO(226, 226, 226, 1),
+      elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const ListTile(
+            leading: Icon(
+              FontAwesomeIcons.cubes,
+              color: Colors.black,
+            ),
+            title: Text(
+              '5 Left',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget productStock() {
+    return Card(
+      color: Color.fromRGBO(226, 226, 226, 1),
+      elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const ListTile(
+            leading: Icon(
+              FontAwesomeIcons.cubes,
+              color: Colors.black,
+            ),
+            title: Text(
+              '10 Stock',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget productDescription() {
+    return Card(
+      color: Color.fromRGBO(226, 226, 226, 1),
+      elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const ListTile(
+            leading: Icon(
+              FontAwesomeIcons.alignJustify,
+              color: Colors.black,
+            ),
+            title: Text(
+              'Membantu tubuh menyerap kalsium dan fosfor yang penting untuk membangun dan menjaga tulang yang kuat',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget warehouseSources() {
+    return Card(
+      color: Color.fromRGBO(226, 226, 226, 1),
+      elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const ListTile(
+            leading: Icon(
+              FontAwesomeIcons.warehouse,
+              color: Colors.black,
+            ),
+            title: Text(
+              'Warehouse-Century',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget warehouseAddress() {
+    return Card(
+      color: Color.fromRGBO(226, 226, 226, 1),
+      elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const ListTile(
+            leading: Icon(
+              FontAwesomeIcons.mapMarkerAlt,
+              color: Colors.black,
+            ),
+            title: Text(
+              'Jl. Limo No.40, RT.8/RW.10, Grogol Sel., Kec. Kby. Lama, Kota Jakarta Selatan',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget productButton() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 10,
+      ),
+      child: Column(
+        children: [
+          // EDIT BUTTON
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(320, 45),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(
+                  color: Color.fromRGBO(35, 42, 255, 1),
+                  width: 2,
+                ),
+              ),
+              primary: Colors.white,
+            ),
+            onPressed: () {},
+            child: Text(
+              'Edit',
+              style: TextStyle(
+                fontSize: 18,
+                color: Color.fromRGBO(35, 42, 255, 1),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10,
+            ),
+            // BAN BUTTON
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: Size(320, 45),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    color: Color.fromRGBO(255, 0, 0, 1),
+                    width: 2,
+                  ),
+                ),
+                primary: Colors.white,
+              ),
+              onPressed: () {},
+              child: Text(
+                'Ban',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color.fromRGBO(255, 0, 0, 1),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

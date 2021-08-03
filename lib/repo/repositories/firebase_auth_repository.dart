@@ -26,20 +26,6 @@ class FirebaseAuthRepo {
     }
   }
 
-  Future<void> signUp({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
   Future<void> logout() async {
     try {
       await _firebaseAuth.signOut();
@@ -51,6 +37,10 @@ class FirebaseAuthRepo {
 
 extension on User {
   FirebaseUser get toUser {
-    return FirebaseUser(uid: uid, name: displayName, email: email);
+    return FirebaseUser(
+      uid: uid,
+      name: displayName,
+      email: email,
+    );
   }
 }

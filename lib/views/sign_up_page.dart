@@ -123,7 +123,10 @@ class _SignupPageState extends State<SignupPage> {
             name: 'name',
             decoration: InputDecoration(
               hintText: 'Name',
-              prefixIcon: Icon(FontAwesomeIcons.solidUser),
+              prefixIcon: Icon(
+                FontAwesomeIcons.solidUser,
+                color: Colors.black,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(12),
@@ -133,6 +136,7 @@ class _SignupPageState extends State<SignupPage> {
             textInputAction: TextInputAction.next,
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(context),
+              FormBuilderValidators.minLength(context, 3)
             ])),
       ),
     );
@@ -161,7 +165,10 @@ class _SignupPageState extends State<SignupPage> {
             child: FormBuilderDropdown(
               name: 'role',
               decoration: InputDecoration(
-                prefixIcon: Icon(FontAwesomeIcons.solidUser),
+                prefixIcon: Icon(
+                  FontAwesomeIcons.solidUser,
+                  color: Colors.black,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
@@ -169,16 +176,20 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               hint: Text('Select Role'),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(context),
+              ]),
               // value: roles,
               items: state.role.map((UserRole item) {
                 return DropdownMenuItem(
                   child: Text('${item.role}'),
-                  value: item.role,
+                  value: item.roleId,
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (int? newValue) {
                 setState(() {
-                  roles = newValue;
+                  // roles = newValue;
+                  newValue == 1 ? roles = 'manager' : roles = 'client';
                 });
               },
             ),
@@ -201,7 +212,10 @@ class _SignupPageState extends State<SignupPage> {
           name: 'email',
           decoration: InputDecoration(
             hintText: 'Email',
-            prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
+            prefixIcon: Icon(
+              FontAwesomeIcons.solidEnvelope,
+              color: Colors.black,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(12),
@@ -231,16 +245,22 @@ class _SignupPageState extends State<SignupPage> {
           obscureText: obscureText,
           decoration: InputDecoration(
             hintText: 'Password',
-            prefixIcon: Icon(FontAwesomeIcons.lock),
+            prefixIcon: Icon(
+              FontAwesomeIcons.lock,
+              color: Colors.black,
+            ),
             suffixIcon: IconButton(
               onPressed: () {
                 setState(() {
                   obscureText = !obscureText;
                 });
               },
-              icon: Icon(obscureText
-                  ? FontAwesomeIcons.solidEye
-                  : FontAwesomeIcons.solidEyeSlash),
+              icon: Icon(
+                obscureText
+                    ? FontAwesomeIcons.solidEye
+                    : FontAwesomeIcons.solidEyeSlash,
+                color: Colors.black,
+              ),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
@@ -284,6 +304,7 @@ class _SignupPageState extends State<SignupPage> {
                   password: _formKey.currentState!.value['password'],
                   name: _formKey.currentState!.value['name'],
                   roleId: _formKey.currentState!.value['role']));
+              Navigator.of(context).pushReplacementNamed('/login');
             }
           },
           child: Text(

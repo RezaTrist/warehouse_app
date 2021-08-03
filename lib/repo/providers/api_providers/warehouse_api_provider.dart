@@ -37,7 +37,7 @@ class WarehouseApiProvider {
     }
   }
 
-  Future loginUser(UserRegister login) async {
+  Future loginUser(String firebaseUid) async {
     final Uri _url = Uri.parse('$_baseUrl/user/F_user/:Firebase_UID');
 
     try {

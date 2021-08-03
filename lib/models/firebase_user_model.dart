@@ -9,5 +9,9 @@ class FirebaseUser {
     this.name,
   });
 
-  static const empty = FirebaseUser(email: '', uid: '', name: null);
+  static const empty = FirebaseUser(
+    email: '',
+    uid: '',
+    name: null,
+  );
 }

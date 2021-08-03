@@ -93,7 +93,10 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             hintText: 'Email',
-            prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
+            prefixIcon: Icon(
+              FontAwesomeIcons.solidEnvelope,
+              color: Colors.black,
+            ),
           ),
           textInputAction: TextInputAction.next,
           validator: FormBuilderValidators.compose([
@@ -123,16 +126,22 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             hintText: 'Password',
-            prefixIcon: Icon(FontAwesomeIcons.lock),
+            prefixIcon: Icon(
+              FontAwesomeIcons.lock,
+              color: Colors.black,
+            ),
             suffixIcon: IconButton(
               onPressed: () {
                 setState(() {
                   obscureText = !obscureText;
                 });
               },
-              icon: Icon(obscureText
-                  ? FontAwesomeIcons.solidEye
-                  : FontAwesomeIcons.solidEyeSlash),
+              icon: Icon(
+                obscureText
+                    ? FontAwesomeIcons.solidEye
+                    : FontAwesomeIcons.solidEyeSlash,
+                color: Colors.black,
+              ),
             ),
           ),
           validator: FormBuilderValidators.compose([

@@ -5,6 +5,7 @@ import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart
 import 'package:warehouse_app/repo/repositories/firebase_auth_repository.dart';
 import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
 import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
+import 'package:warehouse_app/views/dashboard/product/detail_product/add_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/product_page.dart';
 import 'package:warehouse_app/views/dashboard/profile/profile_page.dart';
@@ -82,6 +83,8 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(builder: (context) => ProductPage());
           case '/detailprod':
             return MaterialPageRoute(builder: (context) => DetailProductPage());
+          case '/addprod':
+            return MaterialPageRoute(builder: (context) => AddProductPage());
           default:
         }
       },
