@@ -6,12 +6,12 @@ import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
 
 import 'app.dart';
 import 'bloc_observer.dart';
-import 'locator.dart';
+// import 'locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  setupServices();
+  // setupServices();
   Bloc.observer = CustomBlocObserver();
   final FirebaseAuthRepo _firebaseAuthRepo = FirebaseAuthRepo();
   final RegisterApiRepository _registerApiRepository = RegisterApiRepository();

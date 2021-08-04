@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:warehouse_app/repo/repositories/firebase_auth_repository.dart';
 import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
-import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
+// import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
+import 'package:warehouse_app/views/dashboard/dashboard_runner.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/add_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/product_page.dart';
@@ -76,7 +77,8 @@ class _MyAppState extends State<MyApp> {
                       registerApiRepository: widget._registerApiRepository,
                     ));
           case '/dashboard':
-            return MaterialPageRoute(builder: (context) => DashboardPage());
+            return MaterialPageRoute(
+                builder: (context) => DashboardRunnerPage());
           case '/profile':
             return MaterialPageRoute(builder: (context) => ProfilePage());
           case '/product':

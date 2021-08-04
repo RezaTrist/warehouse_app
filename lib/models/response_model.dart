@@ -10,9 +10,9 @@ class FailedResponse extends PostResponse {
 
   FailedResponse({
     required String message,
-    required this.errorMessage,
-    required this.errorKey,
-    required this.errorData,
+    this.errorMessage,
+    this.errorKey,
+    this.errorData,
   }) : super(message: message);
 
   factory FailedResponse.fromJson(Map<String, dynamic> json) {

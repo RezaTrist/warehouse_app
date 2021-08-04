@@ -95,10 +95,10 @@ class _SignupPageState extends State<SignupPage> {
                         child: Image.asset('assets/images/user1.png'),
                       ),
                     ),
-                    nameField(),
+                    nameField(context),
                     roleDropdown(),
-                    emailField(),
-                    passwordField(),
+                    emailField(context),
+                    passwordField(context),
                     signUpButton(),
                     loginButton(),
                   ],
@@ -111,7 +111,7 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget nameField() {
+  Widget nameField(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 25,
@@ -151,13 +151,8 @@ class _SignupPageState extends State<SignupPage> {
       ),
       child: Container(child:
           BlocBuilder<UserRoleBloc, UserRoleState>(builder: (context, state) {
-        if (state is UserRoleLoading) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.white,
-            ),
-          );
-        } else if (state is UserRoleFailed) {
+        // (state is UserRoleLoading)
+        if (state is UserRoleFailed) {
           print('Dropdown Error');
         } else if (state is UserRoleDone) {
           return ButtonTheme(
@@ -200,7 +195,7 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget emailField() {
+  Widget emailField(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 25,
@@ -232,7 +227,7 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget passwordField() {
+  Widget passwordField(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 25,

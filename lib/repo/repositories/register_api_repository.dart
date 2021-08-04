@@ -22,12 +22,14 @@ class RegisterApiRepository {
       name: name,
       roleId: roleId,
     );
+
     final result = await _provider.registerUser(registration);
     if (result is SuccessResponse) {
       return result;
     } else if (result is FailedResponse) {
       throw GetUserRegisterFailure();
     } else {
+      print(Exception());
       throw Exception();
     }
   }

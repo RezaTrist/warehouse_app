@@ -9,7 +9,7 @@ part 'user_register_state.dart';
 
 class UserRegisterBloc extends Bloc<UserRegisterEvent, UserRegisterState> {
   UserRegisterBloc({required this.registerApiRepository})
-      : super(UserRegisterInitial());
+      : super(UserRegisterState());
 
   final RegisterApiRepository registerApiRepository;
 

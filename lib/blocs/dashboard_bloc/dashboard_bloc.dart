@@ -13,6 +13,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc({required this.firebaseUser}) : super(DashboardInitial());
 
   late final UserLogin _userLogin;
+
   final FirebaseUserRepository _firebaseUserRepository =
       FirebaseUserRepository();
   final FirebaseUser firebaseUser;
@@ -31,10 +32,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         print(_userLogin.userId);
         print(_userLogin.roleId);
         print(_userLogin.firebaseUid);
+        yield DashboardDone();
       } catch (exception) {
         yield DashboardFailed();
       }
-      yield DashboardDone();
     }
   }
 }
