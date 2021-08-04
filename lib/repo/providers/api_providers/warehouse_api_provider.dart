@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:warehouse_app/models/add_product_model.dart';
 import 'package:warehouse_app/models/firebase_uid_model.dart';
 import 'package:warehouse_app/models/response_model.dart';
 import 'package:warehouse_app/models/user_register_model.dart';
@@ -11,7 +12,7 @@ class WarehouseApiProvider {
 
   final http.Client _client;
   final String _baseUrl =
-      'https://asia-east2-warehouse-intern.cloudfunctions.net/Apiv1_1_0';
+      'https://asia-east2-warehouse-intern.cloudfunctions.net/Apiv1_2_0';
 
   // REGISTER
   Future registerUser(UserRegister registration) async {
@@ -77,6 +78,37 @@ class WarehouseApiProvider {
       }
       throw Exception(response.statusCode);
     } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  // ADD PRODUCT
+  Future addProduct(AddProduct addProduct) async {
+    final Uri _url = Uri.parse('$_baseUrl/product/Product');
+
+    try {
+      final http.Response response = await _client.post(
+        _url,
+        headers: <String, String>{
+          'Content-type': 'application/json',
+          'Firebase_UID': '*firebase_uid*',
+        },
+        body: jsonEncode(addProduct),
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseJson = jsonDecode(response.body);
+        if (responseJson['message'] == 'Success') {
+          print('Success');
+          return SuccessResponse.fromJson(responseJson);
+        } else {
+          print('Failed');
+          print('$Exception');
+          return FailedResponse.fromJson(responseJson);
+        }
+      }
+      throw Exception(response.statusCode);
+    } catch (e) {
+      print('$e');
       throw Exception(e);
     }
   }
