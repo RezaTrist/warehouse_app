@@ -11,7 +11,7 @@ part 'type_product_state.dart';
 class TypeProductBloc extends Bloc<TypeProductEvent, TypeProductState> {
   TypeProductBloc({required this.productTypeRepository})
       : super(TypeProductInitial()) {
-    add(LoadType(amount: 4));
+    add(LoadType(typeId: 4));
   }
 
   final ProductTypeRepository productTypeRepository;
@@ -24,7 +24,7 @@ class TypeProductBloc extends Bloc<TypeProductEvent, TypeProductState> {
       yield TypeProductLoading();
       try {
         final result =
-            await productTypeRepository.getProductType(amount: event.amount);
+            await productTypeRepository.getProductType(typeId: event.typeId);
         yield TypeProductDone(type: result);
       } catch (e) {
         yield TypeProductFailed();

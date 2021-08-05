@@ -9,9 +9,9 @@ class ProductTypeRepository {
 
   final WarehouseApiProvider _provider;
 
-  Future<List<ProductType>> getProductType({int? amount}) async {
+  Future<List<ProductType>> getProductType({int? typeId}) async {
     try {
-      final result = await _provider.getProductType(amount ?? 1);
+      final result = await _provider.getProductType(typeId ?? 1);
       return result.data;
     } catch (e) {
       print(e.toString());

@@ -239,6 +239,17 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
+  Widget uploadImage() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+        bottom: 10,
+      ),
+      child: Container(),
+    );
+  }
+
   // Widget productLeft() {
   //   return Card(
   //     color: Color.fromRGBO(226, 226, 226, 1),

@@ -115,11 +115,11 @@ class WarehouseApiProvider {
   }
 
   // PRODUCT TYPE
-  Future getProductType(int amount) async {
+  Future getProductType(int typeId) async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product_type');
 
     try {
-      final http.Response response = await _client.post(_url);
+      final http.Response response = await _client.get(_url);
       if (response.statusCode == 200) {
         return ProductTypePack.fromJson(jsonDecode(response.body));
       }

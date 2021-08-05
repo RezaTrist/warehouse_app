@@ -8,12 +8,12 @@ abstract class TypeProductEvent extends Equatable {
 }
 
 class LoadType extends TypeProductEvent {
-  final int amount;
+  final int typeId;
 
-  LoadType({int? amount}) : amount = amount ?? 4;
+  LoadType({int? typeId}) : typeId = typeId ?? 4;
 
   @override
   List<Object> get props => [
-        amount,
+        typeId,
       ];
 }
