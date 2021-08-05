@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'detail_product/add_product_page.dart';
+// import 'detail_product/add_product_page.dart';
 import 'detail_product/detail_product_page.dart';
 
 class ProductPage extends StatefulWidget {
@@ -60,10 +60,7 @@ class _ProductPageState extends State<ProductPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddProductPage()),
-          );
+          Navigator.pushNamed(context, '/addprod');
         },
         child: Icon(FontAwesomeIcons.plus),
         backgroundColor: Color.fromRGBO(0, 209, 77, 1),

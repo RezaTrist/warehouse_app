@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/add_product_repository.dart';
 import 'package:warehouse_app/repo/repositories/user_repo/firebase_auth_repository.dart';
 import 'package:warehouse_app/repo/repositories/user_repo/register_api_repository.dart';
 // import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
@@ -15,16 +16,19 @@ import 'package:warehouse_app/views/sign_up_page.dart';
 import 'package:warehouse_app/views/welcome_page.dart';
 
 class MyApp extends StatefulWidget {
-  MyApp(
-      {Key? key,
-      required FirebaseAuthRepo firebaseAuthRepo,
-      required RegisterApiRepository registerApiRepository})
-      : _firebaseAuthRepo = firebaseAuthRepo,
+  MyApp({
+    Key? key,
+    required FirebaseAuthRepo firebaseAuthRepo,
+    required RegisterApiRepository registerApiRepository,
+    required AddProductRepository addProductRepository,
+  })  : _firebaseAuthRepo = firebaseAuthRepo,
         _registerApiRepository = registerApiRepository,
+        _addProductRepository = addProductRepository,
         super(key: key);
 
   final FirebaseAuthRepo _firebaseAuthRepo;
   final RegisterApiRepository _registerApiRepository;
+  final AddProductRepository _addProductRepository;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -86,7 +90,10 @@ class _MyAppState extends State<MyApp> {
           case '/detailprod':
             return MaterialPageRoute(builder: (context) => DetailProductPage());
           case '/addprod':
-            return MaterialPageRoute(builder: (context) => AddProductPage());
+            return MaterialPageRoute(
+                builder: (context) => AddProductPage(
+                      addProductRepository: widget._addProductRepository,
+                    ));
           default:
         }
       },

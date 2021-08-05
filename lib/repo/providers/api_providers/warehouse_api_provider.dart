@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:warehouse_app/models/product_model/add_product_model.dart';
+import 'package:warehouse_app/models/product_model/type_product_model.dart';
 import 'package:warehouse_app/models/user_model/firebase_uid_model.dart';
 import 'package:warehouse_app/models/response_model.dart';
 import 'package:warehouse_app/models/user_model/user_register_model.dart';
@@ -109,6 +110,21 @@ class WarehouseApiProvider {
       throw Exception(response.statusCode);
     } catch (e) {
       print('$e');
+      throw Exception(e);
+    }
+  }
+
+  // PRODUCT TYPE
+  Future getProductType(int amount) async {
+    final Uri _url = Uri.parse('$_baseUrl/product/Product_type');
+
+    try {
+      final http.Response response = await _client.post(_url);
+      if (response.statusCode == 200) {
+        return ProductTypePack.fromJson(jsonDecode(response.body));
+      }
+      throw Exception(response.statusCode);
+    } catch (e) {
       throw Exception(e);
     }
   }

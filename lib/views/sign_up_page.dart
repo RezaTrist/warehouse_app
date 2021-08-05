@@ -149,49 +149,51 @@ class _SignupPageState extends State<SignupPage> {
         right: 25,
         bottom: 12,
       ),
-      child: Container(child:
-          BlocBuilder<UserRoleBloc, UserRoleState>(builder: (context, state) {
-        // (state is UserRoleLoading)
-        if (state is UserRoleFailed) {
-          print('Dropdown Error');
-        } else if (state is UserRoleDone) {
-          return ButtonTheme(
-            alignedDropdown: true,
-            child: FormBuilderDropdown(
-              name: 'role',
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  FontAwesomeIcons.solidUser,
-                  color: Colors.black,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
+      child: Container(
+        child:
+            BlocBuilder<UserRoleBloc, UserRoleState>(builder: (context, state) {
+          // (state is UserRoleLoading)
+          if (state is UserRoleFailed) {
+            print('Dropdown Error');
+          } else if (state is UserRoleDone) {
+            return ButtonTheme(
+              alignedDropdown: true,
+              child: FormBuilderDropdown(
+                name: 'role',
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    FontAwesomeIcons.solidUser,
+                    color: Colors.black,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
                   ),
                 ),
+                hint: Text('Select Role'),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(context),
+                ]),
+                // value: roles,
+                items: state.role.map((UserRole item) {
+                  return DropdownMenuItem(
+                    child: Text('${item.role}'),
+                    value: item.roleId,
+                  );
+                }).toList(),
+                onChanged: (int? newValue) {
+                  setState(() {
+                    // roles = newValue;
+                    newValue == 1 ? roles = 'manager' : roles = 'client';
+                  });
+                },
               ),
-              hint: Text('Select Role'),
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(context),
-              ]),
-              // value: roles,
-              items: state.role.map((UserRole item) {
-                return DropdownMenuItem(
-                  child: Text('${item.role}'),
-                  value: item.roleId,
-                );
-              }).toList(),
-              onChanged: (int? newValue) {
-                setState(() {
-                  // roles = newValue;
-                  newValue == 1 ? roles = 'manager' : roles = 'client';
-                });
-              },
-            ),
-          );
-        }
-        return Container();
-      })),
+            );
+          }
+          return Container();
+        }),
+      ),
     );
   }
 

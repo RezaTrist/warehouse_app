@@ -1,10 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:warehouse_app/blocs/add_product_bloc/add_product_bloc.dart';
+import 'package:warehouse_app/blocs/type_product_bloc/type_product_bloc.dart';
+import 'package:warehouse_app/models/product_model/type_product_model.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/add_product_repository.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/type_product_repository.dart';
 
 class AddProductPage extends StatefulWidget {
-  const AddProductPage({Key? key}) : super(key: key);
+  const AddProductPage(
+      {Key? key, required AddProductRepository addProductRepository})
+      : _addProductRepository = addProductRepository,
+        super(key: key);
+
+  final AddProductRepository _addProductRepository;
 
   @override
   _AddProductPageState createState() => _AddProductPageState();
@@ -12,6 +23,22 @@ class AddProductPage extends StatefulWidget {
 
 class _AddProductPageState extends State<AddProductPage> {
   final GlobalKey<FormBuilderState> _prodKey = GlobalKey();
+
+  late AddProductBloc _addProductBloc;
+
+  @override
+  void initState() {
+    _addProductBloc =
+        AddProductBloc(addProductRepository: widget._addProductRepository);
+    super.initState();
+  }
+
+  AddProductRepository provider = AddProductRepository();
+
+  ProductTypeRepository productTypeRepository = ProductTypeRepository();
+
+  String? types;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,42 +59,55 @@ class _AddProductPageState extends State<AddProductPage> {
           child: Container(
             child: FormBuilder(
               key: _prodKey,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 10,
-                      left: 25,
-                      right: 25,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Product',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Divider(
-                          color: Colors.black,
-                          endIndent: 25,
-                          thickness: 2,
-                        ),
-                      ],
-                    ),
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider<AddProductBloc>(
+                    create: (BuildContext context) =>
+                        AddProductBloc(addProductRepository: provider),
                   ),
-                  productPrice(),
-                  productName(),
-                  // productLeft(),
-                  // productStock(),
-                  // productDescription(),
-                  // warehouseSources(),
-                  // warehouseAddress(),
-                  addButton(),
+                  BlocProvider<TypeProductBloc>(
+                    create: (BuildContext context) => TypeProductBloc(
+                        productTypeRepository: productTypeRepository),
+                  ),
                 ],
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        bottom: 10,
+                        left: 25,
+                        right: 25,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Product',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Divider(
+                            color: Colors.black,
+                            endIndent: 25,
+                            thickness: 2,
+                          ),
+                        ],
+                      ),
+                    ),
+                    productPrice(context),
+                    productName(context),
+                    typeProductDropdown(),
+                    // productLeft(),
+                    // productStock(),
+                    // productDescription(),
+                    // warehouseSources(),
+                    // warehouseAddress(),
+                    addButton(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -76,57 +116,125 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
-  Widget productPrice() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          FormBuilderTextField(
-            name: 'price',
-            decoration: InputDecoration(
-              hintText: 'Price',
-              prefixIcon: Icon(
-                FontAwesomeIcons.tag,
-                color: Colors.black,
+  Widget productPrice(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+        bottom: 10,
+      ),
+      child: Container(
+        child: FormBuilderTextField(
+          name: 'price',
+          decoration: InputDecoration(
+            hintText: 'Price',
+            prefixIcon: Icon(
+              FontAwesomeIcons.tag,
+              color: Colors.black,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(12),
               ),
             ),
-            textInputAction: TextInputAction.next,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.numeric(context),
-              FormBuilderValidators.required(context),
-            ]),
           ),
-        ],
+          textInputAction: TextInputAction.next,
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.numeric(context),
+            FormBuilderValidators.required(context),
+          ]),
+        ),
       ),
     );
   }
 
-  Widget productName() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          FormBuilderTextField(
-            name: 'name',
-            decoration: InputDecoration(
-              hintText: 'Name',
-              prefixIcon: Icon(
-                FontAwesomeIcons.cubes,
-                color: Colors.black,
+  Widget productName(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+        bottom: 10,
+      ),
+      child: Container(
+        child: FormBuilderTextField(
+          name: 'name',
+          decoration: InputDecoration(
+            hintText: 'Name',
+            prefixIcon: Icon(
+              FontAwesomeIcons.cubes,
+              color: Colors.black,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(12),
               ),
             ),
-            textInputAction: TextInputAction.next,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context),
-            ]),
           ),
-        ],
+          textInputAction: TextInputAction.next,
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(context),
+          ]),
+        ),
+      ),
+    );
+  }
+
+  Widget typeProductDropdown() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+        bottom: 10,
+      ),
+      child: Container(
+        child: BlocBuilder<TypeProductBloc, TypeProductState>(
+            builder: (context, state) {
+          if (state is TypeProductFailed) {
+            print('Dropdown Error');
+          } else if (state is TypeProductDone) {
+            return ButtonTheme(
+              alignedDropdown: true,
+              child: FormBuilderDropdown(
+                name: 'type',
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    FontAwesomeIcons.cubes,
+                    color: Colors.black,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                ),
+                hint: Text('Select Type Product'),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(context),
+                ]),
+                items: state.type.map((ProductType item) {
+                  return DropdownMenuItem(
+                    child: Text('${item.type}'),
+                    value: item.typeId,
+                  );
+                }).toList(),
+                onChanged: (int? newValue) {
+                  setState(() {
+                    if (newValue == 1) {
+                      types = 'Drug & Healthcare';
+                    } else if (newValue == 2) {
+                      types = 'Food & Groceries';
+                    } else if (newValue == 3) {
+                      types = 'Electronics';
+                    } else if (newValue == 4) {
+                      types = 'Furniture & Houseware';
+                    }
+                  });
+                },
+              ),
+            );
+          }
+          return Container();
+        }),
       ),
     );
   }
@@ -154,124 +262,114 @@ class _AddProductPageState extends State<AddProductPage> {
   //   );
   // }
 
-  Widget productStock() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          FormBuilderTextField(
-            name: 'stock',
-            decoration: InputDecoration(
-              hintText: 'Stock',
-              prefixIcon: Icon(
-                FontAwesomeIcons.cubes,
-                color: Colors.black,
-              ),
-            ),
-            textInputAction: TextInputAction.next,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.numeric(context),
-              FormBuilderValidators.required(context),
-            ]),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget productStock() {
+  //   return Card(
+  //     color: Color.fromRGBO(226, 226, 226, 1),
+  //     elevation: 0,
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       crossAxisAlignment: CrossAxisAlignment.stretch,
+  //       children: <Widget>[
+  //         FormBuilderTextField(
+  //           name: 'stock',
+  //           decoration: InputDecoration(
+  //             hintText: 'Stock',
+  //             prefixIcon: Icon(
+  //               FontAwesomeIcons.cubes,
+  //               color: Colors.black,
+  //             ),
+  //           ),
+  //           textInputAction: TextInputAction.next,
+  //           validator: FormBuilderValidators.compose([
+  //             FormBuilderValidators.numeric(context),
+  //             FormBuilderValidators.required(context),
+  //           ]),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget productDescription() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          FormBuilderTextField(
-            name: 'desc',
-            decoration: InputDecoration(
-              hintText: 'Description',
-              prefixIcon: Icon(
-                FontAwesomeIcons.alignJustify,
-                color: Colors.black,
-              ),
-            ),
-            textInputAction: TextInputAction.next,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context),
-            ]),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget productDescription() {
+  //   return Card(
+  //     color: Color.fromRGBO(226, 226, 226, 1),
+  //     elevation: 0,
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       crossAxisAlignment: CrossAxisAlignment.stretch,
+  //       children: <Widget>[
+  //         FormBuilderTextField(
+  //           name: 'desc',
+  //           decoration: InputDecoration(
+  //             hintText: 'Description',
+  //             prefixIcon: Icon(
+  //               FontAwesomeIcons.alignJustify,
+  //               color: Colors.black,
+  //             ),
+  //           ),
+  //           textInputAction: TextInputAction.next,
+  //           validator: FormBuilderValidators.compose([
+  //             FormBuilderValidators.required(context),
+  //           ]),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget warehouseSources() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          FormBuilderTextField(
-            name: 'warehouse',
-            decoration: InputDecoration(
-              hintText: 'Warehouse Sources',
-              prefixIcon: Icon(
-                FontAwesomeIcons.warehouse,
-                color: Colors.black,
-              ),
-            ),
-            textInputAction: TextInputAction.next,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context),
-            ]),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget warehouseSources() {
+  //   return Card(
+  //     color: Color.fromRGBO(226, 226, 226, 1),
+  //     elevation: 0,
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       crossAxisAlignment: CrossAxisAlignment.stretch,
+  //       children: <Widget>[
+  //         FormBuilderTextField(
+  //           name: 'warehouse',
+  //           decoration: InputDecoration(
+  //             hintText: 'Warehouse Sources',
+  //             prefixIcon: Icon(
+  //               FontAwesomeIcons.warehouse,
+  //               color: Colors.black,
+  //             ),
+  //           ),
+  //           textInputAction: TextInputAction.next,
+  //           validator: FormBuilderValidators.compose([
+  //             FormBuilderValidators.required(context),
+  //           ]),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget warehouseAddress() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          // const ListTile(
-          //   leading: Icon(
-          //     FontAwesomeIcons.mapMarkerAlt,
-          //     color: Colors.black,
-          //   ),
-          //   title: Text(
-          //     'Jl. Limo No.40, RT.8/RW.10, Grogol Sel., Kec. Kby. Lama, Kota Jakarta Selatan',
-          //     style: TextStyle(fontSize: 16),
-          //   ),
-          // ),
-          FormBuilderTextField(
-            name: 'address',
-            decoration: InputDecoration(
-              hintText: 'Warehouse Address',
-              prefixIcon: Icon(
-                FontAwesomeIcons.mapMarkerAlt,
-                color: Colors.black,
-              ),
-            ),
-            textInputAction: TextInputAction.next,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context),
-            ]),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget warehouseAddress() {
+  //   return Card(
+  //     color: Color.fromRGBO(226, 226, 226, 1),
+  //     elevation: 0,
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       crossAxisAlignment: CrossAxisAlignment.stretch,
+  //       children: <Widget>[
+  //         FormBuilderTextField(
+  //           name: 'address',
+  //           decoration: InputDecoration(
+  //             hintText: 'Warehouse Address',
+  //             prefixIcon: Icon(
+  //               FontAwesomeIcons.mapMarkerAlt,
+  //               color: Colors.black,
+  //             ),
+  //           ),
+  //           textInputAction: TextInputAction.next,
+  //           validator: FormBuilderValidators.compose([
+  //             FormBuilderValidators.required(context),
+  //           ]),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget addButton() {
     return Padding(
@@ -280,7 +378,7 @@ class _AddProductPageState extends State<AddProductPage> {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          fixedSize: Size(320, 45),
+          fixedSize: Size(280, 45),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(
