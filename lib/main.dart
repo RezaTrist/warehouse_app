@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:warehouse_app/repo/repositories/firebase_auth_repository.dart';
-import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
+import 'package:warehouse_app/repo/repositories/user_repo/firebase_auth_repository.dart';
+import 'package:warehouse_app/repo/repositories/user_repo/register_api_repository.dart';
 
 import 'app.dart';
 import 'bloc_observer.dart';

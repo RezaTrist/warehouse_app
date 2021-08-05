@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/user_login_bloc/user_login_bloc.dart';
-import 'package:warehouse_app/repo/repositories/firebase_auth_repository.dart';
+import 'package:warehouse_app/repo/repositories/user_repo/firebase_auth_repository.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required FirebaseAuthRepo firebaseAuthRepo})

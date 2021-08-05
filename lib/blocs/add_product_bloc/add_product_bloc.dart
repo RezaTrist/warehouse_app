@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:warehouse_app/repo/repositories/add_product_repository.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/add_product_repository.dart';
 
 part 'add_product_event.dart';
 part 'add_product_state.dart';

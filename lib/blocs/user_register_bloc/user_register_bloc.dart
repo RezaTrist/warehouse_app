@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:warehouse_app/repo/repositories/register_api_repository.dart';
+import 'package:warehouse_app/repo/repositories/user_repo/register_api_repository.dart';
 
 part 'user_register_event.dart';
 part 'user_register_state.dart';

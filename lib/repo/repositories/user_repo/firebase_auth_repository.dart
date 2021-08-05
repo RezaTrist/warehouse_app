@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:warehouse_app/models/firebase_user_model.dart';
+import 'package:warehouse_app/models/user_model/firebase_user_model.dart';
 
 class FirebaseAuthRepo {
   FirebaseAuthRepo({FirebaseAuth? firebaseAuth})

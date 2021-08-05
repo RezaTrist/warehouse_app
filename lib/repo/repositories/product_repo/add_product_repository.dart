@@ -1,4 +1,4 @@
-import 'package:warehouse_app/models/add_product_model.dart';
+import 'package:warehouse_app/models/product_model/add_product_model.dart';
 import 'package:warehouse_app/models/response_model.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
 

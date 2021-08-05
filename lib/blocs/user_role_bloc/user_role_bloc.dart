@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:warehouse_app/models/user_role_model.dart';
-import 'package:warehouse_app/repo/repositories/role_api_repository.dart';
+import 'package:warehouse_app/models/user_model/user_role_model.dart';
+import 'package:warehouse_app/repo/repositories/user_repo/role_api_repository.dart';
 
 part 'user_role_event.dart';
 part 'user_role_state.dart';

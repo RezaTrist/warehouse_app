@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse_app/blocs/dashboard_bloc/dashboard_bloc.dart';
-import 'package:warehouse_app/models/firebase_user_model.dart';
+import 'package:warehouse_app/models/user_model/firebase_user_model.dart';
 import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
 
 class DashboardRunnerPage extends StatefulWidget {

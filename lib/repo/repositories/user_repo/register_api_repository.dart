@@ -1,5 +1,5 @@
 import 'package:warehouse_app/models/response_model.dart';
-import 'package:warehouse_app/models/user_register_model.dart';
+import 'package:warehouse_app/models/user_model/user_register_model.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
 
 class GetUserRegisterFailure implements Exception {}

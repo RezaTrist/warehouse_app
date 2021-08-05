@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:warehouse_app/models/add_product_model.dart';
-import 'package:warehouse_app/models/firebase_uid_model.dart';
+import 'package:warehouse_app/models/product_model/add_product_model.dart';
+import 'package:warehouse_app/models/user_model/firebase_uid_model.dart';
 import 'package:warehouse_app/models/response_model.dart';
-import 'package:warehouse_app/models/user_register_model.dart';
+import 'package:warehouse_app/models/user_model/user_register_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:warehouse_app/models/user_role_model.dart';
+import 'package:warehouse_app/models/user_model/user_role_model.dart';
 
 class WarehouseApiProvider {
   WarehouseApiProvider({http.Client? client})

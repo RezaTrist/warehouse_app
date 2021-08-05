@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:warehouse_app/models/firebase_user_model.dart';
-import 'package:warehouse_app/repo/repositories/firebase_auth_repository.dart';
+import 'package:warehouse_app/models/user_model/firebase_user_model.dart';
+import 'package:warehouse_app/repo/repositories/user_repo/firebase_auth_repository.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
