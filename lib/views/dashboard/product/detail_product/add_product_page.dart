@@ -482,17 +482,24 @@ class _AddProductPageState extends State<AddProductPage> {
           primary: Colors.white,
         ),
         onPressed: () {
-          _prodKey.currentState!.saveAndValidate();
-          if (_prodKey.currentState!.validate()) {
-            print(_prodKey.currentState!.value['price']);
-            print(_prodKey.currentState!.value['name']);
-            print(_prodKey.currentState!.value['type']);
-            print(_prodKey.currentState!.value['image']);
-            // print(_prodKey.currentState!.value['stock']);
-            // print(_prodKey.currentState!.value['desc']);
-            // print(_prodKey.currentState!.value['warehouse']);
-            // print(_prodKey.currentState!.value['address']);
+          if (_prodKey.currentState!.saveAndValidate()) {
+            _addProductBloc.add(NewProduct(
+              typeId: _prodKey.currentState!.value['type'],
+              name: _prodKey.currentState!.value['name'],
+              price: _prodKey.currentState!.value['price'],
+              imageType: (_prodKey.currentState!.value['image'] as PlatformFile)
+                  .extension!,
+              image64: (_prodKey.currentState!.value['image'] as PlatformFile)
+                  .bytes!,
+            ));
           }
+          // _prodKey.currentState!.saveAndValidate();
+          // if (_prodKey.currentState!.validate()) {
+          //   print(_prodKey.currentState!.value['price']);
+          //   print(_prodKey.currentState!.value['name']);
+          //   print(_prodKey.currentState!.value['type']);
+          //   print(_prodKey.currentState!.value['image']);
+          // }
         },
         child: Text(
           'Add',

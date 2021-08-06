@@ -10,9 +10,9 @@ abstract class AddProductEvent extends Equatable {
 class NewProduct extends AddProductEvent {
   final int typeId;
   final String name;
-  final int price;
+  final String price;
   final String imageType;
-  final String image64;
+  final Uint8List image64;
 
   NewProduct({
     required this.typeId,
@@ -21,4 +21,13 @@ class NewProduct extends AddProductEvent {
     required this.imageType,
     required this.image64,
   });
+
+  @override
+  List<Object> get props => [
+        typeId,
+        name,
+        price,
+        imageType,
+        image64,
+      ];
 }

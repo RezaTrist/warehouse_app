@@ -84,7 +84,7 @@ class WarehouseApiProvider {
   }
 
   // ADD NEW PRODUCT
-  Future addProduct(AddProduct addProduct) async {
+  Future addProduct(AddProduct newProduct) async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product');
     try {
       final http.Response response = await _client.post(
@@ -93,7 +93,7 @@ class WarehouseApiProvider {
           'Content-type': 'application/json',
           'Firebase_UID': '*firebase_uid*',
         },
-        body: jsonEncode(addProduct),
+        body: jsonEncode(newProduct),
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> responseJson = jsonDecode(response.body);

@@ -1,7 +1,7 @@
 class AddProduct {
   final int typeId;
   final String name;
-  final int price;
+  final String price;
   final String imageType;
   final String image64;
 
