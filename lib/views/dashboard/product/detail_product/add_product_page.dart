@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_builder_file_picker/form_builder_file_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:warehouse_app/blocs/add_product_bloc/add_product_bloc.dart';
 import 'package:warehouse_app/blocs/type_product_bloc/type_product_bloc.dart';
 import 'package:warehouse_app/models/product_model/type_product_model.dart';
@@ -25,6 +29,58 @@ class _AddProductPageState extends State<AddProductPage> {
   final GlobalKey<FormBuilderState> _prodKey = GlobalKey();
 
   late AddProductBloc _addProductBloc;
+
+  // late File _image;
+
+  // _imageFromCamera() async {
+  //   XFile? image = await ImagePicker()
+  //       .pickImage(source: ImageSource.camera, imageQuality: 50);
+
+  //   if (image != null) {
+  //     setState(() {
+  //       _image = File(image.path);
+  //     });
+  //   }
+  // }
+
+  // _imageFromGallery() async {
+  //   XFile? image = await ImagePicker()
+  //       .pickImage(source: ImageSource.gallery, imageQuality: 50);
+
+  //   if (image != null) {
+  //     setState(() {
+  //       _image = File(image.path);
+  //     });
+  //   }
+  // }
+
+  // void _showPicker(contect) {
+  //   showModalBottomSheet(
+  //       context: context,
+  //       builder: (BuildContext bc) {
+  //         return SafeArea(
+  //             child: Wrap(
+  //           children: [
+  //             ListTile(
+  //               leading: Icon(FontAwesomeIcons.solidImages),
+  //               title: Text('Gallery'),
+  //               onTap: () {
+  //                 _imageFromGallery();
+  //                 Navigator.of(context).pop();
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: Icon(FontAwesomeIcons.camera),
+  //               title: Text('Camera'),
+  //               onTap: () {
+  //                 _imageFromCamera();
+  //                 Navigator.of(context).pop();
+  //               },
+  //             ),
+  //           ],
+  //         ));
+  //       });
+  // }
 
   @override
   void initState() {
@@ -100,6 +156,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     productPrice(context),
                     productName(context),
                     typeProductDropdown(),
+                    uploadImage(),
                     // productLeft(),
                     // productStock(),
                     // productDescription(),
@@ -246,7 +303,34 @@ class _AddProductPageState extends State<AddProductPage> {
         right: 25,
         bottom: 10,
       ),
-      child: Container(),
+      child: Container(
+        child: FormBuilderFilePicker(
+          name: 'image',
+          decoration: InputDecoration(
+              prefixIcon: Icon(
+                FontAwesomeIcons.image,
+                color: Colors.black,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
+              labelText: 'Image'),
+          maxFiles: 1,
+          previewImages: true,
+          onChanged: (val) => print(val),
+          selector: Row(
+            children: <Widget>[Icon(FontAwesomeIcons.upload), Text('Upload')],
+          ),
+          onFileLoading: (val) {
+            print('val');
+          },
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(context),
+          ]),
+        ),
+      ),
     );
   }
 
@@ -404,10 +488,12 @@ class _AddProductPageState extends State<AddProductPage> {
           if (_prodKey.currentState!.validate()) {
             print(_prodKey.currentState!.value['price']);
             print(_prodKey.currentState!.value['name']);
-            print(_prodKey.currentState!.value['stock']);
-            print(_prodKey.currentState!.value['desc']);
-            print(_prodKey.currentState!.value['warehouse']);
-            print(_prodKey.currentState!.value['address']);
+            print(_prodKey.currentState!.value['type']);
+            print(_prodKey.currentState!.value['image']);
+            // print(_prodKey.currentState!.value['stock']);
+            // print(_prodKey.currentState!.value['desc']);
+            // print(_prodKey.currentState!.value['warehouse']);
+            // print(_prodKey.currentState!.value['address']);
           }
         },
         child: Text(
