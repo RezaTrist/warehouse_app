@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
-import 'dart:typed_data';
 import 'package:warehouse_app/models/product_model/add_product_model.dart';
 import 'package:warehouse_app/models/product_model/type_product_model.dart';
 import 'package:warehouse_app/models/user_model/firebase_uid_model.dart';
