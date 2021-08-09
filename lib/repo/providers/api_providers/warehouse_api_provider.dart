@@ -104,7 +104,6 @@ class WarehouseApiProvider {
           return SuccessResponse.fromJson(responseJson);
         } else {
           print('Failed');
-          // print('$Exception');
           print(response.body);
           return FailedResponse.fromJson(responseJson);
         }

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
-// import 'package:image_picker/image_picker.dart';
 import 'package:warehouse_app/blocs/add_product_bloc/add_product_bloc.dart';
 import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:warehouse_app/blocs/type_product_bloc/type_product_bloc.dart';
@@ -268,7 +267,6 @@ class _AddProductPageState extends State<AddProductPage> {
           previewImages: true,
           onChanged: (val) => print(val),
           withData: true,
-          // allowedExtensions: ['jpg', 'jpeg', 'png'],
           selector: Row(
             children: <Widget>[Icon(FontAwesomeIcons.upload)],
           ),
@@ -454,13 +452,6 @@ class _AddProductPageState extends State<AddProductPage> {
                 firebaseUid:
                     BlocProvider.of<AuthenticationBloc>(context).user.uid));
           }
-          // _prodKey.currentState!.saveAndValidate();
-          // if (_prodKey.currentState!.validate()) {
-          //   print(_prodKey.currentState!.value['price']);
-          //   print(_prodKey.currentState!.value['name']);
-          //   print(_prodKey.currentState!.value['type']);
-          //   print(_prodKey.currentState!.value['image']);
-          // }
         },
         child: Text(
           'Add',

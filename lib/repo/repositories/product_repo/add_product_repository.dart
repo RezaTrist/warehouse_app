@@ -16,20 +16,16 @@ class AddProductRepository {
     required String price,
     required ImageProduct image,
     required String firebaseUid,
-    // required String imageType,
-    // required String image64,
   }) async {
     AddProduct newProduct = AddProduct(
       typeId: typeId,
       name: name,
       price: price,
       image: image,
-      // firebaseUid: firebaseUid,
-      // imageType: imageType,
-      // image64: image64,
     );
 
     final result = await _provider.addProduct(newProduct, firebaseUid);
+
     if (result is SuccessResponse) {
       return result;
     } else if (result is FailedResponse) {
