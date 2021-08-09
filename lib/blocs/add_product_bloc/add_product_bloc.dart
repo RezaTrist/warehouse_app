@@ -4,7 +4,8 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mime/mime.dart';
+// import 'package:mime/mime.dart';
+import 'package:warehouse_app/models/product_model/add_product_model.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/add_product_repository.dart';
 
 part 'add_product_event.dart';
@@ -25,15 +26,20 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
       try {
         Uint8List imageToUploadBytes = event.image64;
         String image64 = base64Encode(imageToUploadBytes);
-        String imageType = lookupMimeType(event.imageType)!.split('/').last;
+        // String imageType = lookupMimeType(event.imageType)!.split('/').last;
         print(event.imageType);
+
+        ImageProduct image =
+            ImageProduct(imageType: event.imageType, image64: image64);
 
         await addProductRepository.addProduct(
           typeId: event.typeId,
           name: event.name,
           price: event.price,
-          imageType: imageType,
-          image64: image64,
+          image: image,
+          firebaseUid: event.firebaseUid,
+          // imageType: imageType,
+          // image64: image64,
         );
         yield AddProductDone();
       } catch (e) {

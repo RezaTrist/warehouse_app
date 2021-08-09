@@ -13,6 +13,7 @@ class NewProduct extends AddProductEvent {
   final String price;
   final String imageType;
   final Uint8List image64;
+  final String firebaseUid;
 
   NewProduct({
     required this.typeId,
@@ -20,6 +21,7 @@ class NewProduct extends AddProductEvent {
     required this.price,
     required this.imageType,
     required this.image64,
+    required this.firebaseUid,
   });
 
   @override
@@ -29,5 +31,6 @@ class NewProduct extends AddProductEvent {
         price,
         imageType,
         image64,
+        firebaseUid,
       ];
 }

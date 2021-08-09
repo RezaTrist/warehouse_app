@@ -84,17 +84,19 @@ class WarehouseApiProvider {
   }
 
   // ADD NEW PRODUCT
-  Future addProduct(AddProduct newProduct) async {
+  Future addProduct(AddProduct newProduct, String firebaseUid) async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product');
+
     try {
       final http.Response response = await _client.post(
         _url,
         headers: <String, String>{
-          'Content-type': 'application/json',
-          'Firebase_UID': '*firebase_uid*',
+          "Content-Type": "application/json",
+          "Firebase_UID": firebaseUid,
         },
         body: jsonEncode(newProduct),
       );
+
       if (response.statusCode == 200) {
         Map<String, dynamic> responseJson = jsonDecode(response.body);
         if (responseJson['message'] == 'Success') {
@@ -102,7 +104,8 @@ class WarehouseApiProvider {
           return SuccessResponse.fromJson(responseJson);
         } else {
           print('Failed');
-          print('$Exception');
+          // print('$Exception');
+          print(response.body);
           return FailedResponse.fromJson(responseJson);
         }
       }

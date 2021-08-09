@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:warehouse_app/blocs/add_product_bloc/add_product_bloc.dart';
+import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:warehouse_app/blocs/type_product_bloc/type_product_bloc.dart';
 import 'package:warehouse_app/models/product_model/type_product_model.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/add_product_repository.dart';
@@ -27,58 +28,6 @@ class _AddProductPageState extends State<AddProductPage> {
   final GlobalKey<FormBuilderState> _prodKey = GlobalKey();
 
   late AddProductBloc _addProductBloc;
-
-  // late File _image;
-
-  // _imageFromCamera() async {
-  //   XFile? image = await ImagePicker()
-  //       .pickImage(source: ImageSource.camera, imageQuality: 50);
-
-  //   if (image != null) {
-  //     setState(() {
-  //       _image = File(image.path);
-  //     });
-  //   }
-  // }
-
-  // _imageFromGallery() async {
-  //   XFile? image = await ImagePicker()
-  //       .pickImage(source: ImageSource.gallery, imageQuality: 50);
-
-  //   if (image != null) {
-  //     setState(() {
-  //       _image = File(image.path);
-  //     });
-  //   }
-  // }
-
-  // void _showPicker(contect) {
-  //   showModalBottomSheet(
-  //       context: context,
-  //       builder: (BuildContext bc) {
-  //         return SafeArea(
-  //             child: Wrap(
-  //           children: [
-  //             ListTile(
-  //               leading: Icon(FontAwesomeIcons.solidImages),
-  //               title: Text('Gallery'),
-  //               onTap: () {
-  //                 _imageFromGallery();
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //             ListTile(
-  //               leading: Icon(FontAwesomeIcons.camera),
-  //               title: Text('Camera'),
-  //               onTap: () {
-  //                 _imageFromCamera();
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //           ],
-  //         ));
-  //       });
-  // }
 
   @override
   void initState() {
@@ -318,8 +267,10 @@ class _AddProductPageState extends State<AddProductPage> {
           maxFiles: 1,
           previewImages: true,
           onChanged: (val) => print(val),
+          withData: true,
+          // allowedExtensions: ['jpg', 'jpeg', 'png'],
           selector: Row(
-            children: <Widget>[Icon(FontAwesomeIcons.upload), Text('Upload')],
+            children: <Widget>[Icon(FontAwesomeIcons.upload)],
           ),
           onFileLoading: (val) {
             print('val');
@@ -483,15 +434,25 @@ class _AddProductPageState extends State<AddProductPage> {
         ),
         onPressed: () {
           if (_prodKey.currentState!.saveAndValidate()) {
+            print(_prodKey.currentState!.value['type'].runtimeType);
+            print(_prodKey.currentState!.value['name'].runtimeType);
+            print(_prodKey.currentState!.value['price'].runtimeType);
+            print(_prodKey.currentState!.value['image'].runtimeType);
+
             _addProductBloc.add(NewProduct(
-              typeId: _prodKey.currentState!.value['type'],
-              name: _prodKey.currentState!.value['name'],
-              price: _prodKey.currentState!.value['price'],
-              imageType: (_prodKey.currentState!.value['image'] as PlatformFile)
-                  .extension!,
-              image64: (_prodKey.currentState!.value['image'] as PlatformFile)
-                  .bytes!,
-            ));
+                typeId: _prodKey.currentState!.value['type'],
+                name: _prodKey.currentState!.value['name'],
+                price: _prodKey.currentState!.value['price'],
+                imageType: (_prodKey.currentState!.value['image']
+                        as List<PlatformFile>)
+                    .first
+                    .extension!,
+                image64: (_prodKey.currentState!.value['image']
+                        as List<PlatformFile>)
+                    .first
+                    .bytes!,
+                firebaseUid:
+                    BlocProvider.of<AuthenticationBloc>(context).user.uid));
           }
           // _prodKey.currentState!.saveAndValidate();
           // if (_prodKey.currentState!.validate()) {
