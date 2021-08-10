@@ -452,6 +452,17 @@ class _AddProductPageState extends State<AddProductPage> {
                 firebaseUid:
                     BlocProvider.of<AuthenticationBloc>(context).user.uid));
           }
+          // SpinKitFadingCircle(
+          //   color: Colors.green,
+          //   size: 50,
+          //   controller: AnimationController(
+          //     vsync: this,
+          //     duration: const Duration(milliseconds: 1200),
+          //   ),
+          // );
+          CircularProgressIndicator(
+            color: Colors.green,
+          );
         },
         child: Text(
           'Add',

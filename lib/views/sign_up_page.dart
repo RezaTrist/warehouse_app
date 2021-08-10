@@ -152,7 +152,6 @@ class _SignupPageState extends State<SignupPage> {
       child: Container(
         child:
             BlocBuilder<UserRoleBloc, UserRoleState>(builder: (context, state) {
-          // (state is UserRoleLoading)
           if (state is UserRoleFailed) {
             print('Dropdown Error');
           } else if (state is UserRoleDone) {

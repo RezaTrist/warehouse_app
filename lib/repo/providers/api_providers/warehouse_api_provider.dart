@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:warehouse_app/models/product_model/add_product_model.dart';
+import 'package:warehouse_app/models/product_model/all_product_model.dart';
 import 'package:warehouse_app/models/product_model/type_product_model.dart';
 import 'package:warehouse_app/models/user_model/firebase_uid_model.dart';
 import 'package:warehouse_app/models/response_model.dart';
@@ -45,7 +46,7 @@ class WarehouseApiProvider {
     }
   }
 
-  // LOGIN
+  // USER BY UID
   Future loginUser(String firebaseUid) async {
     final Uri _url = Uri.parse('$_baseUrl/user/F_user/$firebaseUid');
     print(firebaseUid);
@@ -115,8 +116,24 @@ class WarehouseApiProvider {
     }
   }
 
+  // READ ALL PRODUCT
+  Future<AllProductPack> getAllProduct(int allProduct) async {
+    final Uri _url = Uri.parse('$_baseUrl/product/Product_all');
+
+    try {
+      final http.Response response = await _client.get(_url);
+      if (response.statusCode == 200) {
+        return AllProductPack.fromJson(jsonDecode(response.body));
+      }
+      throw Exception(response.statusCode);
+    } catch (e) {
+      print('$e');
+      throw Exception(e);
+    }
+  }
+
   // PRODUCT TYPE
-  Future getProductType(int typeId) async {
+  Future<ProductTypePack> getProductType(int typeId) async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product_type');
 
     try {
