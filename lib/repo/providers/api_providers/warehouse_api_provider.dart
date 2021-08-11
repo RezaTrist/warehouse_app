@@ -117,13 +117,13 @@ class WarehouseApiProvider {
   }
 
   // READ ALL PRODUCT
-  Future<AllProductPack> getAllProduct(int allProduct) async {
+  Future<AllProduct> getAllProduct(int allProduct) async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product_all');
 
     try {
       final http.Response response = await _client.get(_url);
       if (response.statusCode == 200) {
-        return AllProductPack.fromJson(jsonDecode(response.body));
+        return AllProduct.fromJson(jsonDecode(response.body));
       }
       throw Exception(response.statusCode);
     } catch (e) {

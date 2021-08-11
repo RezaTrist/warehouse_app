@@ -12,7 +12,7 @@ class AllProductInitial extends AllProductState {}
 class AllProductLoading extends AllProductState {}
 
 class AllProductDone extends AllProductState {
-  final List<AllProduct> name;
+  final AllProduct name;
 
   AllProductDone({required this.name});
 

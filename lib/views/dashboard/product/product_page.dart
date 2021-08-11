@@ -24,6 +24,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -38,36 +39,36 @@ class _ProductPageState extends State<ProductPage> {
         backgroundColor: Color.fromRGBO(0, 209, 77, 1),
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            child: BlocProvider(
-              create: (context) =>
-                  AllProductBloc(allProductRepository: allProductRepository),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: 25,
-                  bottom: 25,
+        child: BlocProvider(
+          create: (context) =>
+              AllProductBloc(allProductRepository: allProductRepository),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 15,
+              left: 25,
+              bottom: 25,
+              right: 25,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Product',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Product',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                      endIndent: 25,
-                      thickness: 2,
-                    ),
-                    productList(),
-                  ],
+                Divider(
+                  color: Colors.black,
+                  endIndent: 25,
+                  thickness: 2,
                 ),
-              ),
+                Container(
+                  height: size.height * 0.9,
+                  child: productList(),
+                ),
+              ],
             ),
           ),
         ),
@@ -82,10 +83,10 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget productList(List<AllProduct> allProduct) {
+  Widget productList() {
     return Padding(
       padding: EdgeInsets.only(
-        top: 10,
+        top: 20,
       ),
       child: BlocBuilder<AllProductBloc, AllProductState>(
         builder: (context, state) {
@@ -94,55 +95,49 @@ class _ProductPageState extends State<ProductPage> {
               color: Colors.green,
             );
           } else if (state is AllProductFailed) {
-            print('Failed');
+            print('Load Data Failed');
           } else if (state is AllProductDone) {
-            FutureBuilder(builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return ListView.builder(
-                  itemBuilder: (context, position) {
-                    return Card(
-                      color: Color.fromRGBO(226, 226, 226, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      elevation: 4,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailProductPage()),
-                          );
-                        },
-                        child: SizedBox(
-                          width: 330,
-                          height: 80,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Vitamin D3',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Text(
-                                'Rp 35.000',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+            return ListView.builder(
+              itemCount: state.name.data!.length,
+              itemBuilder: (context, position) {
+                return Card(
+                  color: Color.fromRGBO(226, 226, 226, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  elevation: 4,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailProductPage()),
+                      );
+                    },
+                    child: SizedBox(
+                      width: 330,
+                      height: 80,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${state.name.data![position].productName.toString()}',
+                            style: TextStyle(fontSize: 18),
                           ),
-                        ),
+                          Text(
+                            '18.000',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 );
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              }
-              return Text('Connection Failed');
-            });
+              },
+            );
           }
           return Container();
         },

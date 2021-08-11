@@ -23,15 +23,19 @@ class AddProductPage extends StatefulWidget {
   _AddProductPageState createState() => _AddProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _AddProductPageState extends State<AddProductPage>
+    with TickerProviderStateMixin {
   final GlobalKey<FormBuilderState> _prodKey = GlobalKey();
 
   late AddProductBloc _addProductBloc;
+
+  late AnimationController controller;
 
   @override
   void initState() {
     _addProductBloc =
         AddProductBloc(addProductRepository: widget._addProductRepository);
+
     super.initState();
   }
 
@@ -72,44 +76,47 @@ class _AddProductPageState extends State<AddProductPage> {
                         productTypeRepository: productTypeRepository),
                   ),
                 ],
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 10,
-                        left: 25,
-                        right: 25,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Product',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
+                child: BlocListener<AddProductBloc, AddProductState>(
+                  listener: (context, state) {},
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 20,
+                          bottom: 10,
+                          left: 25,
+                          right: 25,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Product',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          Divider(
-                            color: Colors.black,
-                            endIndent: 25,
-                            thickness: 2,
-                          ),
-                        ],
+                            Divider(
+                              color: Colors.black,
+                              endIndent: 25,
+                              thickness: 2,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    productPrice(context),
-                    productName(context),
-                    typeProductDropdown(),
-                    uploadImage(),
-                    // productLeft(),
-                    // productStock(),
-                    // productDescription(),
-                    // warehouseSources(),
-                    // warehouseAddress(),
-                    addButton(),
-                  ],
+                      productPrice(context),
+                      productName(context),
+                      typeProductDropdown(),
+                      uploadImage(),
+                      // productLeft(),
+                      // productStock(),
+                      // productDescription(),
+                      // warehouseSources(),
+                      // warehouseAddress(),
+                      addButton(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -452,17 +459,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 firebaseUid:
                     BlocProvider.of<AuthenticationBloc>(context).user.uid));
           }
-          // SpinKitFadingCircle(
-          //   color: Colors.green,
-          //   size: 50,
-          //   controller: AnimationController(
-          //     vsync: this,
-          //     duration: const Duration(milliseconds: 1200),
-          //   ),
-          // );
-          CircularProgressIndicator(
-            color: Colors.green,
-          );
+          Navigator.of(context).pushReplacementNamed('/product');
         },
         child: Text(
           'Add',
