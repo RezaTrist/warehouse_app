@@ -12,11 +12,12 @@ class AllProduct {
   });
 
   String? message;
-  List<Datum>? data;
+  List<ProductData>? data;
 
   factory AllProduct.fromJson(Map<String, dynamic> json) => AllProduct(
         message: json["message"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<ProductData>.from(
+            json["data"].map((x) => ProductData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -25,8 +26,8 @@ class AllProduct {
       };
 }
 
-class Datum {
-  Datum({
+class ProductData {
+  ProductData({
     this.productId,
     this.productTypeId,
     this.imageUrl,
@@ -42,7 +43,7 @@ class Datum {
   int? singlePrice;
   bool? softDelete;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
         productId: json["Product_ID"],
         productTypeId: json["Product_Type_ID"],
         imageUrl: json["Image_Url"] == null ? null : json["Image_Url"],
