@@ -86,7 +86,7 @@ class _ProductPageState extends State<ProductPage> {
   Widget productList() {
     return Padding(
       padding: EdgeInsets.only(
-        top: 20,
+        top: 10,
       ),
       child: BlocBuilder<AllProductBloc, AllProductState>(
         builder: (context, state) {
@@ -125,7 +125,7 @@ class _ProductPageState extends State<ProductPage> {
                             style: TextStyle(fontSize: 18),
                           ),
                           Text(
-                            '${state.name.data![index].singlePrice.toString()}',
+                            'Rp ${state.name.data![index].singlePrice.toString()}',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
