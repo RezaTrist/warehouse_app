@@ -99,7 +99,7 @@ class _ProductPageState extends State<ProductPage> {
           } else if (state is AllProductDone) {
             return ListView.builder(
               itemCount: state.name.data!.length,
-              itemBuilder: (context, position) {
+              itemBuilder: (context, index) {
                 return Card(
                   color: Color.fromRGBO(226, 226, 226, 1),
                   shape: RoundedRectangleBorder(
@@ -121,11 +121,11 @@ class _ProductPageState extends State<ProductPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${state.name.data![position].productName.toString()}',
+                            '${state.name.data![index].productName.toString()}',
                             style: TextStyle(fontSize: 18),
                           ),
                           Text(
-                            '18.000',
+                            '${state.name.data![index].singlePrice.toString()}',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
