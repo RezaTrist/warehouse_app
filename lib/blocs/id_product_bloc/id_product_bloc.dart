@@ -1,0 +1,34 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:warehouse_app/models/product_model/id_product_model.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/id_product_repository.dart';
+
+part 'id_product_event.dart';
+part 'id_product_state.dart';
+
+class IdProductBloc extends Bloc<IdProductEvent, IdProductState> {
+  IdProductBloc({required this.productByIdRepository})
+      : super(IdProductInitial()) {
+    add(LoadProductById());
+  }
+
+  final ProductByIdRepository productByIdRepository;
+
+  @override
+  Stream<IdProductState> mapEventToState(
+    IdProductEvent event,
+  ) async* {
+    if (event is LoadProductById) {
+      yield IdProductLoading();
+      try {
+        final result =
+            await productByIdRepository.getProductById(productById: 1);
+        yield IdProductDone(idProduct: result);
+      } catch (e) {
+        yield IdProductFailed();
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:warehouse_app/models/product_model/add_product_model.dart';
 import 'package:warehouse_app/models/product_model/all_product_model.dart';
+import 'package:warehouse_app/models/product_model/id_product_model.dart';
 import 'package:warehouse_app/models/product_model/type_product_model.dart';
 import 'package:warehouse_app/models/user_model/firebase_uid_model.dart';
 import 'package:warehouse_app/models/response_model.dart';
@@ -117,13 +118,30 @@ class WarehouseApiProvider {
   }
 
   // READ ALL PRODUCT
-  Future<AllProduct> getAllProduct(int allProduct) async {
+  Future getAllProduct(int allProduct) async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product_all');
 
     try {
       final http.Response response = await _client.get(_url);
       if (response.statusCode == 200) {
         return AllProduct.fromJson(jsonDecode(response.body));
+      } else {
+        return FailedResponse.fromJson(jsonDecode(response.body));
+      }
+    } catch (e) {
+      print('$e');
+      throw Exception(e);
+    }
+  }
+
+  // READ PRODUCT BY ID
+  Future<ProductById> getProductById(int productById) async {
+    final Uri _url = Uri.parse('$_baseUrl/product/Product/11');
+
+    try {
+      final http.Response response = await _client.get(_url);
+      if (response.statusCode == 200) {
+        return ProductById.fromJson(jsonDecode(response.body));
       }
       throw Exception(response.statusCode);
     } catch (e) {

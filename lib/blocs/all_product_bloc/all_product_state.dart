@@ -23,3 +23,5 @@ class AllProductDone extends AllProductState {
 }
 
 class AllProductFailed extends AllProductState {}
+
+class AllProductFailedById extends AllProductFailed {}

@@ -45,6 +45,8 @@ class _AddProductPageState extends State<AddProductPage>
 
   String? types;
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,62 +62,69 @@ class _AddProductPageState extends State<AddProductPage>
         centerTitle: true,
         backgroundColor: Color.fromRGBO(0, 209, 77, 1),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            child: FormBuilder(
-              key: _prodKey,
-              child: MultiBlocProvider(
-                providers: [
-                  BlocProvider<AddProductBloc>(
-                    create: (BuildContext context) =>
-                        AddProductBloc(addProductRepository: provider),
-                  ),
-                  BlocProvider<TypeProductBloc>(
-                    create: (BuildContext context) => TypeProductBloc(
-                        productTypeRepository: productTypeRepository),
-                  ),
-                ],
-                child: BlocListener<AddProductBloc, AddProductState>(
-                  listener: (context, state) {},
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20,
-                          bottom: 10,
-                          left: 25,
-                          right: 25,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Product',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w600,
-                              ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              child: FormBuilder(
+                key: _prodKey,
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider<AddProductBloc>(
+                        create: (BuildContext context) => _addProductBloc),
+                    BlocProvider<TypeProductBloc>(
+                      create: (BuildContext context) => TypeProductBloc(
+                          productTypeRepository: productTypeRepository),
+                    ),
+                  ],
+                  child: Builder(
+                    builder: (context) =>
+                        BlocListener<AddProductBloc, AddProductState>(
+                      listener: (context, state) {
+                        if (state is AddProductLoading) {
+                          print('Loading...');
+                        }
+                      },
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 20,
+                              bottom: 10,
+                              left: 25,
+                              right: 25,
                             ),
-                            Divider(
-                              color: Colors.black,
-                              endIndent: 25,
-                              thickness: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Product',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Divider(
+                                  color: Colors.black,
+                                  endIndent: 25,
+                                  thickness: 2,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          productPrice(context),
+                          productName(context),
+                          typeProductDropdown(),
+                          uploadImage(),
+                          // productLeft(),
+                          // productStock(),
+                          // productDescription(),
+                          // warehouseSources(),
+                          // warehouseAddress(),
+                          addButton(),
+                        ],
                       ),
-                      productPrice(context),
-                      productName(context),
-                      typeProductDropdown(),
-                      uploadImage(),
-                      // productLeft(),
-                      // productStock(),
-                      // productDescription(),
-                      // warehouseSources(),
-                      // warehouseAddress(),
-                      addButton(),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -459,7 +468,6 @@ class _AddProductPageState extends State<AddProductPage>
                 firebaseUid:
                     BlocProvider.of<AuthenticationBloc>(context).user.uid));
           }
-          Navigator.of(context).pushReplacementNamed('/product');
         },
         child: Text(
           'Add',

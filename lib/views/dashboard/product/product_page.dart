@@ -6,7 +6,7 @@ import 'package:warehouse_app/models/product_model/all_product_model.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/all_product_repository.dart';
 
-import 'detail_product/detail_product_page.dart';
+// import 'detail_product/detail_product_page.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -108,11 +108,7 @@ class _ProductPageState extends State<ProductPage> {
                   elevation: 4,
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailProductPage()),
-                      );
+                      Navigator.of(context).pushNamed('/detailprod');
                     },
                     child: SizedBox(
                       width: 330,
