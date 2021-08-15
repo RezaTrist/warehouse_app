@@ -14,7 +14,7 @@ class AllProductRepository {
 
   Future<AllProduct> getAllProduct({allProduct}) async {
     try {
-      final result = await _provider.getAllProduct(allProduct);
+      final result = await _provider.getAllProduct();
       if (result is AllProduct) {
         return result;
       } else if (result is FailedResponse) {

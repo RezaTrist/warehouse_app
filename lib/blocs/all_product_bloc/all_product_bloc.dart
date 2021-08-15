@@ -23,7 +23,7 @@ class AllProductBloc extends Bloc<AllProductEvent, AllProductState> {
     if (event is LoadAllProduct) {
       yield AllProductLoading();
       try {
-        final result = await allProductRepository.getAllProduct(allProduct: 1);
+        final result = await allProductRepository.getAllProduct();
         yield AllProductDone(name: result);
       } on GetAllProductFailureInvalidProductId {
         yield AllProductFailedById();

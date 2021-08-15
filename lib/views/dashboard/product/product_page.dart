@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/all_product_bloc/all_product_bloc.dart';
-import 'package:warehouse_app/models/product_model/all_product_model.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/all_product_repository.dart';
-
-// import 'detail_product/detail_product_page.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -16,8 +13,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  late Future<List<AllProduct>> futureProduct;
-
   final WarehouseApiProvider provider = WarehouseApiProvider();
 
   AllProductRepository allProductRepository = AllProductRepository();

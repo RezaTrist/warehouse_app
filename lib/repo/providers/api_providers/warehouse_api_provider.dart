@@ -118,7 +118,7 @@ class WarehouseApiProvider {
   }
 
   // READ ALL PRODUCT
-  Future getAllProduct(int allProduct) async {
+  Future getAllProduct() async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product_all');
 
     try {
@@ -134,18 +134,17 @@ class WarehouseApiProvider {
     }
   }
 
-  // READ PRODUCT BY ID
-  Future<ProductById> getProductById(int productById) async {
-    final Uri _url = Uri.parse('$_baseUrl/product/Product/11');
-
+  // READ ALL PRODUCT BY ID
+  Future getProductById(int productId) async {
+    final Uri _url = Uri.parse('$_baseUrl/product/Product/$productId');
     try {
       final http.Response response = await _client.get(_url);
       if (response.statusCode == 200) {
-        return ProductById.fromJson(jsonDecode(response.body));
+        return ProductDataById.fromJson(jsonDecode(response.body));
+      } else {
+        return FailedResponse.fromJson(jsonDecode(response.body));
       }
-      throw Exception(response.statusCode);
     } catch (e) {
-      print('$e');
       throw Exception(e);
     }
   }

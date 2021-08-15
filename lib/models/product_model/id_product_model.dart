@@ -1,22 +1,21 @@
 import 'dart:convert';
 
-ProductById productByIdFromJson(String str) =>
-    ProductById.fromJson(json.decode(str));
+IdProduct idProductFromJson(String str) => IdProduct.fromJson(json.decode(str));
 
-String productByIdToJson(ProductById data) => json.encode(data.toJson());
+String idProductToJson(IdProduct data) => json.encode(data.toJson());
 
-class ProductById {
-  ProductById({
+class IdProduct {
+  IdProduct({
     this.message,
     this.data,
   });
 
   String? message;
-  ProductDataId? data;
+  ProductDataById? data;
 
-  factory ProductById.fromJson(Map<String, dynamic> json) => ProductById(
+  factory IdProduct.fromJson(Map<String, dynamic> json) => IdProduct(
         message: json["message"],
-        data: ProductDataId.fromJson(json["data"]),
+        data: ProductDataById.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -25,8 +24,8 @@ class ProductById {
       };
 }
 
-class ProductDataId {
-  ProductDataId({
+class ProductDataById {
+  ProductDataById({
     this.productId,
     this.productTypeId,
     this.imageUrl,
@@ -42,7 +41,8 @@ class ProductDataId {
   int? singlePrice;
   bool? softDelete;
 
-  factory ProductDataId.fromJson(Map<String, dynamic> json) => ProductDataId(
+  factory ProductDataById.fromJson(Map<String, dynamic> json) =>
+      ProductDataById(
         productId: json["Product_ID"],
         productTypeId: json["Product_Type_ID"],
         imageUrl: json["Image_Url"],

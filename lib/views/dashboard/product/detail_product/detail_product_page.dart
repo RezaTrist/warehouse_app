@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:warehouse_app/blocs/id_product_bloc/id_product_bloc.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
-import 'package:warehouse_app/repo/repositories/product_repo/id_product_repository.dart';
 
 class DetailProductPage extends StatefulWidget {
   const DetailProductPage({Key? key}) : super(key: key);
@@ -14,11 +11,7 @@ class DetailProductPage extends StatefulWidget {
 }
 
 class _DetailProductPageState extends State<DetailProductPage> {
-  late Future<Map<String, dynamic>> futureProductId;
-
   final WarehouseApiProvider provider = WarehouseApiProvider();
-
-  ProductByIdRepository productByIdRepository = ProductByIdRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -37,49 +30,45 @@ class _DetailProductPageState extends State<DetailProductPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: BlocProvider(
-            create: (context) =>
-                IdProductBloc(productByIdRepository: productByIdRepository),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                    bottom: 10,
-                    left: 25,
-                    right: 25,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Product',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.black,
-                        endIndent: 25,
-                        thickness: 2,
-                      ),
-                    ],
-                  ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  bottom: 10,
+                  left: 25,
+                  right: 25,
                 ),
-                imgProduct(),
-                productName(),
-                productPrice(),
-                typeProduct(),
-                editButton(),
-                banButton(),
-                // productLeft(),
-                // productStock(),
-                // productDescription(),
-                // warehouseSources(),
-                // warehouseAddress(),
-              ],
-            ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Product',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      endIndent: 25,
+                      thickness: 2,
+                    ),
+                  ],
+                ),
+              ),
+              imgProduct(),
+              productName(),
+              productPrice(),
+              typeProduct(),
+              editButton(),
+              banButton(),
+              // productLeft(),
+              // productStock(),
+              // productDescription(),
+              // warehouseSources(),
+              // warehouseAddress(),
+            ],
           ),
         ),
       ),
