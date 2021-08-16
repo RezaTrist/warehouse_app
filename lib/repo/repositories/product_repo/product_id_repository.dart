@@ -6,16 +6,16 @@ class GetProductByIdFailure implements Exception {}
 
 class GetProductByIdFailureInvalidProductId implements GetProductByIdFailure {}
 
-class ProductBy {
-  ProductBy({WarehouseApiProvider? warehouseApiProvider})
+class ProductByIdRepository {
+  ProductByIdRepository({WarehouseApiProvider? warehouseApiProvider})
       : _provider = warehouseApiProvider ?? WarehouseApiProvider();
 
   final WarehouseApiProvider _provider;
 
-  Future<ProductDataById> getProductById({productId}) async {
+  Future<IdProduct> getProductById({idProduct}) async {
     try {
-      final result = await _provider.getProductById(productId);
-      if (result is ProductDataById) {
+      final result = await _provider.getProductById(idProduct);
+      if (result is IdProduct) {
         return result;
       } else if (result is FailedResponse) {
         switch (result.errorKey) {

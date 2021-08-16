@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/add_product_repository.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/upd_product_repository.dart';
 import 'package:warehouse_app/repo/repositories/user_repo/firebase_auth_repository.dart';
 import 'package:warehouse_app/repo/repositories/user_repo/register_api_repository.dart';
 // import 'package:warehouse_app/views/dashboard/dashboard_page.dart';
 import 'package:warehouse_app/views/dashboard/dashboard_runner.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/add_product_page.dart';
-import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
+import 'package:warehouse_app/views/dashboard/product/detail_product/upd_product_page.dart';
+// import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/product_page.dart';
 import 'package:warehouse_app/views/dashboard/profile/profile_page.dart';
 import 'package:warehouse_app/views/login_page.dart';
@@ -21,14 +23,17 @@ class MyApp extends StatefulWidget {
     required FirebaseAuthRepo firebaseAuthRepo,
     required RegisterApiRepository registerApiRepository,
     required AddProductRepository addProductRepository,
+    required UpdateProductRepository updateProductRepository,
   })  : _firebaseAuthRepo = firebaseAuthRepo,
         _registerApiRepository = registerApiRepository,
         _addProductRepository = addProductRepository,
+        _updateProductRepository = updateProductRepository,
         super(key: key);
 
   final FirebaseAuthRepo _firebaseAuthRepo;
   final RegisterApiRepository _registerApiRepository;
   final AddProductRepository _addProductRepository;
+  final UpdateProductRepository _updateProductRepository;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -87,13 +92,22 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(builder: (context) => ProfilePage());
           case '/product':
             return MaterialPageRoute(builder: (context) => ProductPage());
-          case '/detailprod':
-            return MaterialPageRoute(builder: (context) => DetailProductPage());
+          // case '/detailprod':
+          //   return MaterialPageRoute(
+          //       builder: (context) => DetailProductPage(
+          //             productId: null,
+          //           ));
           case '/addprod':
             return MaterialPageRoute(
                 builder: (context) => AddProductPage(
                       addProductRepository: widget._addProductRepository,
                     ));
+          case '/updateprod':
+            return MaterialPageRoute(
+                builder: (context) => UpdateProductPage(
+                      updateProductRepository: widget._updateProductRepository,
+                    ));
+
           default:
         }
       },

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/all_product_bloc/all_product_bloc.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/all_product_repository.dart';
+import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -85,13 +86,7 @@ class _ProductPageState extends State<ProductPage> {
       ),
       child: BlocBuilder<AllProductBloc, AllProductState>(
         builder: (context, state) {
-          if (state is AllProductLoading) {
-            CircularProgressIndicator(
-              color: Colors.green,
-            );
-          } else if (state is AllProductFailed) {
-            print('Load Data Failed');
-          } else if (state is AllProductDone) {
+          if (state is AllProductDone) {
             return ListView.builder(
               itemCount: state.name.data!.length,
               itemBuilder: (context, index) {
@@ -103,7 +98,10 @@ class _ProductPageState extends State<ProductPage> {
                   elevation: 4,
                   child: InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/detailprod');
+                      print(state.name.data![index].productId);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => DetailProductPage(
+                              productId: state.name.data![index].productId!)));
                     },
                     child: SizedBox(
                       width: 330,

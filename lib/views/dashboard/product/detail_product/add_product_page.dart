@@ -23,13 +23,10 @@ class AddProductPage extends StatefulWidget {
   _AddProductPageState createState() => _AddProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage>
-    with TickerProviderStateMixin {
+class _AddProductPageState extends State<AddProductPage> {
   final GlobalKey<FormBuilderState> _prodKey = GlobalKey();
 
   late AddProductBloc _addProductBloc;
-
-  late AnimationController controller;
 
   @override
   void initState() {
@@ -44,8 +41,6 @@ class _AddProductPageState extends State<AddProductPage>
   ProductTypeRepository productTypeRepository = ProductTypeRepository();
 
   String? types;
-
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -448,10 +443,10 @@ class _AddProductPageState extends State<AddProductPage>
         ),
         onPressed: () {
           if (_prodKey.currentState!.saveAndValidate()) {
-            print(_prodKey.currentState!.value['type'].runtimeType);
-            print(_prodKey.currentState!.value['name'].runtimeType);
-            print(_prodKey.currentState!.value['price'].runtimeType);
-            print(_prodKey.currentState!.value['image'].runtimeType);
+            // print(_prodKey.currentState!.value['type'].runtimeType);
+            // print(_prodKey.currentState!.value['name'].runtimeType);
+            // print(_prodKey.currentState!.value['price'].runtimeType);
+            // print(_prodKey.currentState!.value['image'].runtimeType);
 
             _addProductBloc.add(NewProduct(
                 typeId: _prodKey.currentState!.value['type'],

@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:warehouse_app/blocs/id_product_bloc/id_product_bloc.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/product_id_repository.dart';
 
 class DetailProductPage extends StatefulWidget {
-  const DetailProductPage({Key? key}) : super(key: key);
+  const DetailProductPage({Key? key, required this.productId})
+      : super(key: key);
+
+  final int productId;
 
   @override
   _DetailProductPageState createState() => _DetailProductPageState();
@@ -12,6 +18,21 @@ class DetailProductPage extends StatefulWidget {
 
 class _DetailProductPageState extends State<DetailProductPage> {
   final WarehouseApiProvider provider = WarehouseApiProvider();
+
+  ProductByIdRepository productByIdRepository = ProductByIdRepository();
+
+  late IdProductBloc idProductBloc;
+
+  void initState() {
+    idProductBloc = IdProductBloc(productByIdRepository: productByIdRepository);
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    idProductBloc.add(LoadIdProduct(productId: widget.productId));
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,140 +51,182 @@ class _DetailProductPageState extends State<DetailProductPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  bottom: 10,
-                  left: 25,
-                  right: 25,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Product',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
+          child: BlocProvider(
+            create: (context) => idProductBloc,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 10,
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Product',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                      endIndent: 25,
-                      thickness: 2,
-                    ),
-                  ],
+                      Divider(
+                        color: Colors.black,
+                        endIndent: 25,
+                        thickness: 2,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              imgProduct(),
-              productName(),
-              productPrice(),
-              typeProduct(),
-              editButton(),
-              banButton(),
-              // productLeft(),
-              // productStock(),
-              // productDescription(),
-              // warehouseSources(),
-              // warehouseAddress(),
-            ],
+                imgProduct(),
+                productName(),
+                productPrice(),
+                typeProduct(),
+                // detailProduct(),
+                editButton(),
+                banButton(),
+                // productLeft(),
+                // productStock(),
+                // productDescription(),
+                // warehouseSources(),
+                // warehouseAddress(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  // Widget detailProduct() {
+  //   return BlocBuilder<IdProductBloc, IdProductState>(
+  //     builder: (context, state) {
+  //       if (state is IdProductDone) {
+  //         return Column(
+  //           children: [
+  //             Padding(
+  //                 padding: const EdgeInsets.only(top: 5),
+  //                 child: SizedBox(
+  //                   width: 200,
+  //                   height: 200,
+  //                   child: Image.network('${state.productId.data!.imageUrl}'),
+  //                 )),
+  //           ],
+  //         );
+  //       }
+  //       return Container();
+  //     },
+  //   );
+  // }
+
   Widget imgProduct() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          const ListTile(
-            leading: Icon(
-              FontAwesomeIcons.image,
-              color: Colors.black,
-            ),
-            title: Text(
-              'Image',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-        ],
-      ),
+    return BlocBuilder<IdProductBloc, IdProductState>(
+      builder: (context, state) {
+        if (state is IdProductDone) {
+          // return Card(
+          //     color: Color.fromRGBO(226, 226, 226, 1),
+          //     elevation: 0,
+          //     child: Image.network('${state.productId.data!.imageUrl}'));
+          return SizedBox(
+            height: 250,
+            width: 250,
+            child: Image.network('${state.productId.data!.imageUrl}'),
+          );
+        }
+        return Container();
+      },
     );
   }
 
   Widget productPrice() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          const ListTile(
-            leading: Icon(
-              FontAwesomeIcons.tag,
-              color: Colors.black,
+    return BlocBuilder<IdProductBloc, IdProductState>(
+      builder: (context, state) {
+        if (state is IdProductDone) {
+          return Card(
+            color: Color.fromRGBO(226, 226, 226, 1),
+            elevation: 0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(
+                    FontAwesomeIcons.tag,
+                    color: Colors.black,
+                  ),
+                  title: Text(
+                    'Rp ${state.productId.data!.singlePrice}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
             ),
-            title: Text(
-              'Rp 35.000',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-        ],
-      ),
+          );
+        }
+        return Container();
+      },
     );
   }
 
   Widget productName() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          const ListTile(
-            leading: Icon(
-              FontAwesomeIcons.cubes,
-              color: Colors.black,
+    return BlocBuilder<IdProductBloc, IdProductState>(
+      builder: (context, state) {
+        if (state is IdProductDone) {
+          return Card(
+            color: Color.fromRGBO(226, 226, 226, 1),
+            elevation: 0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(
+                    FontAwesomeIcons.cubes,
+                    color: Colors.black,
+                  ),
+                  title: Text(
+                    '${state.productId.data!.productName}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
             ),
-            title: Text(
-              'Vitamin D3',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-        ],
-      ),
+          );
+        }
+        return Container();
+      },
     );
   }
 
   Widget typeProduct() {
-    return Card(
-      color: Color.fromRGBO(226, 226, 226, 1),
-      elevation: 0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          const ListTile(
-            leading: Icon(
-              FontAwesomeIcons.cubes,
-              color: Colors.black,
+    return BlocBuilder<IdProductBloc, IdProductState>(
+      builder: (context, state) {
+        if (state is IdProductDone) {
+          return Card(
+            color: Color.fromRGBO(226, 226, 226, 1),
+            elevation: 0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(
+                    FontAwesomeIcons.cubes,
+                    color: Colors.black,
+                  ),
+                  title: Text(
+                    '${state.productId.data!.productTypeName}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
             ),
-            title: Text(
-              'Drug & Healthcare',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-        ],
-      ),
+          );
+        }
+        return Container();
+      },
     );
   }
 

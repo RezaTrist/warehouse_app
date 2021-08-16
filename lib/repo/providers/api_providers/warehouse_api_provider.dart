@@ -17,6 +17,10 @@ class WarehouseApiProvider {
   final String _baseUrl =
       'https://asia-east2-warehouse-intern.cloudfunctions.net/Apiv1_2_0';
 
+  // ==========================================================================
+  // AUTHENTICATION
+  // ==========================================================================
+
   // REGISTER
   Future registerUser(UserRegister registration) async {
     final Uri _url = Uri.parse('$_baseUrl/user/Create_user');
@@ -85,6 +89,10 @@ class WarehouseApiProvider {
     }
   }
 
+  // ==========================================================================
+  // PRODUCT
+  // ==========================================================================
+
   // ADD NEW PRODUCT
   Future addProduct(AddProduct newProduct, String firebaseUid) async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product');
@@ -139,13 +147,47 @@ class WarehouseApiProvider {
     final Uri _url = Uri.parse('$_baseUrl/product/Product/$productId');
     try {
       final http.Response response = await _client.get(_url);
+
       if (response.statusCode == 200) {
-        return ProductDataById.fromJson(jsonDecode(response.body));
+        return IdProduct.fromJson(jsonDecode(response.body));
       } else {
         return FailedResponse.fromJson(jsonDecode(response.body));
       }
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  // UPDATE PRODUCT BY ID
+  Future updateProduct(
+      AddProduct updateProduct, int productId, String firebaseUid) async {
+    final Uri _url = Uri.parse('$_baseUrl/product/Product/$productId');
+
+    try {
+      final http.Response response = await _client.put(
+        _url,
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "Firebase_UID": firebaseUid,
+        },
+        body: jsonEncode(updateProduct),
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseJson = jsonDecode(response.body);
+        if (responseJson['message'] == 'Success') {
+          print('Success');
+          return SuccessResponse.fromJson(responseJson);
+        } else {
+          print('Failed');
+          print(response.body);
+
+          return FailedResponse.fromJson(responseJson);
+        }
+      }
+      throw Exception(response.statusCode);
+    } catch (e) {
+      print('$e');
     }
   }
 
@@ -164,3 +206,13 @@ class WarehouseApiProvider {
     }
   }
 }
+
+  // ==========================================================================
+  // WAREHOUSE
+  // ==========================================================================
+
+
+
+    // ==========================================================================
+    // ORDER
+    // ==========================================================================

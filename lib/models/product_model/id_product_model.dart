@@ -25,14 +25,14 @@ class IdProduct {
 }
 
 class ProductDataById {
-  ProductDataById({
-    this.productId,
-    this.productTypeId,
-    this.imageUrl,
-    this.productName,
-    this.singlePrice,
-    this.softDelete,
-  });
+  ProductDataById(
+      {this.productId,
+      this.productTypeId,
+      this.imageUrl,
+      this.productName,
+      this.singlePrice,
+      this.softDelete,
+      this.productTypeName});
 
   int? productId;
   int? productTypeId;
@@ -40,6 +40,7 @@ class ProductDataById {
   String? productName;
   int? singlePrice;
   bool? softDelete;
+  String? productTypeName;
 
   factory ProductDataById.fromJson(Map<String, dynamic> json) =>
       ProductDataById(
@@ -49,6 +50,7 @@ class ProductDataById {
         productName: json["Product_Name"],
         singlePrice: json["Single_Price"],
         softDelete: json["Soft_Delete"],
+        productTypeName: json['Product_Type_Name'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,5 +60,6 @@ class ProductDataById {
         "Product_Name": productName,
         "Single_Price": singlePrice,
         "Soft_Delete": softDelete,
+        "Product_Type_Name": productTypeName,
       };
 }
