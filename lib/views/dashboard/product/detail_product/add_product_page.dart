@@ -467,7 +467,7 @@ class _AddProductPageState extends State<AddProductPage> {
         child: Text(
           'Add',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             color: Color.fromRGBO(0, 209, 77, 1),
           ),
         ),

@@ -67,7 +67,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: Text(
                           'Login',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Colors.white,
                           ),
                         ),
@@ -101,7 +101,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: Text(
                           'Sign Up',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Color.fromRGBO(255, 0, 0, 1),
                           ),
                         ),

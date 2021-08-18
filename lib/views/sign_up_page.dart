@@ -306,7 +306,7 @@ class _SignupPageState extends State<SignupPage> {
           child: Text(
             'Sign Up',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               color: Color.fromRGBO(255, 0, 0, 1),
             ),
           ),

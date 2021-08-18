@@ -16,7 +16,7 @@ class UpdateProductRepository {
     required String price,
     required ImageProduct image,
     required String firebaseUid,
-    idProduct,
+    required int idProduct,
   }) async {
     AddProduct updateProduct = AddProduct(
       typeId: typeId,

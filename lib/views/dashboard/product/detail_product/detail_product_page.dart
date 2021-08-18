@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/id_product_bloc/id_product_bloc.dart';
+// import 'package:warehouse_app/blocs/upd_product_bloc/update_product_bloc.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/product_id_repository.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/upd_product_repository.dart';
+import 'package:warehouse_app/views/dashboard/product/detail_product/upd_product_page.dart';
 
 class DetailProductPage extends StatefulWidget {
   const DetailProductPage({Key? key, required this.productId})
@@ -20,6 +23,8 @@ class _DetailProductPageState extends State<DetailProductPage> {
   final WarehouseApiProvider provider = WarehouseApiProvider();
 
   ProductByIdRepository productByIdRepository = ProductByIdRepository();
+
+  UpdateProductRepository updateProductRepository = UpdateProductRepository();
 
   late IdProductBloc idProductBloc;
 
@@ -350,26 +355,40 @@ class _DetailProductPageState extends State<DetailProductPage> {
       padding: const EdgeInsets.only(
         top: 10,
       ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          fixedSize: Size(320, 45),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
-              color: Color.fromRGBO(35, 42, 255, 1),
-              width: 2,
-            ),
-          ),
-          primary: Colors.white,
-        ),
-        onPressed: () {},
-        child: Text(
-          'Edit',
-          style: TextStyle(
-            fontSize: 18,
-            color: Color.fromRGBO(35, 42, 255, 1),
-          ),
-        ),
+      child: BlocBuilder<IdProductBloc, IdProductState>(
+        builder: (context, state) {
+          if (state is IdProductDone) {
+            return ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: Size(320, 45),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    color: Color.fromRGBO(35, 42, 255, 1),
+                    width: 2,
+                  ),
+                ),
+                primary: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => UpdateProductPage(
+                          productId: state.productId.data!.productId!,
+                          updateProductRepository: updateProductRepository,
+                        )));
+                // Navigator.pushNamed(context, '/updateprod');
+              },
+              child: Text(
+                'Edit',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color.fromRGBO(35, 42, 255, 1),
+                ),
+              ),
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
@@ -396,7 +415,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
         child: Text(
           'Ban',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             color: Color.fromRGBO(255, 0, 0, 1),
           ),
         ),

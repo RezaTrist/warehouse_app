@@ -14,7 +14,7 @@ class UpdateProduct extends UpdateProductEvent {
   final String imageType;
   final Uint8List image64;
   final String firebaseUid;
-  // final int productId;
+  final int productId;
 
   UpdateProduct({
     required this.typeId,
@@ -23,7 +23,7 @@ class UpdateProduct extends UpdateProductEvent {
     required this.imageType,
     required this.image64,
     required this.firebaseUid,
-    // required this.productId,
+    required this.productId,
   });
 
   @override
@@ -34,6 +34,6 @@ class UpdateProduct extends UpdateProductEvent {
         imageType,
         image64,
         firebaseUid,
-        // productId,
+        productId,
       ];
 }

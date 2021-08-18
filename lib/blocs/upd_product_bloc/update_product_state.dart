@@ -11,15 +11,6 @@ class UpdateProductInitial extends UpdateProductState {}
 
 class UpdateProductLoading extends UpdateProductState {}
 
-class UpdateProductDone extends UpdateProductState {
-  // final IdProduct productId;
-
-  // UpdateProductDone({required this.productId});
-
-  // @override
-  // List<Object> get props => [
-  //       productId,
-  //     ];
-}
+class UpdateProductDone extends UpdateProductState {}
 
 class UpdateProductFailed extends UpdateProductState {}

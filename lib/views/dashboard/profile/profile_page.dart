@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Text(
                     'Sign Out',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: Color.fromRGBO(255, 0, 0, 1),
                     ),
                   ),
