@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/id_product_bloc/id_product_bloc.dart';
-// import 'package:warehouse_app/blocs/upd_product_bloc/update_product_bloc.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/product_id_repository.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/upd_product_repository.dart';
@@ -89,14 +88,8 @@ class _DetailProductPageState extends State<DetailProductPage> {
                 productName(),
                 productPrice(),
                 typeProduct(),
-                // detailProduct(),
                 editButton(),
-                banButton(),
-                // productLeft(),
-                // productStock(),
-                // productDescription(),
-                // warehouseSources(),
-                // warehouseAddress(),
+                disableButton(),
               ],
             ),
           ),
@@ -104,27 +97,6 @@ class _DetailProductPageState extends State<DetailProductPage> {
       ),
     );
   }
-
-  // Widget detailProduct() {
-  //   return BlocBuilder<IdProductBloc, IdProductState>(
-  //     builder: (context, state) {
-  //       if (state is IdProductDone) {
-  //         return Column(
-  //           children: [
-  //             Padding(
-  //                 padding: const EdgeInsets.only(top: 5),
-  //                 child: SizedBox(
-  //                   width: 200,
-  //                   height: 200,
-  //                   child: Image.network('${state.productId.data!.imageUrl}'),
-  //                 )),
-  //           ],
-  //         );
-  //       }
-  //       return Container();
-  //     },
-  //   );
-  // }
 
   Widget imgProduct() {
     return BlocBuilder<IdProductBloc, IdProductState>(
@@ -232,6 +204,79 @@ class _DetailProductPageState extends State<DetailProductPage> {
         }
         return Container();
       },
+    );
+  }
+
+  Widget editButton() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 10,
+      ),
+      child: BlocBuilder<IdProductBloc, IdProductState>(
+        builder: (context, state) {
+          if (state is IdProductDone) {
+            return ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: Size(320, 45),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    color: Color.fromRGBO(35, 42, 255, 1),
+                    width: 2,
+                  ),
+                ),
+                primary: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => UpdateProductPage(
+                          productId: state.productId.data!.productId!,
+                          updateProductRepository: updateProductRepository,
+                        )));
+                // Navigator.pushNamed(context, '/updateprod');
+              },
+              child: Text(
+                'Edit',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color.fromRGBO(35, 42, 255, 1),
+                ),
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
+    );
+  }
+
+  Widget disableButton() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 10,
+      ),
+      // BAN BUTTON
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          fixedSize: Size(320, 45),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: Color.fromRGBO(255, 0, 0, 1),
+              width: 2,
+            ),
+          ),
+          primary: Colors.white,
+        ),
+        onPressed: () {},
+        child: Text(
+          'Disable',
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromRGBO(255, 0, 0, 1),
+          ),
+        ),
+      ),
     );
   }
 
@@ -350,76 +395,4 @@ class _DetailProductPageState extends State<DetailProductPage> {
   //   );
   // }
 
-  Widget editButton() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 10,
-      ),
-      child: BlocBuilder<IdProductBloc, IdProductState>(
-        builder: (context, state) {
-          if (state is IdProductDone) {
-            return ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                fixedSize: Size(320, 45),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(
-                    color: Color.fromRGBO(35, 42, 255, 1),
-                    width: 2,
-                  ),
-                ),
-                primary: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UpdateProductPage(
-                          productId: state.productId.data!.productId!,
-                          updateProductRepository: updateProductRepository,
-                        )));
-                // Navigator.pushNamed(context, '/updateprod');
-              },
-              child: Text(
-                'Edit',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color.fromRGBO(35, 42, 255, 1),
-                ),
-              ),
-            );
-          }
-          return Container();
-        },
-      ),
-    );
-  }
-
-  Widget banButton() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 10,
-      ),
-      // BAN BUTTON
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          fixedSize: Size(320, 45),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
-              color: Color.fromRGBO(255, 0, 0, 1),
-              width: 2,
-            ),
-          ),
-          primary: Colors.white,
-        ),
-        onPressed: () {},
-        child: Text(
-          'Ban',
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromRGBO(255, 0, 0, 1),
-          ),
-        ),
-      ),
-    );
-  }
 }

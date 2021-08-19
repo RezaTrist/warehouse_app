@@ -71,6 +71,11 @@ class _UpdateProductPage extends State<UpdateProductPage> {
           return AlertDialog(
             title: Text('ALERT'),
             content: Text('Are you sure to save this changes?'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
             actions: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -78,9 +83,18 @@ class _UpdateProductPage extends State<UpdateProductPage> {
                   OutlinedButton(
                     onPressed: () => Navigator.of(context).pop(context),
                     child: Text('No'),
+                    style: OutlinedButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Color.fromRGBO(255, 0, 0, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 8,
                   ),
                   OutlinedButton(
                     onPressed: () {
@@ -102,11 +116,22 @@ class _UpdateProductPage extends State<UpdateProductPage> {
                                     .user
                                     .uid,
                             productId: widget.productId));
+                        Navigator.of(context).pushNamed('/product');
+                        _showSnackbar();
+                      } else {
+                        Navigator.of(context).pop(context);
                       }
-                      Navigator.of(context).pushNamed('/product');
-                      _showSnackbar();
                     },
                     child: Text('Yes'),
+                    style: OutlinedButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               )

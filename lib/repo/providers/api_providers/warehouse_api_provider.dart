@@ -191,6 +191,35 @@ class WarehouseApiProvider {
     }
   }
 
+  // DELETE PRODUCT BY ID
+  Future deleteProductById(int productId, String firebaseUid) async {
+    final Uri _url = Uri.parse('$_baseUrl/product/Product/$productId');
+
+    try {
+      final http.Response response =
+          await _client.delete(_url, headers: <String, String>{
+        "Content-Type": "application/json",
+        "Firebase_UID": firebaseUid,
+      });
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseJson = jsonDecode(response.body);
+        if (responseJson['message'] == 'Success') {
+          print('Success');
+          return SuccessResponse.fromJson(responseJson);
+        } else {
+          print('Failed');
+          print(response.body);
+
+          return FailedResponse.fromJson(responseJson);
+        }
+      }
+      throw Exception(response.statusCode);
+    } catch (e) {
+      print('$e');
+    }
+  }
+
   // PRODUCT TYPE
   Future<ProductTypePack> getProductType(int typeId) async {
     final Uri _url = Uri.parse('$_baseUrl/product/Product_type');

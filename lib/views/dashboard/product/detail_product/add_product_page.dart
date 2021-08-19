@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:warehouse_app/blocs/add_product_bloc/add_product_bloc.dart';
@@ -23,7 +24,8 @@ class AddProductPage extends StatefulWidget {
   _AddProductPageState createState() => _AddProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _AddProductPageState extends State<AddProductPage>
+    with TickerProviderStateMixin {
   final GlobalKey<FormBuilderState> _prodKey = GlobalKey();
 
   late AddProductBloc _addProductBloc;
@@ -41,6 +43,33 @@ class _AddProductPageState extends State<AddProductPage> {
   ProductTypeRepository productTypeRepository = ProductTypeRepository();
 
   String? types;
+
+  Future<void> _showSnackbar() async {
+    final snackBar = SnackBar(
+      content: const Text('Product successfully added.'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Future<void> _showLoading() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SpinKitFadingCircle(
+            // itemBuilder: (BuildContext context, int index) {
+            //   return DecoratedBox(
+            //     decoration: BoxDecoration(
+            //       color: index.isEven ? Colors.white : Colors.green,
+            //     ),
+            //   );
+            // },
+            color: Colors.green[700],
+            size: 50,
+            controller: AnimationController(
+                vsync: this, duration: const Duration(milliseconds: 1200)),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +107,9 @@ class _AddProductPageState extends State<AddProductPage> {
                       listener: (context, state) {
                         if (state is AddProductLoading) {
                           print('Loading...');
+                          _showLoading();
+                        } else if (state is AddProductDone) {
+                          _showSnackbar();
                         }
                       },
                       child: Column(
@@ -111,11 +143,6 @@ class _AddProductPageState extends State<AddProductPage> {
                           productName(context),
                           typeProductDropdown(),
                           uploadImage(),
-                          // productLeft(),
-                          // productStock(),
-                          // productDescription(),
-                          // warehouseSources(),
-                          // warehouseAddress(),
                           addButton(),
                         ],
                       ),
@@ -292,6 +319,57 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
+  Widget addButton() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 10,
+      ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          fixedSize: Size(280, 45),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: Color.fromRGBO(0, 209, 77, 1),
+              width: 2,
+            ),
+          ),
+          primary: Colors.white,
+        ),
+        onPressed: () {
+          if (_prodKey.currentState!.saveAndValidate()) {
+            // print(_prodKey.currentState!.value['type'].runtimeType);
+            // print(_prodKey.currentState!.value['name'].runtimeType);
+            // print(_prodKey.currentState!.value['price'].runtimeType);
+            // print(_prodKey.currentState!.value['image'].runtimeType);
+
+            _addProductBloc.add(NewProduct(
+                typeId: _prodKey.currentState!.value['type'],
+                name: _prodKey.currentState!.value['name'],
+                price: _prodKey.currentState!.value['price'],
+                imageType: (_prodKey.currentState!.value['image']
+                        as List<PlatformFile>)
+                    .first
+                    .extension!,
+                image64: (_prodKey.currentState!.value['image']
+                        as List<PlatformFile>)
+                    .first
+                    .bytes!,
+                firebaseUid:
+                    BlocProvider.of<AuthenticationBloc>(context).user.uid));
+          }
+        },
+        child: Text(
+          'Add',
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromRGBO(0, 209, 77, 1),
+          ),
+        ),
+      ),
+    );
+  }
+
   // Widget productLeft() {
   //   return Card(
   //     color: Color.fromRGBO(226, 226, 226, 1),
@@ -424,54 +502,4 @@ class _AddProductPageState extends State<AddProductPage> {
   //   );
   // }
 
-  Widget addButton() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 10,
-      ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          fixedSize: Size(280, 45),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
-              color: Color.fromRGBO(0, 209, 77, 1),
-              width: 2,
-            ),
-          ),
-          primary: Colors.white,
-        ),
-        onPressed: () {
-          if (_prodKey.currentState!.saveAndValidate()) {
-            // print(_prodKey.currentState!.value['type'].runtimeType);
-            // print(_prodKey.currentState!.value['name'].runtimeType);
-            // print(_prodKey.currentState!.value['price'].runtimeType);
-            // print(_prodKey.currentState!.value['image'].runtimeType);
-
-            _addProductBloc.add(NewProduct(
-                typeId: _prodKey.currentState!.value['type'],
-                name: _prodKey.currentState!.value['name'],
-                price: _prodKey.currentState!.value['price'],
-                imageType: (_prodKey.currentState!.value['image']
-                        as List<PlatformFile>)
-                    .first
-                    .extension!,
-                image64: (_prodKey.currentState!.value['image']
-                        as List<PlatformFile>)
-                    .first
-                    .bytes!,
-                firebaseUid:
-                    BlocProvider.of<AuthenticationBloc>(context).user.uid));
-          }
-        },
-        child: Text(
-          'Add',
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromRGBO(0, 209, 77, 1),
-          ),
-        ),
-      ),
-    );
-  }
 }
