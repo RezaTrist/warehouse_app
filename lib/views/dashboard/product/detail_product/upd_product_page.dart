@@ -199,7 +199,15 @@ class _UpdateProductPage extends State<UpdateProductPage> {
                 ),
                 productPrice(context),
                 productName(context),
-                typeProductDropdown(),
+                BlocBuilder<IdProductBloc, IdProductState>(
+                  builder: (context, state) {
+                    if (state is IdProductDone) {
+                      return typeProductDropdown(
+                          state.productId.data!.productTypeId);
+                    }
+                    return Container();
+                  },
+                ),
                 uploadImage(),
                 saveButton(),
               ],
@@ -222,9 +230,10 @@ class _UpdateProductPage extends State<UpdateProductPage> {
           if (state is IdProductDone) {
             return Container(
               child: FormBuilderTextField(
+                initialValue: '${state.productId.data!.singlePrice}',
                 name: 'price',
                 decoration: InputDecoration(
-                  hintText: '${state.productId.data!.singlePrice}',
+                  // hintText: '${state.productId.data!.singlePrice}',
                   prefixIcon: Icon(
                     FontAwesomeIcons.tag,
                     color: Colors.black,
@@ -261,9 +270,10 @@ class _UpdateProductPage extends State<UpdateProductPage> {
           if (state is IdProductDone) {
             return Container(
               child: FormBuilderTextField(
+                initialValue: '${state.productId.data!.productName}',
                 name: 'name',
                 decoration: InputDecoration(
-                  hintText: '${state.productId.data!.productName}',
+                  // hintText: '${state.productId.data!.productName}',
                   prefixIcon: Icon(
                     FontAwesomeIcons.cubes,
                     color: Colors.black,
@@ -287,7 +297,7 @@ class _UpdateProductPage extends State<UpdateProductPage> {
     );
   }
 
-  Widget typeProductDropdown() {
+  Widget typeProductDropdown(int? initialValue) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 25,
@@ -313,17 +323,10 @@ class _UpdateProductPage extends State<UpdateProductPage> {
                     ),
                   ),
                 ),
-                hint: BlocBuilder<IdProductBloc, IdProductState>(
-                  builder: (context, state) {
-                    if (state is IdProductDone) {
-                      return Text('${state.productId.data!.productTypeName}');
-                    }
-                    return Container();
-                  },
-                ),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(context),
                 ]),
+                initialValue: initialValue,
                 items: state.type.map((ProductType item) {
                   return DropdownMenuItem(
                     child: Text('${item.type}'),
@@ -359,34 +362,41 @@ class _UpdateProductPage extends State<UpdateProductPage> {
         right: 25,
         bottom: 10,
       ),
-      child: Container(
-        child: FormBuilderFilePicker(
-          name: 'image',
-          decoration: InputDecoration(
-              prefixIcon: Icon(
-                FontAwesomeIcons.image,
-                color: Colors.black,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
+      child: BlocBuilder<IdProductBloc, IdProductState>(
+        builder: (context, state) {
+          if (state is IdProductDone) {
+            return Container(
+              child: FormBuilderFilePicker(
+                name: 'image',
+                decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      FontAwesomeIcons.image,
+                      color: Colors.black,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    labelText: 'Image'),
+                maxFiles: 1,
+                previewImages: true,
+                onChanged: (val) => print(val),
+                withData: true,
+                selector: Row(
+                  children: <Widget>[Icon(FontAwesomeIcons.upload)],
                 ),
+                onFileLoading: (val) {
+                  print('val');
+                },
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(context),
+                ]),
               ),
-              labelText: 'Image'),
-          maxFiles: 1,
-          previewImages: true,
-          onChanged: (val) => print(val),
-          withData: true,
-          selector: Row(
-            children: <Widget>[Icon(FontAwesomeIcons.upload)],
-          ),
-          onFileLoading: (val) {
-            print('val');
-          },
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(context),
-          ]),
-        ),
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
@@ -410,23 +420,6 @@ class _UpdateProductPage extends State<UpdateProductPage> {
         ),
         onPressed: () {
           _showAlertDialog();
-          // if (_updateKey.currentState!.saveAndValidate()) {
-          //   _updateProductBloc.add(UpdateProduct(
-          //       typeId: _updateKey.currentState!.value['type'],
-          //       name: _updateKey.currentState!.value['name'],
-          //       price: _updateKey.currentState!.value['price'],
-          //       imageType: (_updateKey.currentState!.value['image']
-          //               as List<PlatformFile>)
-          //           .first
-          //           .extension!,
-          //       image64: (_updateKey.currentState!.value['image']
-          //               as List<PlatformFile>)
-          //           .first
-          //           .bytes!,
-          //       firebaseUid:
-          //           BlocProvider.of<AuthenticationBloc>(context).user.uid,
-          //       productId: widget.productId));
-          // }
         },
         child: Text(
           'Save',

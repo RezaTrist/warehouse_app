@@ -56,13 +56,6 @@ class _AddProductPageState extends State<AddProductPage>
         context: context,
         builder: (BuildContext context) {
           return SpinKitFadingCircle(
-            // itemBuilder: (BuildContext context, int index) {
-            //   return DecoratedBox(
-            //     decoration: BoxDecoration(
-            //       color: index.isEven ? Colors.white : Colors.green,
-            //     ),
-            //   );
-            // },
             color: Colors.green[700],
             size: 50,
             controller: AnimationController(
@@ -106,9 +99,11 @@ class _AddProductPageState extends State<AddProductPage>
                         BlocListener<AddProductBloc, AddProductState>(
                       listener: (context, state) {
                         if (state is AddProductLoading) {
-                          print('Loading...');
                           _showLoading();
                         } else if (state is AddProductDone) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context)
+                              .pushReplacementNamed('/product');
                           _showSnackbar();
                         }
                       },
@@ -338,11 +333,6 @@ class _AddProductPageState extends State<AddProductPage>
         ),
         onPressed: () {
           if (_prodKey.currentState!.saveAndValidate()) {
-            // print(_prodKey.currentState!.value['type'].runtimeType);
-            // print(_prodKey.currentState!.value['name'].runtimeType);
-            // print(_prodKey.currentState!.value['price'].runtimeType);
-            // print(_prodKey.currentState!.value['image'].runtimeType);
-
             _addProductBloc.add(NewProduct(
                 typeId: _prodKey.currentState!.value['type'],
                 name: _prodKey.currentState!.value['name'],
