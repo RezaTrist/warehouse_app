@@ -34,6 +34,10 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
         elevation: 0,
+        leading: Icon(
+          FontAwesomeIcons.adn,
+          color: Color.fromRGBO(0, 209, 77, 1),
+        ),
         actions: [
           SingleChildScrollView(
             child: IconButton(

@@ -26,6 +26,10 @@ class IdProductBloc extends Bloc<IdProductEvent, IdProductState> {
         yield IdProductDone(productId: result);
       } on GetProductByIdFailureInvalidProductId {
         yield IdProductFailedById();
+      } on GetProductByIdFailureServer {
+        yield IdProductFailedInternalServer();
+      } on GetProductByIdFailureParam {
+        yield IdProductFailedParam();
       } catch (e) {
         yield IdProductFailed();
       }

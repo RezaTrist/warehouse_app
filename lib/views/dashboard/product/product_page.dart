@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/all_product_bloc/all_product_bloc.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
@@ -13,10 +14,24 @@ class ProductPage extends StatefulWidget {
   _ProductPageState createState() => _ProductPageState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class _ProductPageState extends State<ProductPage>
+    with TickerProviderStateMixin {
   final WarehouseApiProvider provider = WarehouseApiProvider();
 
   AllProductRepository allProductRepository = AllProductRepository();
+
+  Future<void> _showLoading() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SpinKitFadingCircle(
+            color: Colors.green[700],
+            size: 50,
+            controller: AnimationController(
+                vsync: this, duration: const Duration(milliseconds: 1200)),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,33 +53,42 @@ class _ProductPageState extends State<ProductPage> {
         child: BlocProvider(
           create: (context) =>
               AllProductBloc(allProductRepository: allProductRepository),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 15,
-              left: 25,
-              bottom: 25,
-              right: 25,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Product',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
+          child: BlocListener<AllProductBloc, AllProductState>(
+            listener: (context, state) {
+              if (state is AllProductLoading) {
+                _showLoading();
+              } else if (state is AllProductDone) {
+                Navigator.of(context).pop();
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 15,
+                left: 25,
+                bottom: 25,
+                right: 25,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Product',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                Divider(
-                  color: Colors.black,
-                  endIndent: 25,
-                  thickness: 2,
-                ),
-                Container(
-                  height: size.height * 0.9,
-                  child: productList(),
-                ),
-              ],
+                  Divider(
+                    color: Colors.black,
+                    endIndent: 25,
+                    thickness: 2,
+                  ),
+                  Container(
+                    height: size.height * 0.9,
+                    child: productList(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

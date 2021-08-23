@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/id_product_bloc/id_product_bloc.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
@@ -18,7 +19,8 @@ class DetailProductPage extends StatefulWidget {
   _DetailProductPageState createState() => _DetailProductPageState();
 }
 
-class _DetailProductPageState extends State<DetailProductPage> {
+class _DetailProductPageState extends State<DetailProductPage>
+    with TickerProviderStateMixin {
   final WarehouseApiProvider provider = WarehouseApiProvider();
 
   ProductByIdRepository productByIdRepository = ProductByIdRepository();
@@ -36,6 +38,85 @@ class _DetailProductPageState extends State<DetailProductPage> {
   void didChangeDependencies() {
     idProductBloc.add(LoadIdProduct(productId: widget.productId));
     super.didChangeDependencies();
+  }
+
+  Future<void> _showLoading() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SpinKitFadingCircle(
+            color: Colors.green[700],
+            size: 50,
+            controller: AnimationController(
+                vsync: this, duration: const Duration(milliseconds: 1200)),
+          );
+        });
+  }
+
+  Future<void> _showAlertInvalidId() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('This product not found, try another one.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _showAlertInternalServer() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Error by internal server, try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -57,40 +138,53 @@ class _DetailProductPageState extends State<DetailProductPage> {
         child: SingleChildScrollView(
           child: BlocProvider(
             create: (context) => idProductBloc,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                    bottom: 10,
-                    left: 25,
-                    right: 25,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Product',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
+            child: BlocListener<IdProductBloc, IdProductState>(
+              listener: (context, state) {
+                if (state is IdProductLoading) {
+                  _showLoading();
+                } else if (state is IdProductFailedById) {
+                  _showAlertInvalidId();
+                } else if (state is IdProductFailedInternalServer) {
+                  _showAlertInternalServer();
+                } else if (state is IdProductDone) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      bottom: 10,
+                      left: 25,
+                      right: 25,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Product',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      Divider(
-                        color: Colors.black,
-                        endIndent: 25,
-                        thickness: 2,
-                      ),
-                    ],
+                        Divider(
+                          color: Colors.black,
+                          endIndent: 25,
+                          thickness: 2,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                imgProduct(),
-                productName(),
-                productPrice(),
-                typeProduct(),
-                editButton(),
-                disableButton(),
-              ],
+                  imgProduct(),
+                  productName(),
+                  productPrice(),
+                  typeProduct(),
+                  editButton(),
+                  disableButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -102,10 +196,6 @@ class _DetailProductPageState extends State<DetailProductPage> {
     return BlocBuilder<IdProductBloc, IdProductState>(
       builder: (context, state) {
         if (state is IdProductDone) {
-          // return Card(
-          //     color: Color.fromRGBO(226, 226, 226, 1),
-          //     elevation: 0,
-          //     child: Image.network('${state.productId.data!.imageUrl}'));
           return SizedBox(
             height: 250,
             width: 250,

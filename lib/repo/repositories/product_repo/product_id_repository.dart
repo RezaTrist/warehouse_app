@@ -6,6 +6,10 @@ class GetProductByIdFailure implements Exception {}
 
 class GetProductByIdFailureInvalidProductId implements GetProductByIdFailure {}
 
+class GetProductByIdFailureParam implements GetProductByIdFailure {}
+
+class GetProductByIdFailureServer implements GetProductByIdFailure {}
+
 class ProductByIdRepository {
   ProductByIdRepository({WarehouseApiProvider? warehouseApiProvider})
       : _provider = warehouseApiProvider ?? WarehouseApiProvider();
@@ -19,8 +23,17 @@ class ProductByIdRepository {
         return result;
       } else if (result is FailedResponse) {
         switch (result.errorKey) {
+          // ERROR 404
           case "error_invalid_product_id":
             throw GetProductByIdFailureInvalidProductId();
+
+          // ERROR 400
+          case "error_param":
+            throw GetProductByIdFailureParam();
+
+          // ERROR 500
+          case "error_internal_server":
+            throw GetProductByIdFailureServer();
 
           default:
             throw GetProductByIdFailure();

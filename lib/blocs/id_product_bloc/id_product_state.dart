@@ -15,6 +15,10 @@ class IdProductFailed extends IdProductState {}
 
 class IdProductFailedById extends IdProductState {}
 
+class IdProductFailedInternalServer extends IdProductState {}
+
+class IdProductFailedParam extends IdProductState {}
+
 class IdProductDone extends IdProductState {
   final IdProduct productId;
 

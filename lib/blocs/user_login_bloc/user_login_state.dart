@@ -14,3 +14,5 @@ class UserLoginLoading extends UserLoginState {}
 class UserLoginDone extends UserLoginState {}
 
 class UserLoginFailed extends UserLoginState {}
+
+class UserLoginFailedById extends UserLoginState {}

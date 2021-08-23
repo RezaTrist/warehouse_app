@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/user_login_bloc/user_login_bloc.dart';
 import 'package:warehouse_app/repo/repositories/user_repo/firebase_auth_repository.dart';
@@ -17,7 +18,7 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey();
 
   late UserLoginBloc _loginBloc;
@@ -28,6 +29,52 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     _loginBloc = UserLoginBloc(firebaseAuthRepo: widget._firebaseAuthRepo);
     super.initState();
+  }
+
+  Future<void> _showLoading() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SpinKitFadingCircle(
+            color: Colors.green[700],
+            size: 50,
+            controller: AnimationController(
+                vsync: this, duration: const Duration(milliseconds: 1200)),
+          );
+        });
+  }
+
+  Future<void> _showAlertInvalidId() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('This product not found, try another one.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -41,32 +88,44 @@ class _LoginPageState extends State<LoginPage> {
               create: (context) => _loginBloc,
               child: FormBuilder(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Welcome Back',
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w400,
+                child: BlocListener<UserLoginBloc, UserLoginState>(
+                  listener: (context, state) {
+                    if (state is UserLoginLoading) {
+                      print('Loading..');
+                      _showLoading();
+                    } else if (state is UserLoginFailedById) {
+                      _showAlertInvalidId();
+                    } else if (state is UserLoginDone) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Welcome Back',
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        bottom: 30,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 30,
+                        ),
+                        child: SizedBox(
+                          width: 180,
+                          height: 180,
+                          child: Image.asset('assets/images/work.png'),
+                        ),
                       ),
-                      child: SizedBox(
-                        width: 180,
-                        height: 180,
-                        child: Image.asset('assets/images/work.png'),
-                      ),
-                    ),
-                    emailField(),
-                    passwordField(),
-                    buttonLogin(),
-                    signUpButton(),
-                  ],
+                      emailField(),
+                      passwordField(),
+                      buttonLogin(),
+                      signUpButton(),
+                    ],
+                  ),
                 ),
               ),
             ),

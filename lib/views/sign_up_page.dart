@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/user_register_bloc/user_register_bloc.dart';
 import 'package:warehouse_app/blocs/user_role_bloc/user_role_bloc.dart';
@@ -21,7 +22,7 @@ class SignupPage extends StatefulWidget {
   _SignupPageState createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey();
 
   late UserRegisterBloc _registerBloc;
@@ -41,6 +42,19 @@ class _SignupPageState extends State<SignupPage> {
 
   String? roles;
 
+  Future<void> _showLoading() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SpinKitFadingCircle(
+            color: Colors.green[700],
+            size: 50,
+            controller: AnimationController(
+                vsync: this, duration: const Duration(milliseconds: 1200)),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +65,7 @@ class _SignupPageState extends State<SignupPage> {
             child: MultiBlocProvider(
               providers: [
                 BlocProvider<UserRegisterBloc>(
-                  create: (BuildContext context) =>
-                      UserRegisterBloc(registerApiRepository: provider),
+                  create: (BuildContext context) => _registerBloc,
                 ),
                 BlocProvider<UserRoleBloc>(
                   create: (BuildContext context) =>
@@ -61,47 +74,57 @@ class _SignupPageState extends State<SignupPage> {
               ],
               child: FormBuilder(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Welcome',
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 6,
-                        bottom: 6,
-                      ),
-                      child: Text(
-                        'Create your account by filling up the form',
+                child: BlocListener<UserRegisterBloc, UserRegisterState>(
+                  listener: (context, state) {
+                    if (state is UserRegisterLoading) {
+                      _showLoading();
+                    } else if (state is UserRegisterDone) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Welcome',
                         style: TextStyle(
-                          fontSize: 16,
-                          color: Color.fromRGBO(183, 183, 183, 1),
+                          fontSize: 35,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        bottom: 25,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 6,
+                          bottom: 6,
+                        ),
+                        child: Text(
+                          'Create your account by filling up the form',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromRGBO(183, 183, 183, 1),
+                          ),
+                        ),
                       ),
-                      child: SizedBox(
-                        width: 160,
-                        height: 160,
-                        child: Image.asset('assets/images/user1.png'),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 25,
+                        ),
+                        child: SizedBox(
+                          width: 160,
+                          height: 160,
+                          child: Image.asset('assets/images/user1.png'),
+                        ),
                       ),
-                    ),
-                    nameField(context),
-                    roleDropdown(),
-                    emailField(context),
-                    passwordField(context),
-                    signUpButton(),
-                    loginButton(),
-                  ],
+                      nameField(context),
+                      roleDropdown(),
+                      emailField(context),
+                      passwordField(context),
+                      signUpButton(),
+                      loginButton(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -300,7 +323,7 @@ class _SignupPageState extends State<SignupPage> {
                   password: _formKey.currentState!.value['password'],
                   name: _formKey.currentState!.value['name'],
                   roleId: _formKey.currentState!.value['role']));
-              Navigator.of(context).pushReplacementNamed('/login');
+              // Navigator.of(context).pushReplacementNamed('/login');
             }
           },
           child: Text(
