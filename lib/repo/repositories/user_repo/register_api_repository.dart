@@ -4,6 +4,14 @@ import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provide
 
 class GetUserRegisterFailure implements Exception {}
 
+class GetUserRegisterFailureUsedFb implements GetUserRegisterFailure {}
+
+class GetUserRegisterFailureUsed implements GetUserRegisterFailure {}
+
+class GetUserRegisterFailureParam implements GetUserRegisterFailure {}
+
+class GetUserRegisterFailureServer implements GetUserRegisterFailure {}
+
 class RegisterApiRepository {
   RegisterApiRepository({WarehouseApiProvider? provider})
       : _provider = provider ?? WarehouseApiProvider();
@@ -24,12 +32,30 @@ class RegisterApiRepository {
     );
 
     final result = await _provider.registerUser(registration);
+    print(result.runtimeType);
     if (result is SuccessResponse) {
       return result;
     } else if (result is FailedResponse) {
-      throw GetUserRegisterFailure();
+      switch (result.errorKey) {
+        case "error_email_is_used_fb":
+          throw GetUserRegisterFailureUsedFb();
+
+        case "error_email_is_used":
+          throw GetUserRegisterFailureUsed();
+
+        // ERROR 400
+        case "error_param":
+          throw GetUserRegisterFailureParam();
+
+        // ERROR 500
+        case "error_internal_server":
+          throw GetUserRegisterFailureServer();
+
+        default:
+          throw GetUserRegisterFailure();
+      }
     } else {
-      print(Exception());
+      // print(Exception());
       throw Exception();
     }
   }

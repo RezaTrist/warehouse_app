@@ -14,3 +14,13 @@ class UpdateProductLoading extends UpdateProductState {}
 class UpdateProductDone extends UpdateProductState {}
 
 class UpdateProductFailed extends UpdateProductState {}
+
+class UpdateProductFailedByUid extends UpdateProductFailed {}
+
+class UpdateProductFailedById extends UpdateProductFailed {}
+
+class UpdateProductFailedContentType extends UpdateProductFailed {}
+
+class UpdateProductFailedParam extends UpdateProductFailed {}
+
+class UpdateProductFailedInternalServer extends UpdateProductFailed {}

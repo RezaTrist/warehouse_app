@@ -4,6 +4,16 @@ import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provide
 
 class GetAddProductFailure implements Exception {}
 
+class GetAddProductFailureInvalidUid implements GetAddProductFailure {}
+
+class GetAddProductFailureInvalidId implements GetAddProductFailure {}
+
+class GetAddProductFailureParam implements GetAddProductFailure {}
+
+class GetAddProductFailureContentType implements GetAddProductFailure {}
+
+class GetAddProductFailureServer implements GetAddProductFailure {}
+
 class AddProductRepository {
   AddProductRepository({WarehouseApiProvider? provider})
       : _provider = provider ?? WarehouseApiProvider();
@@ -29,8 +39,30 @@ class AddProductRepository {
     if (result is SuccessResponse) {
       return result;
     } else if (result is FailedResponse) {
-      print(result.errorKey);
-      throw GetAddProductFailure();
+      switch (result.errorKey) {
+        // ERROR 401
+        case "error_invalid_uid":
+          throw GetAddProductFailureInvalidUid();
+
+        // ERROR 404
+        case "error_invalid_product_id":
+          throw GetAddProductFailureInvalidId();
+
+        // ERROR 400
+        case "error_param":
+          throw GetAddProductFailureParam();
+
+        // ERROR 415
+        case "error_content-type":
+          throw GetAddProductFailureContentType();
+
+        // ERROR 500
+        case "error_internal_server":
+          throw GetAddProductFailureServer();
+
+        default:
+          throw GetAddProductFailure();
+      }
     } else {
       print(Exception());
       throw Exception();

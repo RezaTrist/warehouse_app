@@ -4,6 +4,16 @@ import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provide
 
 class UpdateProductFailure implements Exception {}
 
+class UpdateProductFailureInvalidUid implements UpdateProductFailure {}
+
+class UpdateProductFailureInvalidId implements UpdateProductFailure {}
+
+class UpdateProductFailureParam implements UpdateProductFailure {}
+
+class UpdateProductFailureContentType implements UpdateProductFailure {}
+
+class UpdateProductFailureServer implements UpdateProductFailure {}
+
 class UpdateProductRepository {
   UpdateProductRepository({WarehouseApiProvider? provider})
       : _provider = provider ?? WarehouseApiProvider();
@@ -34,8 +44,30 @@ class UpdateProductRepository {
     if (result is SuccessResponse) {
       return result;
     } else if (result is FailedResponse) {
-      print(result.errorKey);
-      throw UpdateProductFailure();
+      switch (result.errorKey) {
+        // ERROR 401
+        case "error_invalid_uid":
+          throw UpdateProductFailureInvalidUid();
+
+        // ERROR 404
+        case "error_invalid_product_id":
+          throw UpdateProductFailureInvalidId();
+
+        // ERROR 400
+        case "error_param":
+          throw UpdateProductFailureParam();
+
+        // ERROR 415
+        case "error_content-type":
+          throw UpdateProductFailureContentType();
+
+        // ERROR 500
+        case "error_internal_server":
+          throw UpdateProductFailureServer();
+
+        default:
+          throw UpdateProductFailure();
+      }
     } else {
       print(Exception());
       throw Exception();

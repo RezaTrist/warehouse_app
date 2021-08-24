@@ -18,9 +18,9 @@ class FailedResponse extends PostResponse {
   factory FailedResponse.fromJson(Map<String, dynamic> json) {
     return FailedResponse(
       message: json['message'],
-      errorMessage: json['message'],
-      errorKey: json['message'],
-      errorData: json['message'],
+      errorMessage: json['error_message'],
+      errorKey: json['error_key'],
+      errorData: json['error_data'],
     );
   }
 }

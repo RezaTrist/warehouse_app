@@ -38,6 +38,16 @@ class UpdateProductBloc extends Bloc<UpdateProductEvent, UpdateProductState> {
             firebaseUid: event.firebaseUid,
             idProduct: event.productId);
         yield UpdateProductDone();
+      } on UpdateProductFailureInvalidUid {
+        yield UpdateProductFailedByUid();
+      } on UpdateProductFailureInvalidId {
+        yield UpdateProductFailedById();
+      } on UpdateProductFailureParam {
+        yield UpdateProductFailedParam();
+      } on UpdateProductFailureContentType {
+        yield UpdateProductFailedContentType();
+      } on UpdateProductFailureServer {
+        yield UpdateProductFailedInternalServer();
       } catch (e) {
         yield UpdateProductFailed();
       }

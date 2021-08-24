@@ -27,9 +27,18 @@ class UserRegisterBloc extends Bloc<UserRegisterEvent, UserRegisterState> {
           roleId: event.roleId,
         );
         yield UserRegisterDone();
-      } catch (e) {
-        yield UserRegisterFailed();
+      } on GetUserRegisterFailureUsedFb {
+        yield UserRegisterFailedUsedFb();
+      } on GetUserRegisterFailureUsed {
+        yield UserRegisterFailedUsed();
+      } on GetUserRegisterFailureParam {
+        yield UserRegisterFailedParam();
+      } on GetUserRegisterFailureServer {
+        yield UserRegisterFailedInternalServer();
       }
+      // catch (e) {
+      //   yield UserRegisterFailed();
+      // }
     }
   }
 }

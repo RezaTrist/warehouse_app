@@ -13,11 +13,13 @@ class IdProductLoading extends IdProductState {}
 
 class IdProductFailed extends IdProductState {}
 
-class IdProductFailedById extends IdProductState {}
+class IdProductFailedById extends IdProductFailed {}
 
-class IdProductFailedInternalServer extends IdProductState {}
+class IdProductFailedInternalServer extends IdProductFailed {}
 
-class IdProductFailedParam extends IdProductState {}
+class IdProductFailedContentType extends IdProductFailed {}
+
+class IdProductFailedParam extends IdProductFailed {}
 
 class IdProductDone extends IdProductState {
   final IdProduct productId;

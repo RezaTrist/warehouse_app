@@ -8,6 +8,8 @@ class GetProductByIdFailureInvalidProductId implements GetProductByIdFailure {}
 
 class GetProductByIdFailureParam implements GetProductByIdFailure {}
 
+class GetProductByIdFailureContentType implements GetProductByIdFailure {}
+
 class GetProductByIdFailureServer implements GetProductByIdFailure {}
 
 class ProductByIdRepository {
@@ -30,6 +32,10 @@ class ProductByIdRepository {
           // ERROR 400
           case "error_param":
             throw GetProductByIdFailureParam();
+
+          // ERROR 415
+          case "error_content-type":
+            throw GetProductByIdFailureContentType();
 
           // ERROR 500
           case "error_internal_server":

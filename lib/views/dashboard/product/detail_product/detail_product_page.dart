@@ -53,46 +53,13 @@ class _DetailProductPageState extends State<DetailProductPage>
         });
   }
 
-  Future<void> _showAlertInvalidId() async {
+  Future<void> _showAlertDialog() async {
     return showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (builder) {
           return AlertDialog(
             title: Text('ALERT'),
-            content: Text('This product not found, try another one.'),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-            ),
-            actions: [
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(context);
-                },
-                child: Text('Ok'),
-                style: OutlinedButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        });
-  }
-
-  Future<void> _showAlertInternalServer() async {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('ALERT'),
-            content: Text('Error by internal server, try again later.'),
+            content: Text('Something went wrong, try again later.'),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(20),
@@ -142,10 +109,9 @@ class _DetailProductPageState extends State<DetailProductPage>
               listener: (context, state) {
                 if (state is IdProductLoading) {
                   _showLoading();
-                } else if (state is IdProductFailedById) {
-                  _showAlertInvalidId();
-                } else if (state is IdProductFailedInternalServer) {
-                  _showAlertInternalServer();
+                } else if (state is IdProductFailed) {
+                  Navigator.of(context).pop();
+                  _showAlertDialog();
                 } else if (state is IdProductDone) {
                   Navigator.of(context).pop();
                 }

@@ -38,9 +38,20 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
           firebaseUid: event.firebaseUid,
         );
         yield AddProductDone();
-      } catch (e) {
-        yield AddProductFailed();
+      } on GetAddProductFailureInvalidUid {
+        yield AddProductFailedByUid();
+      } on GetAddProductFailureInvalidId {
+        yield AddProductFailedById();
+      } on GetAddProductFailureParam {
+        yield AddProductFailedParam();
+      } on GetAddProductFailureContentType {
+        yield AddProductFailedContentType();
+      } on GetAddProductFailureServer {
+        yield AddProductFailedInternalServer();
       }
+      // catch (e) {
+      //   yield AddProductFailed();
+      // }
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
@@ -29,7 +30,8 @@ class UpdateProductPage extends StatefulWidget {
   _UpdateProductPage createState() => _UpdateProductPage();
 }
 
-class _UpdateProductPage extends State<UpdateProductPage> {
+class _UpdateProductPage extends State<UpdateProductPage>
+    with TickerProviderStateMixin {
   final GlobalKey<FormBuilderState> _updateKey = GlobalKey();
 
   late UpdateProductBloc _updateProductBloc;
@@ -140,6 +142,52 @@ class _UpdateProductPage extends State<UpdateProductPage> {
         });
   }
 
+  Future<void> _showLoading() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SpinKitFadingCircle(
+            color: Colors.green[700],
+            size: 50,
+            controller: AnimationController(
+                vsync: this, duration: const Duration(milliseconds: 1200)),
+          );
+        });
+  }
+
+  Future<void> _showAlertFailed() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Something went wrong, try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,47 +218,57 @@ class _UpdateProductPage extends State<UpdateProductPage> {
                 create: (BuildContext context) => _updateProductBloc,
               )
             ],
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                    bottom: 10,
-                    left: 25,
-                    right: 25,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Edit Product',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
+            child: BlocListener<UpdateProductBloc, UpdateProductState>(
+              listener: (context, state) {
+                if (state is UpdateProductLoading) {
+                  _showLoading();
+                } else if (state is UpdateProductFailed) {
+                  Navigator.of(context).pop();
+                  _showAlertFailed();
+                }
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      bottom: 10,
+                      left: 25,
+                      right: 25,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Edit Product',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      Divider(
-                        color: Colors.black,
-                        endIndent: 25,
-                        thickness: 2,
-                      ),
-                    ],
+                        Divider(
+                          color: Colors.black,
+                          endIndent: 25,
+                          thickness: 2,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                productPrice(context),
-                productName(context),
-                BlocBuilder<IdProductBloc, IdProductState>(
-                  builder: (context, state) {
-                    if (state is IdProductDone) {
-                      return typeProductDropdown(
-                          state.productId.data!.productTypeId);
-                    }
-                    return Container();
-                  },
-                ),
-                uploadImage(),
-                saveButton(),
-              ],
+                  productPrice(context),
+                  productName(context),
+                  BlocBuilder<IdProductBloc, IdProductState>(
+                    builder: (context, state) {
+                      if (state is IdProductDone) {
+                        return typeProductDropdown(
+                            state.productId.data!.productTypeId);
+                      }
+                      return Container();
+                    },
+                  ),
+                  uploadImage(),
+                  saveButton(),
+                ],
+              ),
             ),
           ),
         ),

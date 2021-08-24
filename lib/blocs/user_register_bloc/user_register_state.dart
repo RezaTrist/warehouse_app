@@ -13,4 +13,12 @@ class UserRegisterLoading extends UserRegisterState {}
 
 class UserRegisterDone extends UserRegisterState {}
 
-class UserRegisterFailed extends UserRegisterState {}
+// class UserRegisterFailed extends UserRegisterState {}
+
+class UserRegisterFailedUsedFb extends UserRegisterState {}
+
+class UserRegisterFailedUsed extends UserRegisterState {}
+
+class UserRegisterFailedParam extends UserRegisterState {}
+
+class UserRegisterFailedInternalServer extends UserRegisterState {}

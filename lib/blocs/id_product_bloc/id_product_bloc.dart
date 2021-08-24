@@ -22,7 +22,10 @@ class IdProductBloc extends Bloc<IdProductEvent, IdProductState> {
       yield IdProductLoading();
       try {
         final result = await productByIdRepository.getProductById(
-            idProduct: event.productId);
+          idProduct:
+              // 190,
+              event.productId,
+        );
         yield IdProductDone(productId: result);
       } on GetProductByIdFailureInvalidProductId {
         yield IdProductFailedById();
@@ -30,6 +33,8 @@ class IdProductBloc extends Bloc<IdProductEvent, IdProductState> {
         yield IdProductFailedInternalServer();
       } on GetProductByIdFailureParam {
         yield IdProductFailedParam();
+      } on GetProductByIdFailureContentType {
+        yield IdProductFailedContentType();
       } catch (e) {
         yield IdProductFailed();
       }
