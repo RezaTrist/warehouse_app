@@ -8,19 +8,19 @@ abstract class DeleteProductEvent extends Equatable {
 }
 
 class DisableProduct extends DeleteProductEvent {
-  final bool softDelete;
+  // final bool softDelete;
   final int productId;
   final String firebaseUid;
 
   DisableProduct({
-    required this.softDelete,
+    // required this.softDelete,
     required this.productId,
     required this.firebaseUid,
   });
 
   @override
   List<Object> get props => [
-        softDelete,
+        // softDelete,
         productId,
         firebaseUid,
       ];

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:warehouse_app/blocs/dashboard_bloc/dashboard_bloc.dart';
-import 'package:warehouse_app/views/dashboard/product/product_page.dart';
+// import 'package:warehouse_app/views/dashboard/product/product_page.dart';
 import 'package:warehouse_app/views/dashboard/profile/profile_page.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -141,10 +141,9 @@ class _DashboardPageState extends State<DashboardPage> {
                           elevation: 4,
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(
+                              Navigator.pushNamed(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProductPage()),
+                                '/product',
                               );
                             },
                             child: SizedBox(

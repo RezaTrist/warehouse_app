@@ -234,7 +234,20 @@ class WarehouseApiProvider {
       throw Exception(e);
     }
   }
+
+  Future<String> networkImageToBase64(String imageUrl) async {
+    final Uri _url = Uri.parse(imageUrl);
+
+    try {
+      final http.Response response = await http.get(_url);
+      final bytes = response.bodyBytes;
+      return base64Encode(bytes);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
+
 
   // ==========================================================================
   // WAREHOUSE

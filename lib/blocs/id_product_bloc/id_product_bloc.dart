@@ -35,9 +35,10 @@ class IdProductBloc extends Bloc<IdProductEvent, IdProductState> {
         yield IdProductFailedParam();
       } on GetProductByIdFailureContentType {
         yield IdProductFailedContentType();
-      } catch (e) {
-        yield IdProductFailed();
       }
+      // catch (e) {
+      //   yield IdProductFailed();
+      // }
     }
   }
 }

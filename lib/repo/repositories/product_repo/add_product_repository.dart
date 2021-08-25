@@ -64,7 +64,7 @@ class AddProductRepository {
           throw GetAddProductFailure();
       }
     } else {
-      print(Exception());
+      // print(Exception());
       throw Exception();
     }
   }

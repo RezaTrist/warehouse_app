@@ -15,12 +15,12 @@ class UpdateProductDone extends UpdateProductState {}
 
 class UpdateProductFailed extends UpdateProductState {}
 
-class UpdateProductFailedByUid extends UpdateProductFailed {}
+class UpdateProductFailedByUid extends UpdateProductState {}
 
-class UpdateProductFailedById extends UpdateProductFailed {}
+class UpdateProductFailedById extends UpdateProductState {}
 
-class UpdateProductFailedContentType extends UpdateProductFailed {}
+class UpdateProductFailedContentType extends UpdateProductState {}
 
-class UpdateProductFailedParam extends UpdateProductFailed {}
+class UpdateProductFailedParam extends UpdateProductState {}
 
-class UpdateProductFailedInternalServer extends UpdateProductFailed {}
+class UpdateProductFailedInternalServer extends UpdateProductState {}

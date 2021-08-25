@@ -55,39 +55,73 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
         });
   }
 
-  // Future<void> _alertEmailUsed() async {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (builder) {
-  //         return AlertDialog(
-  //           title: Text('ALERT'),
-  //           content: Text(
-  //               'There is already account with this email address. Try another email.'),
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.all(
-  //               Radius.circular(20),
-  //             ),
-  //           ),
-  //           actions: [
-  //             OutlinedButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop(context);
-  //               },
-  //               child: Text('Ok'),
-  //               style: OutlinedButton.styleFrom(
-  //                 primary: Colors.white,
-  //                 backgroundColor: Color.fromRGBO(35, 42, 255, 1),
-  //                 shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.all(
-  //                     Radius.circular(20),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
+  Future<void> _alertEmailUsed() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text(
+                'There is already account with this email address, try another email.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _alertEmailUsedFb() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text(
+                'This email address already registered, try another email.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
 
   Future<void> _alertErrorParam() async {
     return showDialog(
@@ -156,40 +190,6 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
         });
   }
 
-  // Future<void> _alertEmailUsedFb() async {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (builder) {
-  //         return AlertDialog(
-  //           title: Text('ALERT'),
-  //           content: Text(
-  //               'This email address already registered in firebase. Try another email.'),
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.all(
-  //               Radius.circular(20),
-  //             ),
-  //           ),
-  //           actions: [
-  //             OutlinedButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop(context);
-  //               },
-  //               child: Text('Ok'),
-  //               style: OutlinedButton.styleFrom(
-  //                 primary: Colors.white,
-  //                 backgroundColor: Color.fromRGBO(35, 42, 255, 1),
-  //                 shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.all(
-  //                     Radius.circular(20),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,74 +215,10 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin {
                       _showLoading();
                     } else if (state is UserRegisterFailedUsed) {
                       Navigator.of(context).pop();
-                      // _alertEmailUsed();
-                      showDialog(
-                          context: context,
-                          builder: (builder) {
-                            return AlertDialog(
-                              title: Text('ALERT'),
-                              content: Text(
-                                  'There is already account with this email address. Try another email.'),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                              ),
-                              actions: [
-                                OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(context);
-                                  },
-                                  child: Text('Ok'),
-                                  style: OutlinedButton.styleFrom(
-                                    primary: Colors.white,
-                                    backgroundColor:
-                                        Color.fromRGBO(35, 42, 255, 1),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          });
+                      _alertEmailUsed();
                     } else if (state is UserRegisterFailedUsedFb) {
                       Navigator.of(context).pop();
-                      // _alertEmailUsedFb();
-                      showDialog(
-                          context: context,
-                          builder: (builder) {
-                            return AlertDialog(
-                              title: Text('ALERT'),
-                              content: Text(
-                                  'This email address already registered in firebase. Try another email.'),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                              ),
-                              actions: [
-                                OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(context);
-                                  },
-                                  child: Text('Ok'),
-                                  style: OutlinedButton.styleFrom(
-                                    primary: Colors.white,
-                                    backgroundColor:
-                                        Color.fromRGBO(35, 42, 255, 1),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          });
+                      _alertEmailUsedFb();
                     } else if (state is UserRegisterFailedParam) {
                       Navigator.of(context).pop();
                       _alertErrorParam();

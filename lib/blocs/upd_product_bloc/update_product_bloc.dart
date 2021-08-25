@@ -23,12 +23,22 @@ class UpdateProductBloc extends Bloc<UpdateProductEvent, UpdateProductState> {
     if (event is UpdateProduct) {
       yield UpdateProductLoading();
       try {
-        Uint8List imageToUploadBytes = event.image64;
-        String image64 = base64Encode(imageToUploadBytes);
-        print(event.imageType);
+        ImageProduct? image;
+        // String imageType;
+        // String image64;
+        if (event.image64 == null && event.imageType == null) {
+          image = null;
+        } else if (event.image64 != null && event.imageType != null) {
+          image = ImageProduct(
+              imageType: event.imageType,
+              image64: base64Encode(event.image64!));
+        } else {
+          yield UpdateProductFailed();
+          throw Exception();
+        }
 
-        ImageProduct image =
-            ImageProduct(imageType: event.imageType, image64: image64);
+        // ImageProduct image =
+        //     ImageProduct(imageType: imageType, image64: image64);
 
         await updateProductRepository.updateProduct(
             typeId: event.typeId,
@@ -37,6 +47,7 @@ class UpdateProductBloc extends Bloc<UpdateProductEvent, UpdateProductState> {
             image: image,
             firebaseUid: event.firebaseUid,
             idProduct: event.productId);
+
         yield UpdateProductDone();
       } on UpdateProductFailureInvalidUid {
         yield UpdateProductFailedByUid();
@@ -48,9 +59,10 @@ class UpdateProductBloc extends Bloc<UpdateProductEvent, UpdateProductState> {
         yield UpdateProductFailedContentType();
       } on UpdateProductFailureServer {
         yield UpdateProductFailedInternalServer();
-      } catch (e) {
-        yield UpdateProductFailed();
       }
+      // catch (e) {
+      //   yield UpdateProductFailed();
+      // }
     }
   }
 }

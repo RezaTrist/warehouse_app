@@ -197,13 +197,13 @@ class _AddProductPageState extends State<AddProductPage>
         });
   }
 
-  Future<void> _alertInvalidProduct() async {
+  Future<void> _alertInvalidProductId() async {
     return showDialog(
         context: context,
         builder: (builder) {
           return AlertDialog(
             title: Text('ALERT'),
-            content: Text('Product ID not found, please try again later.'),
+            content: Text('Product not found, please try again later.'),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(20),
@@ -268,7 +268,7 @@ class _AddProductPageState extends State<AddProductPage>
                           _showLoading();
                         } else if (state is AddProductFailedById) {
                           Navigator.of(context).pop();
-                          _alertInvalidProduct();
+                          _alertInvalidProductId();
                         } else if (state is AddProductFailedByUid) {
                           Navigator.of(context).pop();
                           _alertInvalidUid();

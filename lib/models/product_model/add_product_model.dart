@@ -2,22 +2,30 @@ class AddProduct {
   final int typeId;
   final String name;
   final String price;
-  final ImageProduct image;
+  final ImageProduct? image;
 
   const AddProduct({
     required this.typeId,
     required this.name,
     required this.price,
-    required this.image,
+    this.image,
   });
 
   Map<String, dynamic> toJson() {
-    return {
-      'Product_Type_ID': typeId,
-      'Product_Name': name,
-      'Single_Price': price,
-      'Image': image,
-    };
+    if (image != null) {
+      return {
+        'Product_Type_ID': typeId,
+        'Product_Name': name,
+        'Single_Price': price,
+        'Image': image,
+      };
+    } else {
+      return {
+        'Product_Type_ID': typeId,
+        'Product_Name': name,
+        'Single_Price': price,
+      };
+    }
   }
 }
 

@@ -105,14 +105,20 @@ class _UpdateProductPage extends State<UpdateProductPage>
                             typeId: _updateKey.currentState!.value['type'],
                             name: _updateKey.currentState!.value['name'],
                             price: _updateKey.currentState!.value['price'],
-                            imageType: (_updateKey.currentState!.value['image']
-                                    as List<PlatformFile>)
-                                .first
-                                .extension!,
-                            image64: (_updateKey.currentState!.value['image']
-                                    as List<PlatformFile>)
-                                .first
-                                .bytes!,
+                            imageType:
+                                _updateKey.currentState!.value['image'] != null
+                                    ? (_updateKey.currentState!.value['image']
+                                            as List<PlatformFile>)
+                                        .first
+                                        .extension!
+                                    : null,
+                            image64:
+                                _updateKey.currentState!.value['image'] != null
+                                    ? (_updateKey.currentState!.value['image']
+                                            as List<PlatformFile>)
+                                        .first
+                                        .bytes!
+                                    : null,
                             firebaseUid:
                                 BlocProvider.of<AuthenticationBloc>(context)
                                     .user
@@ -155,13 +161,146 @@ class _UpdateProductPage extends State<UpdateProductPage>
         });
   }
 
-  Future<void> _showAlertFailed() async {
+  Future<void> _alertContentType() async {
     return showDialog(
         context: context,
         builder: (builder) {
           return AlertDialog(
             title: Text('ALERT'),
             content: Text('Something went wrong, try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _alertErrorParam() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Something went wrong, please try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _alertErrorServer() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text(
+                'Something went wrong on our server, please try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _alertInvalidUid() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Firebase ID not found, please try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _alertInvalidProductId() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Product not found, please try again later.'),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(20),
@@ -222,9 +361,21 @@ class _UpdateProductPage extends State<UpdateProductPage>
               listener: (context, state) {
                 if (state is UpdateProductLoading) {
                   _showLoading();
-                } else if (state is UpdateProductFailed) {
+                } else if (state is UpdateProductFailedById) {
                   Navigator.of(context).pop();
-                  _showAlertFailed();
+                  _alertInvalidProductId();
+                } else if (state is UpdateProductFailedByUid) {
+                  Navigator.of(context).pop();
+                  _alertInvalidUid();
+                } else if (state is UpdateProductFailedContentType) {
+                  Navigator.of(context).pop();
+                  _alertContentType();
+                } else if (state is UpdateProductFailedInternalServer) {
+                  Navigator.of(context).pop();
+                  _alertErrorServer();
+                } else if (state is UpdateProductFailedParam) {
+                  Navigator.of(context).pop();
+                  _alertErrorParam();
                 }
               },
               child: Column(
@@ -423,34 +574,46 @@ class _UpdateProductPage extends State<UpdateProductPage>
       child: BlocBuilder<IdProductBloc, IdProductState>(
         builder: (context, state) {
           if (state is IdProductDone) {
-            return Container(
-              child: FormBuilderFilePicker(
-                name: 'image',
-                decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      FontAwesomeIcons.image,
-                      color: Colors.black,
+            return Column(
+              children: [
+                Container(
+                  child: FormBuilderFilePicker(
+                    name: 'image',
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          FontAwesomeIcons.image,
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                        ),
+                        labelText: 'Image'),
+                    maxFiles: 1,
+                    previewImages: true,
+                    onChanged: (val) => print(val),
+                    withData: true,
+                    selector: Row(
+                      children: <Widget>[Icon(FontAwesomeIcons.upload)],
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
-                    ),
-                    labelText: 'Image'),
-                maxFiles: 1,
-                previewImages: true,
-                onChanged: (val) => print(val),
-                withData: true,
-                selector: Row(
-                  children: <Widget>[Icon(FontAwesomeIcons.upload)],
+                    onFileLoading: (val) {
+                      print('val');
+                    },
+                    // validator: FormBuilderValidators.compose([
+                    //   FormBuilderValidators.required(context),
+                    // ]),
+                  ),
                 ),
-                onFileLoading: (val) {
-                  print('val');
-                },
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context),
-                ]),
-              ),
+                _updateKey.currentState?.value['image'] == null
+                    ? Image.network(
+                        state.productId.data!.imageUrl!,
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(),
+              ],
             );
           }
           return Container();

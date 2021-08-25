@@ -11,15 +11,15 @@ class IdProductInitial extends IdProductState {}
 
 class IdProductLoading extends IdProductState {}
 
-class IdProductFailed extends IdProductState {}
+// class IdProductFailed extends IdProductState {}
 
-class IdProductFailedById extends IdProductFailed {}
+class IdProductFailedById extends IdProductState {}
 
-class IdProductFailedInternalServer extends IdProductFailed {}
+class IdProductFailedInternalServer extends IdProductState {}
 
-class IdProductFailedContentType extends IdProductFailed {}
+class IdProductFailedContentType extends IdProductState {}
 
-class IdProductFailedParam extends IdProductFailed {}
+class IdProductFailedParam extends IdProductState {}
 
 class IdProductDone extends IdProductState {
   final IdProduct productId;

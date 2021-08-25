@@ -4,30 +4,32 @@ abstract class UpdateProductEvent extends Equatable {
   const UpdateProductEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class UpdateProduct extends UpdateProductEvent {
   final int typeId;
   final String name;
   final String price;
-  final String imageType;
-  final Uint8List image64;
+  final String? imageType;
+  final Uint8List? image64;
   final String firebaseUid;
   final int productId;
+  // final String? imageUrl;
 
   UpdateProduct({
     required this.typeId,
     required this.name,
     required this.price,
-    required this.imageType,
-    required this.image64,
+    this.imageType,
+    this.image64,
     required this.firebaseUid,
     required this.productId,
+    // this.imageUrl,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         typeId,
         name,
         price,
@@ -35,5 +37,6 @@ class UpdateProduct extends UpdateProductEvent {
         image64,
         firebaseUid,
         productId,
+        // imageUrl,
       ];
 }

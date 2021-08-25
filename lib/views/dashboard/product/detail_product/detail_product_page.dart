@@ -3,17 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:warehouse_app/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:warehouse_app/blocs/delete_product_bloc/delete_product_bloc.dart';
 import 'package:warehouse_app/blocs/id_product_bloc/id_product_bloc.dart';
 import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provider.dart';
+import 'package:warehouse_app/repo/repositories/product_repo/del_product_repository.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/product_id_repository.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/upd_product_repository.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/upd_product_page.dart';
+// import 'package:warehouse_app/views/dashboard/product/product_page.dart';
 
 class DetailProductPage extends StatefulWidget {
-  const DetailProductPage({Key? key, required this.productId})
-      : super(key: key);
+  const DetailProductPage(
+      {Key? key,
+      required this.productId,
+      required DeleteProductRepository deleteProductRepository})
+      : _deleteProductRepository = deleteProductRepository,
+        super(key: key);
 
   final int productId;
+
+  final DeleteProductRepository _deleteProductRepository;
 
   @override
   _DetailProductPageState createState() => _DetailProductPageState();
@@ -23,14 +33,20 @@ class _DetailProductPageState extends State<DetailProductPage>
     with TickerProviderStateMixin {
   final WarehouseApiProvider provider = WarehouseApiProvider();
 
+  late DeleteProductBloc _delProductBloc;
+
   ProductByIdRepository productByIdRepository = ProductByIdRepository();
 
   UpdateProductRepository updateProductRepository = UpdateProductRepository();
+
+  // DeleteProductRepository deleteProductRepository = DeleteProductRepository();
 
   late IdProductBloc idProductBloc;
 
   void initState() {
     idProductBloc = IdProductBloc(productByIdRepository: productByIdRepository);
+    _delProductBloc = DeleteProductBloc(
+        deleteProductRepository: widget._deleteProductRepository);
     super.initState();
   }
 
@@ -53,7 +69,7 @@ class _DetailProductPageState extends State<DetailProductPage>
         });
   }
 
-  Future<void> _showAlertDialog() async {
+  Future<void> _alertContentType() async {
     return showDialog(
         context: context,
         builder: (builder) {
@@ -86,6 +102,178 @@ class _DetailProductPageState extends State<DetailProductPage>
         });
   }
 
+  Future<void> _alertErrorParam() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Something went wrong, please try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _alertErrorServer() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text(
+                'Something went wrong on our server, please try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _alertInvalidProductId() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Product not found, please try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _showSnackbar() async {
+    final snackBar = SnackBar(
+      content: const Text('Product successfully deleted.'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Future<void> _showAlertDialog() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Are you sure want to disable this product?'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  OutlinedButton(
+                    onPressed: () => Navigator.of(context).pop(context),
+                    child: Text('No'),
+                    style: OutlinedButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Color.fromRGBO(255, 0, 0, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      _delProductBloc.add(DisableProduct(
+                          // softDelete: softDelete,
+                          productId: widget.productId,
+                          firebaseUid:
+                              BlocProvider.of<AuthenticationBloc>(context)
+                                  .user
+                                  .uid));
+                      // Navigator.pushAndRemoveUntil(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (BuildContext context) => ProductPage()),
+                      //     (route) => false);
+                    },
+                    child: Text('Yes'),
+                    style: OutlinedButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,19 +291,48 @@ class _DetailProductPageState extends State<DetailProductPage>
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: BlocProvider(
-            create: (context) => idProductBloc,
-            child: BlocListener<IdProductBloc, IdProductState>(
-              listener: (context, state) {
-                if (state is IdProductLoading) {
-                  _showLoading();
-                } else if (state is IdProductFailed) {
-                  Navigator.of(context).pop();
-                  _showAlertDialog();
-                } else if (state is IdProductDone) {
-                  Navigator.of(context).pop();
-                }
-              },
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => idProductBloc),
+              BlocProvider(create: (context) => _delProductBloc),
+            ],
+            child: MultiBlocListener(
+              listeners: [
+                BlocListener<IdProductBloc, IdProductState>(
+                  listener: (context, state) {
+                    if (state is IdProductLoading) {
+                      _showLoading();
+                    } else if (state is IdProductFailedById) {
+                      Navigator.of(context).pop();
+                      _alertInvalidProductId();
+                    } else if (state is IdProductFailedContentType) {
+                      Navigator.of(context).pop();
+                      _alertContentType();
+                    } else if (state is IdProductFailedInternalServer) {
+                      Navigator.of(context).pop();
+                      _alertErrorServer();
+                    } else if (state is IdProductFailedParam) {
+                      Navigator.of(context).pop();
+                      _alertErrorParam();
+                    } else if (state is IdProductDone) {
+                      Navigator.of(context).pop();
+                    } else if (state is DeleteProductDone) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+                BlocListener<DeleteProductBloc, DeleteProductState>(
+                    listener: (context, state) {
+                  if (state is DeleteProductDone) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).popUntil((route) {
+                      print('/detailprod ${route.settings.name}');
+                      return route.settings.name == '/product';
+                    });
+                    _showSnackbar();
+                  }
+                })
+              ],
               child: Column(
                 children: [
                   Padding(
@@ -324,7 +541,9 @@ class _DetailProductPageState extends State<DetailProductPage>
           ),
           primary: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          _showAlertDialog();
+        },
         child: Text(
           'Disable',
           style: TextStyle(
