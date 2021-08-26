@@ -13,4 +13,10 @@ class DeleteProductLoading extends DeleteProductState {}
 
 class DeleteProductDone extends DeleteProductState {}
 
-class DeleteProductFailed extends DeleteProductState {}
+// class DeleteProductFailed extends DeleteProductState {}
+
+class DeleteProductFailedById extends DeleteProductState {}
+
+class DeleteProductFailedInternalServer extends DeleteProductState {}
+
+class DeleteProductFailedUid extends DeleteProductState {}

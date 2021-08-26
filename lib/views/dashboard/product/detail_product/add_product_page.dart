@@ -24,8 +24,7 @@ class AddProductPage extends StatefulWidget {
   _AddProductPageState createState() => _AddProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage>
-    with TickerProviderStateMixin {
+class _AddProductPageState extends State<AddProductPage> {
   final GlobalKey<FormBuilderState> _prodKey = GlobalKey();
 
   late AddProductBloc _addProductBloc;
@@ -58,8 +57,8 @@ class _AddProductPageState extends State<AddProductPage>
           return SpinKitFadingCircle(
             color: Colors.green[700],
             size: 50,
-            controller: AnimationController(
-                vsync: this, duration: const Duration(milliseconds: 1200)),
+            // controller: AnimationController(
+            //     vsync: this, duration: const Duration(milliseconds: 1200)),
           );
         });
   }

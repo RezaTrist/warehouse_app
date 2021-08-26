@@ -15,8 +15,7 @@ class ProductPage extends StatefulWidget {
   _ProductPageState createState() => _ProductPageState();
 }
 
-class _ProductPageState extends State<ProductPage>
-    with TickerProviderStateMixin {
+class _ProductPageState extends State<ProductPage> {
   final WarehouseApiProvider provider = WarehouseApiProvider();
 
   AllProductRepository allProductRepository = AllProductRepository();
@@ -30,8 +29,8 @@ class _ProductPageState extends State<ProductPage>
           return SpinKitFadingCircle(
             color: Colors.green[700],
             size: 50,
-            controller: AnimationController(
-                vsync: this, duration: const Duration(milliseconds: 1200)),
+            // controller: AnimationController(
+            //     vsync: this, duration: const Duration(milliseconds: 1200)),
           );
         });
   }
@@ -41,6 +40,12 @@ class _ProductPageState extends State<ProductPage>
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(FontAwesomeIcons.arrowLeft),
+          onPressed: () {
+            Navigator.of(context).pushNamed('/dashboard');
+          },
+        ),
         title: Text(
           'Warehouse App',
           style: TextStyle(

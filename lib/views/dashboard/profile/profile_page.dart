@@ -30,6 +30,12 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.black,
           ),
         ),
+        leading: IconButton(
+          icon: Icon(FontAwesomeIcons.arrowLeft),
+          onPressed: () {
+            Navigator.of(context).pop(context);
+          },
+        ),
       ),
       backgroundColor: Colors.white,
       body: Center(

@@ -10,7 +10,7 @@ import 'package:warehouse_app/repo/providers/api_providers/warehouse_api_provide
 import 'package:warehouse_app/repo/repositories/product_repo/del_product_repository.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/product_id_repository.dart';
 import 'package:warehouse_app/repo/repositories/product_repo/upd_product_repository.dart';
-import 'package:warehouse_app/views/dashboard/product/detail_product/upd_product_page.dart';
+// import 'package:warehouse_app/views/dashboard/product/detail_product/upd_product_page.dart';
 // import 'package:warehouse_app/views/dashboard/product/product_page.dart';
 
 class DetailProductPage extends StatefulWidget {
@@ -29,8 +29,7 @@ class DetailProductPage extends StatefulWidget {
   _DetailProductPageState createState() => _DetailProductPageState();
 }
 
-class _DetailProductPageState extends State<DetailProductPage>
-    with TickerProviderStateMixin {
+class _DetailProductPageState extends State<DetailProductPage> {
   final WarehouseApiProvider provider = WarehouseApiProvider();
 
   late DeleteProductBloc _delProductBloc;
@@ -63,8 +62,8 @@ class _DetailProductPageState extends State<DetailProductPage>
           return SpinKitFadingCircle(
             color: Colors.green[700],
             size: 50,
-            controller: AnimationController(
-                vsync: this, duration: const Duration(milliseconds: 1200)),
+            // controller: AnimationController(
+            //     vsync: this, duration: const Duration(milliseconds: 1200)),
           );
         });
   }
@@ -202,6 +201,39 @@ class _DetailProductPageState extends State<DetailProductPage>
         });
   }
 
+  Future<void> _alertInvalidUid() async {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Text('ALERT'),
+            content: Text('Firebase ID not found, please try again later.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text('Ok'),
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Color.fromRGBO(35, 42, 255, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   Future<void> _showSnackbar() async {
     final snackBar = SnackBar(
       content: const Text('Product successfully deleted.'),
@@ -244,17 +276,12 @@ class _DetailProductPageState extends State<DetailProductPage>
                   OutlinedButton(
                     onPressed: () {
                       _delProductBloc.add(DisableProduct(
-                          // softDelete: softDelete,
                           productId: widget.productId,
                           firebaseUid:
                               BlocProvider.of<AuthenticationBloc>(context)
                                   .user
                                   .uid));
-                      // Navigator.pushAndRemoveUntil(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (BuildContext context) => ProductPage()),
-                      //     (route) => false);
+                      Navigator.of(context).pop(context);
                     },
                     child: Text('Yes'),
                     style: OutlinedButton.styleFrom(
@@ -286,6 +313,12 @@ class _DetailProductPageState extends State<DetailProductPage>
             color: Colors.black,
           ),
         ),
+        leading: IconButton(
+          icon: Icon(FontAwesomeIcons.arrowLeft),
+          onPressed: () {
+            Navigator.of(context).pop(context);
+          },
+        ),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(0, 209, 77, 1),
       ),
@@ -300,6 +333,7 @@ class _DetailProductPageState extends State<DetailProductPage>
               listeners: [
                 BlocListener<IdProductBloc, IdProductState>(
                   listener: (context, state) {
+                    // PRODUCT BY ID
                     if (state is IdProductLoading) {
                       _showLoading();
                     } else if (state is IdProductFailedById) {
@@ -316,19 +350,29 @@ class _DetailProductPageState extends State<DetailProductPage>
                       _alertErrorParam();
                     } else if (state is IdProductDone) {
                       Navigator.of(context).pop();
-                    } else if (state is DeleteProductDone) {
-                      Navigator.of(context).pop();
                     }
                   },
                 ),
                 BlocListener<DeleteProductBloc, DeleteProductState>(
                     listener: (context, state) {
-                  if (state is DeleteProductDone) {
+                  if (state is DeleteProductLoading) {
+                    _showLoading();
+                  } else if (state is DeleteProductFailedById) {
                     Navigator.of(context).pop();
-                    Navigator.of(context).popUntil((route) {
-                      print('/detailprod ${route.settings.name}');
-                      return route.settings.name == '/product';
-                    });
+                    _alertInvalidProductId();
+                  } else if (state is DeleteProductFailedInternalServer) {
+                    Navigator.of(context).pop();
+                    _alertErrorServer();
+                  } else if (state is DeleteProductFailureUid) {
+                    Navigator.of(context).pop();
+                    _alertInvalidUid();
+                  } else if (state is DeleteProductDone) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacementNamed('/product');
+                    // Navigator.of(context).popUntil((route) {
+                    //   print('/detailprod ${route.settings.name}');
+                    //   return route.settings.name == '/detailprod';
+                    // });
                     _showSnackbar();
                   }
                 })
@@ -501,11 +545,14 @@ class _DetailProductPageState extends State<DetailProductPage>
                 primary: Colors.white,
               ),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UpdateProductPage(
-                          productId: state.productId.data!.productId!,
-                          updateProductRepository: updateProductRepository,
-                        )));
+                Navigator.of(context).pushNamed('/updateprod',
+                    arguments: {'productId': state.productId.data!.productId!}
+                    // MaterialPageRoute(
+                    //     builder: (context) => UpdateProductPage(
+                    //           productId: state.productId.data!.productId!,
+                    //           updateProductRepository: updateProductRepository,
+                    //         )),
+                    );
                 // Navigator.pushNamed(context, '/updateprod');
               },
               child: Text(

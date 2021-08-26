@@ -10,6 +10,7 @@ import 'package:warehouse_app/repo/repositories/user_repo/register_api_repositor
 import 'package:warehouse_app/views/dashboard/dashboard_runner.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/add_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/detail_product/detail_product_page.dart';
+import 'package:warehouse_app/views/dashboard/product/detail_product/upd_product_page.dart';
 import 'package:warehouse_app/views/dashboard/product/product_page.dart';
 import 'package:warehouse_app/views/dashboard/profile/profile_page.dart';
 import 'package:warehouse_app/views/login_page.dart';
@@ -28,12 +29,14 @@ class MyApp extends StatefulWidget {
         _registerApiRepository = registerApiRepository,
         _addProductRepository = addProductRepository,
         _deleteProductRepository = deleteProductRepository,
+        _updateProductRepository = updateProductRepository,
         super(key: key);
 
   final FirebaseAuthRepo _firebaseAuthRepo;
   final RegisterApiRepository _registerApiRepository;
   final AddProductRepository _addProductRepository;
   final DeleteProductRepository _deleteProductRepository;
+  final UpdateProductRepository _updateProductRepository;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -106,7 +109,16 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(
                 builder: (context) => DetailProductPage(
                     productId: args['productId'],
-                    deleteProductRepository: widget._deleteProductRepository));
+                    deleteProductRepository: widget._deleteProductRepository),
+                settings: RouteSettings(name: '/detailprod'));
+
+          case '/updateprod':
+            Map<String, dynamic> args =
+                settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(
+                builder: (context) => UpdateProductPage(
+                    productId: args['productId'],
+                    updateProductRepository: widget._updateProductRepository));
 
           default:
         }

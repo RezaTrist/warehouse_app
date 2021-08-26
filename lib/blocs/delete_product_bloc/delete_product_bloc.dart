@@ -25,9 +25,16 @@ class DeleteProductBloc extends Bloc<DeleteProductEvent, DeleteProductState> {
           firebaseUid: event.firebaseUid,
         );
         yield DeleteProductDone();
-      } catch (e) {
-        yield DeleteProductFailed();
+      } on DeleteProductFailureProductId {
+        yield DeleteProductFailedById();
+      } on DeleteProductFailureUid {
+        yield DeleteProductFailedUid();
+      } on DeleteProductFailureServer {
+        yield DeleteProductFailedInternalServer();
       }
+      // catch (e) {
+      //   yield DeleteProductFailed();
+      // }
     }
   }
 }

@@ -30,8 +30,7 @@ class UpdateProductPage extends StatefulWidget {
   _UpdateProductPage createState() => _UpdateProductPage();
 }
 
-class _UpdateProductPage extends State<UpdateProductPage>
-    with TickerProviderStateMixin {
+class _UpdateProductPage extends State<UpdateProductPage> {
   final GlobalKey<FormBuilderState> _updateKey = GlobalKey();
 
   late UpdateProductBloc _updateProductBloc;
@@ -155,8 +154,8 @@ class _UpdateProductPage extends State<UpdateProductPage>
           return SpinKitFadingCircle(
             color: Colors.green[700],
             size: 50,
-            controller: AnimationController(
-                vsync: this, duration: const Duration(milliseconds: 1200)),
+            // controller: AnimationController(
+            //     vsync: this, duration: const Duration(milliseconds: 1200)),
           );
         });
   }
@@ -339,6 +338,12 @@ class _UpdateProductPage extends State<UpdateProductPage>
             color: Colors.black,
           ),
         ),
+        leading: IconButton(
+          icon: Icon(FontAwesomeIcons.arrowLeft),
+          onPressed: () {
+            Navigator.of(context).pop(context);
+          },
+        ),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(0, 209, 77, 1),
       ),
@@ -376,6 +381,8 @@ class _UpdateProductPage extends State<UpdateProductPage>
                 } else if (state is UpdateProductFailedParam) {
                   Navigator.of(context).pop();
                   _alertErrorParam();
+                } else if (state is UpdateProductDone) {
+                  Navigator.of(context).pop();
                 }
               },
               child: Column(
